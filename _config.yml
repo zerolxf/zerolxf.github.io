@@ -12,9 +12,10 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-    url: 
+    url: git@github.com:zerolxf/zerolxf.github.io.git
 root: /
-permalink: :year/:month/:day/:title/
+oot: /
+permalink: :2016/:4/:12/:Blog/
 permalink_defaults:
 
 # Directory
