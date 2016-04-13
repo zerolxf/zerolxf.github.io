@@ -1,7 +1,18 @@
 .DS_Store
 Thumbs.db
 db.json
+<<<<<<< HEAD
 *.log
 node_modules/
 public/
 .deploy*/
+=======
+debug.log
+node_modules/
+__MACOSX/
+public/
+.deploy/
+_SYNCAPP
+metadata.xml
+/.idea
+>>>>>>> 830cf8c4319909f31d059c631439cb3cad0a23b0
