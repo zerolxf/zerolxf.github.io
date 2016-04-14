@@ -1,8 +1,15 @@
-# Landscape plus
+# Landscape plus (TaoSama's Edition)
 
-[![Join the chat at https://gitter.im/xiangming/landscape-plus](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/xiangming/landscape-plus?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[我的博客演示](http://taosama.github.io/)  
 
-针对中国大陆的hexo用户，优化hexo官方主题landscape。支持hexo 3.x 和 hexo 2.x。[**演示**](http://jasonxiang.com/landscape-plus/)
+[部分修改内容简介](http://taosama.github.io/2016/03/09/Hello%20World%20%E2%80%94%E2%80%94%20%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA%E5%8E%86%E7%A8%8B/)  
+
+---
+~~以下搬运修改内容，待更新~~
+
+**以下为官方内容搬运**
+
+针对中国大陆的hexo用户，优化hexo官方主题landscape。支持hexo 3.x 和 hexo 2.x。
 
 ## 主题特色
 
@@ -32,8 +39,10 @@
 
 ## <a name='install'>安装</a>
 
+或者直接使用最新版：（可能会存在bug，谨慎使用）
+
 ```bash
-git clone https://github.com/xiangming/landscape-plus.git themes/landscape-plus
+git clone https://github.com/TaoSama/landscape-plus.git themes/landscape-plus
 ```
 
 ## <a name='enable'>启用</a>
