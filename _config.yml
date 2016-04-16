@@ -6,13 +6,13 @@
 title: Dreamer
 subtitle:
 description:
-author: John Doe
+author: Zerolxf
 language:
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://yoursite.com
+url: http://zerolxf.github.io
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -30,17 +30,17 @@ skip_render:
 # Writing
 new_post_name: :title.md # File name of new posts
 default_layout: post
-titlecase: false # Transform title into titlecase
+titlecase: true # Transform title into titlecase
 external_link: true # Open external links in new tab
 filename_case: 0
-render_drafts: false
-post_asset_folder: false
+render_drafts: true
+post_asset_folder: true
 relative_link: false
 future: true
 highlight:
   enable: true
   line_number: true
-  auto_detect: false
+  auto_detect: true
   tab_replace:
 
 # Category & Tag
@@ -71,3 +71,7 @@ deploy:
   type: git
   repository: git@github.com:zerolxf/zerolxf.github.io.git
   branch: master
+
+# sitemap
+sitemap:
+path: sitemap.xml
