@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Dreamer</title>
+  
+  <link href="/atom.xml" rel="self"/>
+  
+  <link href="http://zerolxf.github.io/"/>
+  <updated>2016-04-16T07:07:28.973Z</updated>
+  <id>http://zerolxf.github.io/</id>
+  
+  <author>
+    <name>Zerolxf</name>
+    
+  </author>
+  
+  <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>搭建博客感想</title>
+    <link href="http://zerolxf.github.io/2016/04/16/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%84%9F%E6%83%B3/"/>
+    <id>http://zerolxf.github.io/2016/04/16/搭建博客感想/</id>
+    <published>2016-04-16T07:05:11.000Z</published>
+    <updated>2016-04-16T07:07:28.973Z</updated>
+    
+    <content type="html">&lt;h1 id=&quot;搭建一个博客好麻烦&quot;&gt;&lt;a href=&quot;#搭建一个博客好麻烦&quot; class=&quot;headerlink&quot; title=&quot;搭建一个博客好麻烦&quot;&gt;&lt;/a&gt;搭建一个博客好麻烦&lt;/h1&gt;&lt;p&gt;… 不过我是直接复制别人主题的 ..&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;搭建一个博客好麻烦&quot;&gt;&lt;a href=&quot;#搭建一个博客好麻烦&quot; class=&quot;headerlink&quot; title=&quot;搭建一个博客好麻烦&quot;&gt;&lt;/a&gt;搭建一个博客好麻烦&lt;/h1&gt;&lt;p&gt;… 不过我是直接复制别人主题的 ..&lt;/p&gt;
+
+    
+    </summary>
+    
+    
+      <category term="感想" scheme="http://zerolxf.github.io/tags/%E6%84%9F%E6%83%B3/"/>
+    
+  </entry>
+  
+</feed>
