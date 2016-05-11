@@ -64,25 +64,15 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-SCU1a" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-解题报告" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/10/SCU1a/" class="article-date">
-  <time datetime="2016-05-10T12:36:17.000Z" itemprop="datePublished">2016-05-10</time>
+    <a href="/2016/05/11/解题报告/" class="article-date">
+  <time datetime="2016-05-11T06:26:18.792Z" itemprop="datePublished">2016-05-11</time>
 </a>
     
   </div>
   <div class="article-inner">
     
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/10/SCU1a/">SCU1a</a>
-    </h1>
-  
-
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
@@ -91,8 +81,171 @@
         <h3 id="A-双剑合并"><a href="#A-双剑合并" class="headerlink" title="A.双剑合并"></a>A.双剑合并</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9</p>
 <h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>1.根据这题范围肯定需要O(n)级别算法，基本上就是固定A，然后B中的每一个值必须要在常数时间内找到最大对应的匹配的A的值。从这个限制描述，隐隐约约能够感觉到要用一个类似于字典树的东西。同时，基于一种贪心策略，尽可能的要让我合并后的值的最高位为1。所以，我们可以以最高位为根建一个深度为31的01二叉树，首先让A中的值一个一个插进去，并在相应节点标记为可走。那么B的某一个值只需要从根节点开始走，尽可能的走和自己不同的位的路(比如当前B的位是0,那么如果有1我就走1否则再走0)，这样能够保证走过的一定是最优的。</p>
 <p>2.这题没啥可错的，做这题之前读了一片论文，所以很有帮助：浅谈信息学竞赛中的0和1by武森</p>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>1.这题写的比较撮，每一个都特判了以下，后面看到汝佳的伸展树感觉写法挺好的。ch[2],0表示左儿子，1表示右儿子，值为-1表示不存在。这样的话就不用讨论当前是0还是1了，用一个变量o表示x当前的01位，ch[o]如果不存在就!o就好</p>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>1.这题写的比较撮，每一个都特判了一下，后面看到汝佳的伸展树感觉写法挺好的。ch[2],0表示左儿子，1表示右儿子，值为-1表示不存在。这样的话就不用讨论当前是0还是1了，用一个变量o表示x当前的01位，ch[o]如果不存在就!o就好</p>
 <p>2.以后遇到两个数值变成最大，那么优先考虑高位。同时异或的性质比较好，可以预处理后很快求出i项和j项的异或和，同时还有一个特点sum[i]^sum[j]=0 的话表明他们两个相等同时还表明第i项到第j项异或和是0</p>
+<h3 id="B-单词替换"><a href="#B-单词替换" class="headerlink" title="B.单词替换"></a>B.单词替换</h3><h4 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h4><p>给出一个只包含小写字母的s字符串，和单词A,B。把s中的所有A替换成B，长度都小于5e6。PS:这题不需要考虑后效性</p>
+<h4 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h4><p>1.这题就是最裸的KMP，当s中匹配到A的时候把匹配到A的首位置标记一下，输出的时候直接跳过lenA的长度同时输出B就好</p>
+<h4 id="思考-1"><a href="#思考-1" class="headerlink" title="思考"></a>思考</h4><p>1.用KMP的时候一定要统一模板，以后就决定用f[0] = 0, f[1] = 0,这样的方式了，不需要纠结，也就不会有分歧</p>
+<h3 id="C-01的时间"><a href="#C-01的时间" class="headerlink" title="C 01的时间"></a>C 01的时间</h3><h4 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h4><p>给你一个数x，让你找到x的倍数，同时这个倍数只能包含01数字(十进制)，输出最小的符合条件的</p>
+<h4 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h4><p>1.这题本意是想让我们用搜索的，但写过数位dp后对这题第一反应就是可以dp啊。<br>dp[i][j][0]表示当前i长度余j并且第i位取0可不可达，同理dp[i][j][1]。</p>
+<p>首先预处理出当第i位是1时对x取模的余数状态转移的话<br><em>dp[i][j][0] |= dp[i-1][j][0] || dp[i-1][j][1];<br>dp[i][j][1] |= dp[i-1][(j-base[j]+x)%x][0] || dp[i-1][(j-base[j]+x)%x][1]; </em></p>
+<p>2.全部切记初始化0,dp[0][0][0] = 1;</p>
+<h4 id="思考-2"><a href="#思考-2" class="headerlink" title="思考"></a>思考</h4><p>1.这里刚开始我把dp所存的值弄混淆了，存了当前的最小值是多少，同时还开了一个辅助flag作为标记能不能可达。但是，后面想一想，完全没必要。因为当状态转移好之后，第一个首位是1并且取余是0的状态就是最小的(这个可以反向想一下)。找到最小的状态之后，剩下的就是往回找，看前一个是由谁转移来的。</p>
+<p>2.前面的转移式是最基本的转移，但实际转移中为了回溯更方便可以dp记录上一位的取值情况，不可到达初始为-1. 当有两种可选的状态的时候选较小的。</p>
+<p>3.我曾经错误以为：上述过程有一个性质就是，对于所找到的第一个符合条件首位是1的数字，他的之前所有状态都只有一个前述状态。为什么？假如他可以由两个状态转移y,z转移过来，那么(y-z)%x==0,那么就会出现一个比当前更小的符合条件的。但是后面想一想（y-z）可能不符合只含01这个条件。（但是如果没有这个限制的话，这就是一个可以利用的性质）</p>
+<h3 id="E-RunningPhoton’s-Nightmare"><a href="#E-RunningPhoton’s-Nightmare" class="headerlink" title="E.RunningPhoton’s Nightmare"></a>E.RunningPhoton’s Nightmare</h3><h4 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h4><p>一个人站在S这个起始位置，想要走到一个迷宫出口E，但是现在这个人身上有一个炸弹在k时间内就会爆炸，同时到达一些R位置能够让炸弹计时器清零，问能否出迷宫，能并输出最短时间,其中迷宫大小不超过600*600，1&lt;=k&lt;=600，最多有100个清零器</p>
+<h4 id="分析-3"><a href="#分析-3" class="headerlink" title="分析"></a>分析</h4><p>1.在S起点距离k的位置内的所有的都是可达并且最优时间等于最短距离。然后再由这些已经确定是最短的并且炸弹时间已被清零的点来更新周围距离k的点（如果炸弹时间不清零，那么这个点所能够到达的最远距离只能够在S的范围之内…）,然后这就好比是dijstra算法，只是多了一个限制（只能由R点更新周围点）。</p>
+<p>2.刚开始拿到这一题想的是从起点开始暴搜（受到华为那个寻路比赛影响），状态包含当前已经走过的时间和炸弹剩余的时间以及当前位置，但是这样的话什么样的状态才是最优的就不好确定了，如果k小的话倒是能够对每个位置的每一个炸弹时间k记录一个最优时间。但是k比较大…</p>
+<h4 id="思考-3"><a href="#思考-3" class="headerlink" title="思考"></a>思考</h4><p>1.上述算法最终只有S，E，R这三个点起作用了，那么现在就只看这三个点。如果这三类点距离小于k那么表示可以联通，也就是在原图的基础上面重新建了一个图。那就无脑跑100多次bfs求最短路，如果三类点距离d小于k则他们建一个d距离的边否则不能直接相连。</p>
+<p>2.为了代码美观好写，用bfs求最短路的时候传入距离数组指针。</p>
+<h3 id="F-表达式"><a href="#F-表达式" class="headerlink" title="F 表达式"></a>F 表达式</h3><h4 id="题意-4"><a href="#题意-4" class="headerlink" title="题意"></a>题意</h4><p>最快多少次才能够最快的得到$x^k$，可以从已经得到的数中乘除，最初只有x，比如 $x^31$,他最快可以通过通过6次操作</p>
+<h4 id="分析-4"><a href="#分析-4" class="headerlink" title="分析"></a>分析</h4><p>1.为了能够知道当前搜索的解x是最优解，那么我能够做的就只有把比x小的解全部枚举一遍。所以就用到迭代加深搜索。</p>
+<p>2.刚拿到这题，有很多种贪心策略，可惜后面发现都不对。然后试着用最短路的姿势来写，不过问题是你怎么才能确认这是最短路。这个搜索的空间无穷大，所以一直搜下去永远不能够确定。但这个就告诉我们不能把搜索空间弄的太深因为这样容易在某一个解空间里面无限搜下去，同时我们还要能确保当前搜到某一个解一定是最优解。由此，迭代加深搜索就凸现出来了</p>
+<h4 id="思考-4"><a href="#思考-4" class="headerlink" title="思考"></a>思考</h4><p>1.对这类搜索复杂度一直很迷。而且有一个细节问题一直不能理解，为什么搜的时候一定要从当前最新的值a和前面的值进行运算得到新的值，而不能是以前的值b和c得出d，然后d和a再得出我想要的值呢？</p>
+<p>2.搜的时候可以保留记录。以后对这类迷糊不确定上界的搜索首先就想到迭代加深吧！！！</p>
+<h3 id="G-神舟的宝藏"><a href="#G-神舟的宝藏" class="headerlink" title="G 神舟的宝藏"></a>G 神舟的宝藏</h3><h4 id="题意-5"><a href="#题意-5" class="headerlink" title="题意"></a>题意</h4><p>让你找这样一个密码：</p>
+<ul>
+<li>密码是一个C进制的数； </li>
+<li>密码由给定的M个数字构成；</li>
+<li>密码是一个给定N的十进制整数的正整数倍；</li>
+<li>如果存在多个满足上面所有条件的数字，值最小数字就是密码； </li>
+<li>系统输入上限为500位数字，如果求出的密码长度大于500位，则也不能打开房门。</li>
+</ul>
+<p>其中C，M不超过16，N不超过5000</p>
+<h4 id="分析-5"><a href="#分析-5" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这题相当于01的时间的<strong>进阶版</strong>。写起来就很简单了：我们预处理的时候要以C进制为基础预处理第i为是M个数字中的某一个是对N取模的余数是多少。dp[i][j]表示长度为i，对N余数是j这样状态第i位是哪一个数字</p>
+</li>
+<li><p>这题和之前的有两个不一样是</p>
+</li>
+</ol>
+<ul>
+<li>我不确定0有没有，如果有0的话我要特殊判断当前是0.状态转移的时候从最小数值开始转移<strong>(当余数j是0的时候不包含0，因为这个时候如果能用其他数值更新那么后面就不需要再添加数字了，如果用0更新的话就会出现前导0还需要继续添加位数这样就不是最小的)</strong>，就能够保证后面得到相同状态的时候值最小。</li>
+<li>状态使用dp[i][j]而不像C题那样使用dp[i][j][k]多出来的K表示当前位取第K个数字，这样的添加了状态数和转移数，使得转移复杂度变得高很多，内存也不划算</li>
+</ul>
+<h4 id="思考-5"><a href="#思考-5" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>像上面所说的那样从最小数字更新，这样一旦更新了，我就不准二次更新了，不需要比较值了，这样dp就可以“安心”记录上一个状态的值了</p>
+</li>
+<li><p>这题容易处理错0这个数字，如果更新的时候把0放在最先，那么dp[i][0]永远都只会被0更新，而这是非法的（就好比是00000000…）。如果不把0放到最前面，那么处理余数非0的状态时候明可以用0来更新，而被用非0数字更新这样会导致所求的不是最小的数值。</p>
+</li>
+</ol>
+<h3 id="H-DNA序列"><a href="#H-DNA序列" class="headerlink" title="H. DNA序列"></a>H. DNA序列</h3><h4 id="题意-6"><a href="#题意-6" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>就是让你找这样一个字符串，让所给的串是目标串的子串，那么目标串最短应该是多少 （最多8个串，每个串长度最大为5）</li>
+</ul>
+<h4 id="分析-6"><a href="#分析-6" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这个题我只用了迭代加深搜索，但是没剪枝过了，数据没卡我（AAAA GGGG CCCCC TTTTT就T了）。后面想了一下状态压缩记忆化搜索是可以在有限时间搜索出来的。用8个六进制的数字表示每一个串的当前位置。然后这个状态只有四种转移方向ATGC，然后从最终状态往前记忆化搜索就好了。</p>
+</li>
+<li><p>搜索一直没想出来怎么剪枝…,所以就使用迭代加深思想，然后暴力的枚举8个队列串首字符，比如枚举当前字符为A，那么谁队首是A的就POP出来，如果没有队首是A那就没必要搜索了。</p>
+</li>
+</ol>
+<h4 id="思考-6"><a href="#思考-6" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点，就是不好好剪枝你会T在上面那个样例</p>
+</li>
+<li><p>在用状态压缩转移的时候，要用记忆化从最后搜，因为最初状态往后转移的话，初状态不好枚举。</p>
+</li>
+</ol>
+<h3 id="I-小冰和小娜"><a href="#I-小冰和小娜" class="headerlink" title="I. 小冰和小娜"></a>I. 小冰和小娜</h3><h4 id="题意-7"><a href="#题意-7" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>这题就是一个车有方向的放在某一个位置，现在转向和前进都会消耗一点时间，问你从起点到达终点的最短时间</li>
+</ul>
+<h4 id="分析-7"><a href="#分析-7" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这题就是我E题说到的，带附加属性的最短路，这个附加属性范围大小是4（4个方向）。那么直接在原先最短路的基础上面增加一维方向就好，然后就从初状态跑最短路就好。</p>
+</li>
+<li><p>当时写的太挫了，wa了几发，太粗心了</p>
+</li>
+</ol>
+<h4 id="思考-7"><a href="#思考-7" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点</p>
+</li>
+<li><p>在状态转移的时候使用dx[i],dy[i],dd[i].这样三种操作弄成一个循环了简洁不出错</p>
+</li>
+</ol>
+<h3 id="J-TooEasy-Or-TooDifficult"><a href="#J-TooEasy-Or-TooDifficult" class="headerlink" title="J. TooEasy Or TooDifficult"></a>J. TooEasy Or TooDifficult</h3><h4 id="题意-8"><a href="#题意-8" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>给你定义两类值，P[i]表示以第i个字符为中心的最长回文串长度，MZ和max{P[i]}有关，FJD为连续若干个P[i]异或和的最大值。问你MZ和FJD谁大</li>
+</ul>
+<h4 id="分析-8"><a href="#分析-8" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>解决MZ就是最裸的manacher算法，FJD则利用到一个性质sum[j]^sum[i] = p[i]^…P[j];这样转换之后就是求最大的sum[j]^sum[i],这个问题在问题A中谈论过了，就是建立01二叉树，然后把sum[i]全部插入，再全部走一遍</p>
+</li>
+<li><p>当时生成插入01树的时候写挫了，一直死循环，debug半天</p>
+</li>
+</ol>
+<h4 id="思考-8"><a href="#思考-8" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点</p>
+</li>
+<li><p>常规题</p>
+</li>
+</ol>
+<h3 id="K-奶牛合影"><a href="#K-奶牛合影" class="headerlink" title="K. 奶牛合影"></a>K. 奶牛合影</h3><h4 id="题意-9"><a href="#题意-9" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>每个牛有一瑕疵值，我想再平移之后，得到一种排序他字典序最小，也就是最裸的最小表示法</li>
+</ul>
+<h4 id="分析-9"><a href="#分析-9" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>直接用模板</p>
+</li>
+<li><p>只要模板没有写错，几乎不会错</p>
+</li>
+</ol>
+<h4 id="思考-9"><a href="#思考-9" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没坑点</p>
+</li>
+<li><p>这题其实还可以用后缀数组写的，不过效率不划算</p>
+</li>
+</ol>
+<h3 id="L-奶牛序列"><a href="#L-奶牛序列" class="headerlink" title="L. 奶牛序列"></a>L. 奶牛序列</h3><h4 id="题意-10"><a href="#题意-10" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>约翰刚帮奶牛们拍完照，拿着合影的他，看着奶牛队列，又莫名想到了一个字符串问题：<br>我们将n头奶牛的队列看成一个长为n的字符串S，让Ti表示从第i的字符开始的后缀。求：    <img src="http://7xread.com1.z0.glb.clouddn.com/3fd06cf9-7253-40fd-ad13-f076195d35e7" alt="图片描述"></li>
+<li>其中，len(a)表示字符串a的长度，lcp(a,b)表示字符串a和字符串b的最长公共前缀，输入字符串长度不超过5e5</li>
+</ul>
+<h4 id="分析-10"><a href="#分析-10" class="headerlink" title="分析"></a>分析</h4><ol>
+<li></li>
+</ol>
+<ul>
+<li><p>首先前面的len(Ti)和len(Tj)可以提取出来一步算出来，剩下主要就是求<br>lcp(Ti,Tj)的和，在后缀数组中求两个后缀的最长前缀长度，就是求各自对应h[i]数组间的最小值。由于这里i和j把所有的一对Ti和Tj组合都取遍，所以这里可以转换成求所有h[i]和h[j]数组中间的最小值的和的两倍</p>
+</li>
+<li><p>那么问题转换成求所有h[i]和h[j]数组中间的最小值的和，，如何快速的求出所有和呢，因为枚举会T。这里用到nlogn求最长公共子序列的思想。每一次我只求所有h[j]和h[i]之间的最小值的和(其中j&lt;i).</p>
+</li>
+<li><p>然后不断的放入h[i],h[i]放入到第一个大于等于他的位置并把当前位置的值更新为 h[i]（因为所有大于h[i]的h[j]的值在和h[i]取最小之后多出来的那部分无效了，即使是在求i之后h[k]的所有lcp和也一样，由于存在h[i],那么h[j]在h[i]的左边并大于h[i]的部分无效，所以就直接用h[i]代替了h[j]）.同在在那个位置记录下最新的位置信息pos[k] = i。同时用一个数组sum[i]记录到位置i的lcp的和。</p>
+</li>
+<li><p>如何计算sum（lcp(Tj,Ti)） j&lt;i？，就拿h[i]插入后举例子，他的前一个h[i-1]一定小于h[i],那么那个位置的sum[i-1]就不需要更新了，直接拿来用。pos[i-1]和pos[i]之间的值就全部都是h[i]了，然后再更新sum[i].</p>
+</li>
+</ul>
+<ol>
+<li>好了经过上面很长的分析之后，我忘记sum(lcp)*2了</li>
+</ol>
+<h4 id="思考-10"><a href="#思考-10" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>这题想到就不难了，当然实现的时候还是要想半天的</p>
+</li>
+<li><p>求最长公共子序列这种nlogn的思想很实用。</p>
+</li>
+</ol>
+<h3 id="M-奶牛硬盘"><a href="#M-奶牛硬盘" class="headerlink" title="M. 奶牛硬盘"></a>M. 奶牛硬盘</h3><h4 id="题意-11"><a href="#题意-11" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>硬盘的制造商认为”一千” 是1000，但是操作系统认为”一千”是1024.单位分别有“B”, “KB”, “MB”, “GB”, “TB”, “PB”, “EB”, “ZB”, “YB” </li>
+</ul>
+<h4 id="分析-11"><a href="#分析-11" class="headerlink" title="分析"></a>分析</h4><ol>
+<li>很简单的一道题，只和单位有关系和前面数值没关系，先求出保存率，然后1-保存率，base[0]= 1, base[1] = （1000）/1024;…</li>
+</ol>
+<h4 id="思考-11"><a href="#思考-11" class="headerlink" title="思考"></a>思考</h4><ol>
+<li>我在想0MB的丢失百分比是多少？？？我反正没考虑直接过了</li>
+</ol>
+<h3 id="N-奶牛情书"><a href="#N-奶牛情书" class="headerlink" title="N. 奶牛情书"></a>N. 奶牛情书</h3><h4 id="题意-12"><a href="#题意-12" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>一个奶牛知道一些单词，现在有一个长度n的文本，问你这个文本至少包含一个奶牛会的单词的方案数。</li>
+</ul>
+<h4 id="分析-12"><a href="#分析-12" class="headerlink" title="分析"></a>分析</h4><p>1.</p>
+<ul>
+<li><p>正向算至少包含一个太麻烦了，所以就逆向算，算出总的(快速幂取模)，再算出一个都不包含的情况。而怎么才能算出一个都不包含的情况呢。这个就涉及了自动机套dp。</p>
+</li>
+<li><p>方案数用到dp这个都能够想到，可是字符串如何用状态表示呢。这个就要用到前缀了，把每一个前缀看做一个状态，那么添加一个字符之后所形成的前缀成为了另外一种状态（这里需要注意的是空串也是一种特殊的前缀）。</p>
+</li>
+<li>但是怎么很快得到所有的前缀并能得到他们的转移方向呢，很简单，那就是ac自动机。他把每一个字符串的前缀都体现出来了，ac自动机的节点数就是这里的状态数，ac自动机另外也可以叫做<strong>有限状态机</strong>，状态就这样来了</li>
+</ul>
+<ol>
+<li></li>
+</ol>
+<ul>
+<li>在禁止一些字符串时，少考虑了把包含这个字符串的其他前缀串都禁止了。比如aba和ccabac，我们现在要把这两个串禁止用，但是单禁止这两个串还不行，因为我们的一个前缀状态是ccaba,ccaba就包含了禁止串，所以我们要这样禁止一个串：如果他的失配后指向的串被禁止了那么当前的串也要禁止。    if(cnt[fail[u]]) cnt[u] = 1;</li>
+</ul>
+<h4 id="思考-12"><a href="#思考-12" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>只要懂了原理就很简单了，没有坑点</p>
+</li>
+<li><p>这个类型的ac自动机加dp帮我更好理解自动机。之前对于ac自动机的根节点和fail数组并不是很理解，现在想就是root节点就是空节点。fail指针就相当于在这个节点添加一个字符匹配失配后我还能够匹配哪里。</p>
+</li>
+</ol>
 
       
 	  
@@ -101,16 +254,14 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/05/10/SCU1a/" data-id="cio1g46e80002yijsmwdiokfe" class="article-share-link" data-share="baidu" data-title="SCU1a">Share</a>
+        <a data-url="http://zerolxf.github.io/2016/05/11/解题报告/" data-id="cio2hh9bd000w27jspegr4217" class="article-share-link" data-share="baidu" data-title="">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/05/10/SCU1a/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://zerolxf.github.io/2016/05/11/解题报告/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/01异或/">01异或</a></li></ul>
-
     </footer>
   </div>
   
@@ -118,10 +269,10 @@
 
 
   
-    <article id="post-test2" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-奶牛情书" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/01/test2/" class="article-date">
-  <time datetime="2016-05-01T06:30:29.000Z" itemprop="datePublished">2016-05-01</time>
+    <a href="/2016/05/11/奶牛情书/" class="article-date">
+  <time datetime="2016-05-10T20:50:00.000Z" itemprop="datePublished">2016-05-11</time>
 </a>
     
   </div>
@@ -132,7 +283,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/01/test2/">test2</a>
+      <a class="article-title" href="/2016/05/11/奶牛情书/">奶牛情书</a>
     </h1>
   
 
@@ -142,7 +293,30 @@
       
 		<!-- Table of Contents -->
 			    
-        
+        <h3 id="N-奶牛情书"><a href="#N-奶牛情书" class="headerlink" title="N. 奶牛情书"></a>N. 奶牛情书</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>一个奶牛知道一些单词，现在有一个长度n的文本，问你这个文本至少包含一个奶牛会的单词的方案数。</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>1.</p>
+<ul>
+<li><p>正向算至少包含一个太麻烦了，所以就逆向算，算出总的(快速幂取模)，再算出一个都不包含的情况。而怎么才能算出一个都不包含的情况呢。这个就涉及了自动机套dp。</p>
+</li>
+<li><p>方案数用到dp这个都能够想到，可是字符串如何用状态表示呢。这个就要用到前缀了，把每一个前缀看做一个状态，那么添加一个字符之后所形成的前缀成为了另外一种状态（这里需要注意的是空串也是一种特殊的前缀）。</p>
+</li>
+<li>但是怎么很快得到所有的前缀并能得到他们的转移方向呢，很简单，那就是ac自动机。他把每一个字符串的前缀都体现出来了，ac自动机的节点数就是这里的状态数，ac自动机另外也可以叫做<strong>有限状态机</strong>，状态就这样来了</li>
+</ul>
+<ol>
+<li></li>
+</ol>
+<ul>
+<li>在禁止一些字符串时，少考虑了把包含这个字符串的其他前缀串都禁止了。比如aba和ccabac，我们现在要把这两个串禁止用，但是单禁止这两个串还不行，因为我们的一个前缀状态是ccaba,ccaba就包含了禁止串，所以我们要这样禁止一个串：如果他的失配后指向的串被禁止了那么当前的串也要禁止。    if(cnt[fail[u]]) cnt[u] = 1;</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>只要懂了原理就很简单了，没有坑点</p>
+</li>
+<li><p>这个类型的ac自动机加dp帮我更好理解自动机。之前对于ac自动机的根节点和fail数组并不是很理解，现在想就是root节点就是空节点。fail指针就相当于在这个节点添加一个字符匹配失配后我还能够匹配哪里。</p>
+</li>
+</ol>
+
       
 	  
 
@@ -150,14 +324,16 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/05/01/test2/" data-id="cio1g46fp000byijsli5k3mad" class="article-share-link" data-share="baidu" data-title="test2">Share</a>
+        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛情书/" data-id="cio2hh9as000j27jsv05lww3o" class="article-share-link" data-share="baidu" data-title="奶牛情书">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/05/01/test2/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://zerolxf.github.io/2016/05/11/奶牛情书/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ac自动机-dp/">ac自动机 dp</a></li></ul>
+
     </footer>
   </div>
   
@@ -165,10 +341,10 @@
 
 
   
-    <article id="post-test-1" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-奶牛硬盘" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/01/test-1/" class="article-date">
-  <time datetime="2016-05-01T06:30:22.000Z" itemprop="datePublished">2016-05-01</time>
+    <a href="/2016/05/11/奶牛硬盘/" class="article-date">
+  <time datetime="2016-05-10T20:44:00.000Z" itemprop="datePublished">2016-05-11</time>
 </a>
     
   </div>
@@ -179,7 +355,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/01/test-1/">test</a>
+      <a class="article-title" href="/2016/05/11/奶牛硬盘/">奶牛硬盘</a>
     </h1>
   
 
@@ -189,7 +365,16 @@
       
 		<!-- Table of Contents -->
 			    
-        
+        <h3 id="M-奶牛硬盘"><a href="#M-奶牛硬盘" class="headerlink" title="M. 奶牛硬盘"></a>M. 奶牛硬盘</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>硬盘的制造商认为”一千” 是1000，但是操作系统认为”一千”是1024.单位分别有“B”, “KB”, “MB”, “GB”, “TB”, “PB”, “EB”, “ZB”, “YB” </li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
+<li>很简单的一道题，只和单位有关系和前面数值没关系，先求出保存率，然后1-保存率，base[0]= 1, base[1] = （1000）/1024;…</li>
+</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li>我在想0MB的丢失百分比是多少？？？我反正没考虑直接过了</li>
+</ol>
+
       
 	  
 
@@ -197,14 +382,16 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/05/01/test-1/" data-id="cio1g46fo000ayijsw99ohrmk" class="article-share-link" data-share="baidu" data-title="test">Share</a>
+        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛硬盘/" data-id="cio2hh9au000l27jsoppfq12c" class="article-share-link" data-share="baidu" data-title="奶牛硬盘">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/05/01/test-1/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://zerolxf.github.io/2016/05/11/奶牛硬盘/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/简单题/">简单题</a></li></ul>
+
     </footer>
   </div>
   
@@ -212,10 +399,10 @@
 
 
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-奶牛序列" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/04/23/hello-world/" class="article-date">
-  <time datetime="2016-04-22T17:18:36.979Z" itemprop="datePublished">2016-04-23</time>
+    <a href="/2016/05/11/奶牛序列/" class="article-date">
+  <time datetime="2016-05-10T20:09:00.000Z" itemprop="datePublished">2016-05-11</time>
 </a>
     
   </div>
@@ -226,7 +413,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/23/hello-world/">Hello World</a>
+      <a class="article-title" href="/2016/05/11/奶牛序列/">奶牛序列</a>
     </h1>
   
 
@@ -236,15 +423,32 @@
       
 		<!-- Table of Contents -->
 			    
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <h3 id="L-奶牛序列"><a href="#L-奶牛序列" class="headerlink" title="L. 奶牛序列"></a>L. 奶牛序列</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>约翰刚帮奶牛们拍完照，拿着合影的他，看着奶牛队列，又莫名想到了一个字符串问题：<br>我们将n头奶牛的队列看成一个长为n的字符串S，让Ti表示从第i的字符开始的后缀。求：    <img src="http://7xread.com1.z0.glb.clouddn.com/3fd06cf9-7253-40fd-ad13-f076195d35e7" alt="图片描述"></li>
+<li>其中，len(a)表示字符串a的长度，lcp(a,b)表示字符串a和字符串b的最长公共前缀，输入字符串长度不超过5e5</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
+<li></li>
+</ol>
+<ul>
+<li><p>首先前面的len(Ti)和len(Tj)可以提取出来一步算出来，剩下主要就是求<br>lcp(Ti,Tj)的和，在后缀数组中求两个后缀的最长前缀长度，就是求各自对应h[i]数组间的最小值。由于这里i和j把所有的一对Ti和Tj组合都取遍，所以这里可以转换成求所有h[i]和h[j]数组中间的最小值的和的两倍</p>
+</li>
+<li><p>那么问题转换成求所有h[i]和h[j]数组中间的最小值的和，，如何快速的求出所有和呢，因为枚举会T。这里用到nlogn求最长公共子序列的思想。每一次我只求所有h[j]和h[i]之间的最小值的和(其中j&lt;i).</p>
+</li>
+<li><p>然后不断的放入h[i],h[i]放入到第一个大于等于他的位置并把当前位置的值更新为 h[i]（因为所有大于h[i]的h[j]的值在和h[i]取最小之后多出来的那部分无效了，即使是在求i之后h[k]的所有lcp和也一样，由于存在h[i],那么h[j]在h[i]的左边并大于h[i]的部分无效，所以就直接用h[i]代替了h[j]）.同在在那个位置记录下最新的位置信息pos[k] = i。同时用一个数组sum[i]记录到位置i的lcp的和。</p>
+</li>
+<li><p>如何计算sum（lcp(Tj,Ti)） j&lt;i？，就拿h[i]插入后举例子，他的前一个h[i-1]一定小于h[i],那么那个位置的sum[i-1]就不需要更新了，直接拿来用。pos[i-1]和pos[i]之间的值就全部都是h[i]了，然后再更新sum[i].</p>
+</li>
+</ul>
+<ol>
+<li>好了经过上面很长的分析之后，我忘记sum(lcp)*2了</li>
+</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>这题想到就不难了，当然实现的时候还是要想半天的</p>
+</li>
+<li><p>求最长公共子序列这种nlogn的思想很实用。</p>
+</li>
+</ol>
 
       
 	  
@@ -253,14 +457,16 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/04/23/hello-world/" data-id="cio1g46f90006yijs4u54irqd" class="article-share-link" data-share="baidu" data-title="Hello World">Share</a>
+        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛序列/" data-id="cio2hh9aq000h27jsre1mw7r4" class="article-share-link" data-share="baidu" data-title="奶牛序列">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/04/23/hello-world/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://zerolxf.github.io/2016/05/11/奶牛序列/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/后缀数组/">后缀数组</a></li></ul>
+
     </footer>
   </div>
   
@@ -268,10 +474,10 @@
 
 
   
-    <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-奶牛合影" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/04/23/test/" class="article-date">
-  <time datetime="2016-04-22T16:09:39.000Z" itemprop="datePublished">2016-04-23</time>
+    <a href="/2016/05/11/奶牛合影/" class="article-date">
+  <time datetime="2016-05-10T20:03:00.000Z" itemprop="datePublished">2016-05-11</time>
 </a>
     
   </div>
@@ -282,7 +488,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/23/test/">test</a>
+      <a class="article-title" href="/2016/05/11/奶牛合影/">奶牛合影</a>
     </h1>
   
 
@@ -292,7 +498,22 @@
       
 		<!-- Table of Contents -->
 			    
-        
+        <h3 id="K-奶牛合影"><a href="#K-奶牛合影" class="headerlink" title="K. 奶牛合影"></a>K. 奶牛合影</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>每个牛有一瑕疵值，我想再平移之后，得到一种排序他字典序最小，也就是最裸的最小表示法</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>直接用模板</p>
+</li>
+<li><p>只要模板没有写错，几乎不会错</p>
+</li>
+</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没坑点</p>
+</li>
+<li><p>这题其实还可以用后缀数组写的，不过效率不划算</p>
+</li>
+</ol>
+
       
 	  
 
@@ -300,14 +521,16 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/04/23/test/" data-id="cio1g46f70005yijspw3igeal" class="article-share-link" data-share="baidu" data-title="test">Share</a>
+        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛合影/" data-id="cio2hh9am000f27jstzjznk25" class="article-share-link" data-share="baidu" data-title="奶牛合影">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/04/23/test/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://zerolxf.github.io/2016/05/11/奶牛合影/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/最小表示法/">最小表示法</a></li></ul>
+
     </footer>
   </div>
   
@@ -315,10 +538,10 @@
 
 
   
-    <article id="post-搭建博客感想" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-TooEasyOrTooDifficult" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/04/16/搭建博客感想/" class="article-date">
-  <time datetime="2016-04-16T07:05:11.000Z" itemprop="datePublished">2016-04-16</time>
+    <a href="/2016/05/11/TooEasyOrTooDifficult/" class="article-date">
+  <time datetime="2016-05-10T19:49:00.000Z" itemprop="datePublished">2016-05-11</time>
 </a>
     
   </div>
@@ -329,7 +552,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/16/搭建博客感想/">搭建博客感想</a>
+      <a class="article-title" href="/2016/05/11/TooEasyOrTooDifficult/">TooEasy Or TooDifficult</a>
     </h1>
   
 
@@ -339,7 +562,21 @@
       
 		<!-- Table of Contents -->
 			    
-        <h1 id="搭建一个博客好麻烦"><a href="#搭建一个博客好麻烦" class="headerlink" title="搭建一个博客好麻烦"></a>搭建一个博客好麻烦</h1><p>… 不过我是直接复制别人主题的 ..</p>
+        <h3 id="J-TooEasy-Or-TooDifficult"><a href="#J-TooEasy-Or-TooDifficult" class="headerlink" title="J. TooEasy Or TooDifficult"></a>J. TooEasy Or TooDifficult</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>给你定义两类值，P[i]表示以第i个字符为中心的最长回文串长度，MZ和max{P[i]}有关，FJD为连续若干个P[i]异或和的最大值。问你MZ和FJD谁大</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>解决MZ就是最裸的manacher算法，FJD则利用到一个性质sum[j]^sum[i] = p[i]^…P[j];这样转换之后就是求最大的sum[j]^sum[i],这个问题在问题A中谈论过了，就是建立01二叉树，然后把sum[i]全部插入，再全部走一遍</p>
+</li>
+<li><p>当时生成插入01树的时候写挫了，一直死循环，debug半天</p>
+</li>
+</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点</p>
+</li>
+<li><p>常规题</p>
+</li>
+</ol>
 
       
 	  
@@ -348,15 +585,15 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/04/16/搭建博客感想/" data-id="cio1g46fa0007yijsqzf1e1e2" class="article-share-link" data-share="baidu" data-title="搭建博客感想">Share</a>
+        <a data-url="http://zerolxf.github.io/2016/05/11/TooEasyOrTooDifficult/" data-id="cio2hh9a3000627jsigtdyh64" class="article-share-link" data-share="baidu" data-title="TooEasy Or TooDifficult">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/04/16/搭建博客感想/#ds-thread" class="article-comment-link">Comments</a>
+        <a href="http://zerolxf.github.io/2016/05/11/TooEasyOrTooDifficult/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/感想/">感想</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/manacher-异或/">manacher 异或</a></li></ul>
 
     </footer>
   </div>
@@ -365,6 +602,266 @@
 
 
   
+    <article id="post-小冰和小娜" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/11/小冰和小娜/" class="article-date">
+  <time datetime="2016-05-10T19:18:00.000Z" itemprop="datePublished">2016-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/11/小冰和小娜/">小冰和小娜</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="I-小冰和小娜"><a href="#I-小冰和小娜" class="headerlink" title="I. 小冰和小娜"></a>I. 小冰和小娜</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>这题就是一个车有方向的放在某一个位置，现在转向和前进都会消耗一点时间，问你从起点到达终点的最短时间</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这题就是我E题说到的，带附加属性的最短路，这个附加属性范围大小是4（4个方向）。那么直接在原先最短路的基础上面增加一维方向就好，然后就从初状态跑最短路就好。</p>
+</li>
+<li><p>当时写的太挫了，wa了几发，太粗心了</p>
+</li>
+</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点</p>
+</li>
+<li><p>在状态转移的时候使用dx[i],dy[i],dd[i].这样三种操作弄成一个循环了简洁不出错</p>
+</li>
+</ol>
+
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/11/小冰和小娜/" data-id="cio2hh9ax000n27jse1n8pgyt" class="article-share-link" data-share="baidu" data-title="小冰和小娜">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/11/小冰和小娜/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/最短路/">最短路</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-DNA序列" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/11/DNA序列/" class="article-date">
+  <time datetime="2016-05-10T19:18:00.000Z" itemprop="datePublished">2016-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/11/DNA序列/">DNA序列</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="H-DNA序列"><a href="#H-DNA序列" class="headerlink" title="H. DNA序列"></a>H. DNA序列</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>就是让你找这样一个字符串，让所给的串是目标串的子串，那么目标串最短应该是多少 （最多8个串，每个串长度最大为5）</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这个题我只用了迭代加深搜索，但是没剪枝过了，数据没卡我（AAAA GGGG CCCCC TTTTT就T了）。后面想了一下状态压缩记忆化搜索是可以在有限时间搜索出来的。用8个六进制的数字表示每一个串的当前位置。然后这个状态只有四种转移方向ATGC，然后从最终状态往前记忆化搜索就好了。</p>
+</li>
+<li><p>搜索一直没想出来怎么剪枝…,所以就使用迭代加深思想，然后暴力的枚举8个队列串首字符，比如枚举当前字符为A，那么谁队首是A的就POP出来，如果没有队首是A那就没必要搜索了。</p>
+</li>
+</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点，就是不好好剪枝你会T在上面那个样例</p>
+</li>
+<li><p>在用状态压缩转移的时候，要用记忆化从最后搜，因为最初状态往后转移的话，初状态不好枚举。</p>
+</li>
+</ol>
+
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/11/DNA序列/" data-id="cio2hh99s000327jspl6mk4at" class="article-share-link" data-share="baidu" data-title="DNA序列">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/11/DNA序列/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/状压-搜索/">状压 搜索</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-神舟的宝藏" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/11/神舟的宝藏/" class="article-date">
+  <time datetime="2016-05-10T18:40:00.000Z" itemprop="datePublished">2016-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/11/神舟的宝藏/">神舟的宝藏</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="G-神舟的宝藏"><a href="#G-神舟的宝藏" class="headerlink" title="G 神舟的宝藏"></a>G 神舟的宝藏</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>让你找这样一个密码：</p>
+<ul>
+<li>密码是一个C进制的数； </li>
+<li>密码由给定的M个数字构成；</li>
+<li>密码是一个给定N的十进制整数的正整数倍；</li>
+<li>如果存在多个满足上面所有条件的数字，值最小数字就是密码； </li>
+<li>系统输入上限为500位数字，如果求出的密码长度大于500位，则也不能打开房门。</li>
+</ul>
+<p>其中C，M不超过16，N不超过5000</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这题相当于01的时间的<strong>进阶版</strong>。写起来就很简单了：我们预处理的时候要以C进制为基础预处理第i为是M个数字中的某一个是对N取模的余数是多少。dp[i][j]表示长度为i，对N余数是j这样状态第i位是哪一个数字</p>
+</li>
+<li><p>这题和之前的有两个不一样是</p>
+</li>
+</ol>
+<ul>
+<li>我不确定0有没有，如果有0的话我要特殊判断当前是0.状态转移的时候从最小数值开始转移<strong>(当余数j是0的时候不包含0，因为这个时候如果能用其他数值更新那么后面就不需要再添加数字了，如果用0更新的话就会出现前导0还需要继续添加位数这样就不是最小的)</strong>，就能够保证后面得到相同状态的时候值最小。</li>
+<li>状态使用dp[i][j]而不像C题那样使用dp[i][j][k]多出来的K表示当前位取第K个数字，这样的添加了状态数和转移数，使得转移复杂度变得高很多，内存也不划算</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>像上面所说的那样从最小数字更新，这样一旦更新了，我就不准二次更新了，不需要比较值了，这样dp就可以“安心”记录上一个状态的值了</p>
+</li>
+<li><p>这题容易处理错0这个数字，如果更新的时候把0放在最先，那么dp[i][0]永远都只会被0更新，而这是非法的（就好比是00000000…）。如果不把0放到最前面，那么处理余数非0的状态时候明可以用0来更新，而被用非0数字更新这样会导致所求的不是最小的数值。</p>
+</li>
+</ol>
+
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/11/神舟的宝藏/" data-id="cio2hh9b6000r27jsiwlvntyi" class="article-share-link" data-share="baidu" data-title="神舟的宝藏">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/11/神舟的宝藏/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数位dp/">数位dp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-表达式" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/11/表达式/" class="article-date">
+  <time datetime="2016-05-10T18:05:00.000Z" itemprop="datePublished">2016-05-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/11/表达式/">表达式</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="F-表达式"><a href="#F-表达式" class="headerlink" title="F 表达式"></a>F 表达式</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>最快多少次才能够最快的得到$x^k$，可以从已经得到的数中乘除，最初只有x，比如 $x^31$,他最快可以通过通过6次操作</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>1.为了能够知道当前搜索的解x是最优解，那么我能够做的就只有把比x小的解全部枚举一遍。所以就用到迭代加深搜索。</p>
+<p>2.刚拿到这题，有很多种贪心策略，可惜后面发现都不对。然后试着用最短路的姿势来写，不过问题是你怎么才能确认这是最短路。这个搜索的空间无穷大，所以一直搜下去永远不能够确定。但这个就告诉我们不能把搜索空间弄的太深因为这样容易在某一个解空间里面无限搜下去，同时我们还要能确保当前搜到某一个解一定是最优解。由此，迭代加深搜索就凸现出来了</p>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>1.对这类搜索复杂度一直很迷。而且有一个细节问题一直不能理解，为什么搜的时候一定要从当前最新的值a和前面的值进行运算得到新的值，而不能是以前的值b和c得出d，然后d和a再得出我想要的值呢？</p>
+<p>2.搜的时候可以保留记录。以后对这类迷糊不确定上界的搜索首先就想到迭代加深吧！！！</p>
+
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/11/表达式/" data-id="cio2hh9b9000t27js7exsjppo" class="article-share-link" data-share="baidu" data-title="表达式">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/11/表达式/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IDA/">IDA*</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+  
+    <nav id="page-nav">
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+    </nav>
   
 </section>
       
@@ -408,7 +905,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/01异或/" style="font-size: 10px;">01异或</a> <a href="/tags/感想/" style="font-size: 10px;">感想</a>
+      <a href="/tags/01异或/" style="font-size: 10px;">01异或</a> <a href="/tags/IDA/" style="font-size: 10px;">IDA*</a> <a href="/tags/ac自动机-dp/" style="font-size: 10px;">ac自动机 dp</a> <a href="/tags/dp/" style="font-size: 10px;">dp</a> <a href="/tags/kmp/" style="font-size: 10px;">kmp</a> <a href="/tags/manacher-异或/" style="font-size: 10px;">manacher 异或</a> <a href="/tags/后缀数组/" style="font-size: 10px;">后缀数组</a> <a href="/tags/感想/" style="font-size: 10px;">感想</a> <a href="/tags/数位dp/" style="font-size: 10px;">数位dp</a> <a href="/tags/最小表示法/" style="font-size: 10px;">最小表示法</a> <a href="/tags/最短路/" style="font-size: 20px;">最短路</a> <a href="/tags/状压-搜索/" style="font-size: 10px;">状压 搜索</a> <a href="/tags/简单题/" style="font-size: 10px;">简单题</a>
     </div>
   </div>
 
@@ -417,7 +914,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">2016年 05月</a><span class="archive-list-count">3</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">2016年 04月</a><span class="archive-list-count">3</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">2016年 05月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">2016年 04月</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
