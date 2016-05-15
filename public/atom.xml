@@ -390,41 +390,6 @@
   </entry>
   
   <entry>
-    <title>小冰和小娜</title>
-    <link href="http://zerolxf.github.io/2016/05/11/%E5%B0%8F%E5%86%B0%E5%92%8C%E5%B0%8F%E5%A8%9C/"/>
-    <id>http://zerolxf.github.io/2016/05/11/小冰和小娜/</id>
-    <published>2016-05-10T19:18:00.000Z</published>
-    <updated>2016-05-10T19:48:59.357Z</updated>
-    
-    <content type="html">&lt;h3 id=&quot;I-小冰和小娜&quot;&gt;&lt;a href=&quot;#I-小冰和小娜&quot; class=&quot;headerlink&quot; title=&quot;I. 小冰和小娜&quot;&gt;&lt;/a&gt;I. 小冰和小娜&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;这题就是一个车有方向的放在某一个位置，现在转向和前进都会消耗一点时间，问你从起点到达终点的最短时间&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;这题就是我E题说到的，带附加属性的最短路，这个附加属性范围大小是4（4个方向）。那么直接在原先最短路的基础上面增加一维方向就好，然后就从初状态跑最短路就好。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;当时写的太挫了，wa了几发，太粗心了&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;没啥坑点&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;在状态转移的时候使用dx[i],dy[i],dd[i].这样三种操作弄成一个循环了简洁不出错&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;I-小冰和小娜&quot;&gt;&lt;a href=&quot;#I-小冰和小娜&quot; class=&quot;headerlink&quot; title=&quot;I. 小冰和小娜&quot;&gt;&lt;/a&gt;I. 小冰和小娜&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=
-    
-    </summary>
-    
-    
-      <category term="最短路" scheme="http://zerolxf.github.io/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/"/>
-    
-  </entry>
-  
-  <entry>
     <title>DNA序列</title>
     <link href="http://zerolxf.github.io/2016/05/11/DNA%E5%BA%8F%E5%88%97/"/>
     <id>http://zerolxf.github.io/2016/05/11/DNA序列/</id>
@@ -456,6 +421,41 @@
     
     
       <category term="状压 搜索" scheme="http://zerolxf.github.io/tags/%E7%8A%B6%E5%8E%8B-%E6%90%9C%E7%B4%A2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>小冰和小娜</title>
+    <link href="http://zerolxf.github.io/2016/05/11/%E5%B0%8F%E5%86%B0%E5%92%8C%E5%B0%8F%E5%A8%9C/"/>
+    <id>http://zerolxf.github.io/2016/05/11/小冰和小娜/</id>
+    <published>2016-05-10T19:18:00.000Z</published>
+    <updated>2016-05-10T19:48:59.357Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;I-小冰和小娜&quot;&gt;&lt;a href=&quot;#I-小冰和小娜&quot; class=&quot;headerlink&quot; title=&quot;I. 小冰和小娜&quot;&gt;&lt;/a&gt;I. 小冰和小娜&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这题就是一个车有方向的放在某一个位置，现在转向和前进都会消耗一点时间，问你从起点到达终点的最短时间&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;这题就是我E题说到的，带附加属性的最短路，这个附加属性范围大小是4（4个方向）。那么直接在原先最短路的基础上面增加一维方向就好，然后就从初状态跑最短路就好。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;当时写的太挫了，wa了几发，太粗心了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;没啥坑点&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在状态转移的时候使用dx[i],dy[i],dd[i].这样三种操作弄成一个循环了简洁不出错&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;I-小冰和小娜&quot;&gt;&lt;a href=&quot;#I-小冰和小娜&quot; class=&quot;headerlink&quot; title=&quot;I. 小冰和小娜&quot;&gt;&lt;/a&gt;I. 小冰和小娜&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=
+    
+    </summary>
+    
+    
+      <category term="最短路" scheme="http://zerolxf.github.io/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/"/>
     
   </entry>
   
