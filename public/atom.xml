@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zerolxf.github.io/"/>
-  <updated>2016-05-10T13:31:35.112Z</updated>
+  <updated>2016-05-24T05:13:11.777Z</updated>
   <id>http://zerolxf.github.io/</id>
   
   <author>
@@ -16,16 +16,65 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>01的时间</title>
+    <link href="http://zerolxf.github.io/2016/05/10/01%E7%9A%84%E6%97%B6%E9%97%B4/"/>
+    <id>http://zerolxf.github.io/2016/05/10/01的时间/</id>
+    <published>2016-05-10T14:01:50.000Z</published>
+    <updated>2016-05-24T05:13:11.777Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;01的时间&quot;&gt;&lt;a href=&quot;#01的时间&quot; class=&quot;headerlink&quot; title=&quot;01的时间&quot;&gt;&lt;/a&gt;01的时间&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;给你一个数x，让你找到x的倍数，同时这个倍数只能包含01数字(十进制)，输出最小的符合条件的&lt;/p&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;p&gt;1.这题本意是想让我们用搜索的，但写过数位dp后对这题第一反应就是可以dp啊。dp[i][j][0]表示当前i长度余j并且第i位取0可不可达，同理dp[i][j][1]。&lt;/p&gt;
+&lt;p&gt;首先预处理出当第i位是1时对x取模的余数&lt;br&gt;状态转移的话dp[i][j][0] |= dp[i-1][j][0] || dp[i-1][j][1],dp[i][j][1] |= dp[i-1][(j-base[j]+x)%x][0] || dp[i-1][(j-base[j]+x)%x][1]; &lt;/p&gt;
+&lt;p&gt;2.全部切忌初始化0,dp[0][0][0] = 1;&lt;/p&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;p&gt;1.前面的转移式是最基本的转移，但实际转移中为了回溯更方便可以dp记录上一位的取值情况，不可到达初始为-1,这里刚开始我把dp所存的值弄混淆了，存了当前的最小值是多少，同时还开了一个辅助flag作为标记能不能可达。但是，后面想一想，完全没必要。因为当状态转移好之后，第一个首位是1并且取余是0的状态就是最小的(这个可以反向想一下)。找到最小的状态之后，剩下的就是往回找，看前一个是由谁转移来的。&lt;/p&gt;
+&lt;p&gt;2.上述过程有一个性质就是，对于所找到的第一个符合条件首位是1的数字，他的之前所有状态都只有一个前述状态。为什么？假如他可以由两个状态转移y,z转移过来，那么(y-z)%x==0,那么就会出现一个比当前更小的符合条件的&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;01的时间&quot;&gt;&lt;a href=&quot;#01的时间&quot; class=&quot;headerlink&quot; title=&quot;01的时间&quot;&gt;&lt;/a&gt;01的时间&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题
+    
+    </summary>
+    
+    
+      <category term="dp" scheme="http://zerolxf.github.io/tags/dp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>单词替换</title>
+    <link href="http://zerolxf.github.io/2016/05/10/%E5%8D%95%E8%AF%8D%E6%9B%BF%E6%8D%A2/"/>
+    <id>http://zerolxf.github.io/2016/05/10/单词替换/</id>
+    <published>2016-05-10T13:47:51.000Z</published>
+    <updated>2016-05-24T05:13:11.821Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;B-单词替换&quot;&gt;&lt;a href=&quot;#B-单词替换&quot; class=&quot;headerlink&quot; title=&quot;B.单词替换&quot;&gt;&lt;/a&gt;B.单词替换&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;给出一个只包含小写字母的s字符串，和单词A,B。把s中的所有A替换成B，长度都小于5e6。PS:这题不需要考虑后效性&lt;/p&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;p&gt;1.这题就是最裸的KMP，当s中匹配到A的时候把匹配到A的首位置标记一下，输出的时候直接跳过lenA的长度同时输出B就好&lt;/p&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;p&gt;1.用KMP的时候一定要统一模板，以后就决定用f[0] = 0, f[1] = 0,这样的方式了，不需要纠结，也就不会有分歧&lt;/p&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;B-单词替换&quot;&gt;&lt;a href=&quot;#B-单词替换&quot; class=&quot;headerlink&quot; title=&quot;B.单词替换&quot;&gt;&lt;/a&gt;B.单词替换&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;
+    
+    </summary>
+    
+    
+      <category term="kmp" scheme="http://zerolxf.github.io/tags/kmp/"/>
+    
+  </entry>
+  
+  <entry>
     <title>SCU1a</title>
     <link href="http://zerolxf.github.io/2016/05/10/SCU1a/"/>
     <id>http://zerolxf.github.io/2016/05/10/SCU1a/</id>
     <published>2016-05-10T12:36:17.000Z</published>
-    <updated>2016-05-10T13:31:35.112Z</updated>
+    <updated>2016-05-24T05:13:11.785Z</updated>
     
     <content type="html">&lt;h3 id=&quot;A-双剑合并&quot;&gt;&lt;a href=&quot;#A-双剑合并&quot; class=&quot;headerlink&quot; title=&quot;A.双剑合并&quot;&gt;&lt;/a&gt;A.双剑合并&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9&lt;/p&gt;
 &lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;p&gt;1.根据这题范围肯定需要O(n)级别算法，基本上就是固定A，然后B中的每一个值必须要在常数时间内找到最大对应的匹配的A的值。从这个限制描述，隐隐约约能够感觉到要用一个类似于字典树的东西。同时，基于一种贪心策略，尽可能的要让我合并后的值的最高位为1。所以，我们可以以最高位为根建一个深度为31的01二叉树，首先让A中的值一个一个插进去，并在相应节点标记为可走。那么B的某一个值只需要从根节点开始走，尽可能的走和自己不同的位的路(比如当前B的位是0,那么如果有1我就走1否则再走0)，这样能够保证走过的一定是最优的。&lt;/p&gt;
 &lt;p&gt;2.这题没啥可错的，做这题之前读了一片论文，所以很有帮助：浅谈信息学竞赛中的0和1by武森&lt;/p&gt;
-&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;p&gt;1.这题写的比较撮，每一个都特判了以下，后面看到汝佳的伸展树感觉写法挺好的。ch[2],0表示左儿子，1表示右儿子，值为-1表示不存在。这样的话就不用讨论当前是0还是1了，用一个变量o表示x当前的01位，ch[o]如果不存在就!o就好&lt;/p&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;p&gt;1.这题写的比较撮，每一个都特判了一下，后面看到汝佳的伸展树感觉写法挺好的。ch[2],0表示左儿子，1表示右儿子，值为-1表示不存在。这样的话就不用讨论当前是0还是1了，用一个变量o表示x当前的01位，ch[o]如果不存在就!o就好&lt;/p&gt;
 &lt;p&gt;2.以后遇到两个数值变成最大，那么优先考虑高位。同时异或的性质比较好，可以预处理后很快求出i项和j项的异或和，同时还有一个特点sum[i]^sum[j]=0 的话表明他们两个相等同时还表明第i项到第j项异或和是0&lt;/p&gt;
 </content>
     
@@ -45,7 +94,7 @@
     <link href="http://zerolxf.github.io/2016/05/01/test2/"/>
     <id>http://zerolxf.github.io/2016/05/01/test2/</id>
     <published>2016-05-01T06:30:29.000Z</published>
-    <updated>2016-05-01T06:30:29.257Z</updated>
+    <updated>2016-05-24T05:13:11.821Z</updated>
     
     <content type="html"></content>
     
@@ -104,7 +153,7 @@
     <link href="http://zerolxf.github.io/2016/04/23/test/"/>
     <id>http://zerolxf.github.io/2016/04/23/test/</id>
     <published>2016-04-22T16:09:39.000Z</published>
-    <updated>2016-04-22T16:09:39.846Z</updated>
+    <updated>2016-05-24T05:13:11.801Z</updated>
     
     <content type="html"></content>
     
@@ -120,7 +169,7 @@
     <link href="http://zerolxf.github.io/2016/04/16/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%84%9F%E6%83%B3/"/>
     <id>http://zerolxf.github.io/2016/04/16/搭建博客感想/</id>
     <published>2016-04-16T07:05:11.000Z</published>
-    <updated>2016-04-22T14:24:03.053Z</updated>
+    <updated>2016-05-24T05:13:11.821Z</updated>
     
     <content type="html">&lt;h1 id=&quot;搭建一个博客好麻烦&quot;&gt;&lt;a href=&quot;#搭建一个博客好麻烦&quot; class=&quot;headerlink&quot; title=&quot;搭建一个博客好麻烦&quot;&gt;&lt;/a&gt;搭建一个博客好麻烦&lt;/h1&gt;&lt;p&gt;… 不过我是直接复制别人主题的 ..&lt;/p&gt;
 </content>
