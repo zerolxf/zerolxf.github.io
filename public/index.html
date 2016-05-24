@@ -64,10 +64,247 @@
     <div class="outer">
       <section id="main">
   
-    <article id="post-解题报告" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-dp解题报告" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/11/解题报告/" class="article-date">
-  <time datetime="2016-05-11T06:26:18.792Z" itemprop="datePublished">2016-05-11</time>
+    <a href="/2016/05/24/dp解题报告/" class="article-date">
+  <time datetime="2016-05-24T04:50:57.625Z" itemprop="datePublished">2016-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="A-雷神之路"><a href="#A-雷神之路" class="headerlink" title="A 雷神之路"></a>A 雷神之路</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>在一个坐标轴上面起始位置是0，你可以往右走一步，两步，三步。其中某些位置不能走，问你走到位置n有多少种方法（1&lt;= n &lt;= 1e18）</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li>这题是走楼梯的进阶版，状态很好想dp[n]，转移有三种：走一步两步三步转移过来。不过由于n太大，很容易想到矩阵加速。</li>
+<li>用矩阵A表示第i个可走，矩阵B表示第i个不可走。有些地方x不能走，那么我只要用矩阵加速求出第x-1个矩阵C，那么第x个矩阵就是C*B，最后得出第n个矩阵</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>dp[n] = dp[n-1] + dp[n-2] + dp[n-3] (n&gt;=3)所以我们第一个矩阵是从2开始的，小于2的方案要手动打出来</li>
+</ul>
+<h3 id="B-Snowd-修长廊"><a href="#B-Snowd-修长廊" class="headerlink" title="B Snowd 修长廊"></a>B Snowd 修长廊</h3><h4 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>现在要修长廊覆盖n个点，第i个点可以单独修一个长廊，也可以修到前面第j个点（覆盖j到i之间的点），现在修i和j之间的长廊花费cost(i,j) = W + (x $<em>{i}$ － x$</em>{j}$ ) $^_{2}$,其中W是固有花费,现在求最小花费是多少</li>
+</ul>
+<h4 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>我们状态很好建立,dp[i]表示覆盖到第i个点为止至少需要花费多少,但是他可以有很多状态转移过来.</p>
+</li>
+<li><p>dp[i] = min(dp[j-1]+cost(j,i));</p>
+</li>
+<li><p>如果现在有两个状态j和k(其中j&gt;k)可以转移过来.那么用单调队列dp思想把这两个相减</p>
+<pre><code>dp[j] + cost(j,i) - dp[k] - cost(k,i)
+
+ =(dp[j] +x[j]*x[j])-(dp[k]+ x[k]*x[k]) -　2*x[i]*(x[j]-x[k])
+</code></pre><p>  那么也就是说如果dp[j]转移过来比dp[k]更优的话,就有上式小于 0,那么我们在更新最优的dp[y]的时候,如果前面存在一个状态x比状态i差,那么便有上式成立</p>
+<p>  同时可以发现如果现在就已经成立,那么这个式子对y以后的状态都会成立,因为对y以后的x<a href="i&gt;=y">i</a>上式也成立(这个就是斜率dp的特点,总会有一个自变量一直递增或递减),那么状态x就属于无用状态应该从队列中剔除</p>
+<p>  <strong>判定条件一:如果i点没有j点优(也就是说j点比i点更优)的条件是i和j(i&lt;j)斜率小于2x[i]</strong></p>
+</li>
+<li><p>那么如何保证队列起第一个就是最优的呢?</p>
+<ul>
+<li><p><strong>感性的认识:</strong></p>
+<p>  根据上面的式子我们可以一直判断第一个和第二个元素然后剔除,从而使得保证队队列第一个一定比第二个更优,那么剩下的就需要保证第一个比第三个,第一个比第四个更优…这个性质一直成立就好了</p>
+<p>  假设上面这个性质成立则有:23点的斜率大于12点,34点斜率大于12点…<br>但是确保每相邻两个点斜率大于12点不具有<strong>传递性</strong>,所以我们可以缩小简化:23点的斜率大于12点,34点斜率大于23点…从而形成了<strong>下凸包</strong></p>
+<p>  从结果看:斜率递增保证了下凸包,而下凸包其实是保证了<strong>:第三个点没有第二个点优,第四个点没有三个点优..</strong>,因为第一个破坏下凸包性质的点一定不是最优,可参考理性认识的证明</p>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>所以我们要维护上面两个性质:1:第一个点比第二个点优,2:第三个点没有第二个点优,第四个点没有三个点优...(用维护斜率递增实现)**
+</code></pre><h4 id="思考-1"><a href="#思考-1" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><p>如何证明维护的队列的第一个就是最优的呢?</p>
+<ul>
+<li><p><strong>理性认识:</strong></p>
+<p>dp[i] = dp[j] + x[j] $^<em>{2}$ + x[i]$^</em>{2}$ +　2x[i]*x[j] + W</p>
+<p>dp[i] - W - x[i]$^<em>{2}$  = dp[j] + x[j] $^</em>{2}$ +　2x[i]*x[j] </p>
+<p>从上面这个式子看出dp[i] , x[i]$^_{2}$ ,Ｗ这三个相对于i是定值</p>
+<p><strong>问题转换:</strong>我们要找到这样一个 x[j] 和 dp[j] + x[j] $^<em>{2}$ 使得 dp[i] 最小,看成b = y - kx,也就是b最小.从而我们可以画出一些点(2x[j],dp[j] + x[j] $^</em>{2}$),用斜率固定k的直线从下面往上面开始扫描,第一个接触到的点就是我们要找的最优点.这样找的话就会发现一个特点,上凸包的转折点永远不会被扫到,所以也应该剔除.</p>
+<p>如果我们在每一次插入的时候一直这样判断,那么就能够保证最后两个斜率一定大于前两个点的斜率,由于插入斜率大小具有<strong>传递性</strong>,所以能够保证<strong>斜率递增</strong></p>
+<p><strong>但是光斜率递增就一定能够使得第一个最优吗?</strong></p>
+<p>确保第一个最优的充分必要条件是每个点和第一个点的斜率大于等于2x[i],这样看来显然不能够确保第一个最优.(<strong>举一个极限的例子,所有点和第一个点的斜率都小于2x[i]但是却递增</strong>)</p>
+<p>为了弥补上面的不足,可以让第一个优于第二个,也就是12斜率大于2x[i],由于上面凸包的性质使得第一个点和所有点斜率都大于2x[i]也就是说,以后的点不能够比第一个点更优.所以:<strong>第一个是最优的</strong></p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="C-Taosama和煎饼"><a href="#C-Taosama和煎饼" class="headerlink" title="C  Taosama和煎饼"></a>C  Taosama和煎饼</h3><h4 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>韬韬想吃煎饼但是有急事,一个煎饼有n个工序,每个工序i有着A[i]美味度,韬韬有m个道具,每个道具用一次可以前进b[i]个单位,每个工序一旦被跳过得不到美味度,问你使用这些工具最多获得多少美味度<em>(0&lt;=b[i]&lt;=4,0&lt;=a[i]&lt;=100,0&lt;=n&lt;=350,0&lt;=m&lt;=120)</em>,确保b[i]的和是n-1</li>
+</ul>
+<h4 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>建立状态</p>
+<p>dp[i][a][b][c][d]表示处于i位置还剩abcd个四种道具(a表示前进b[1]个道具)最多能够获得多少美味度</p>
+<p>状态转移</p>
+<p>dp[i][a][b][c][d]可以由dp[i-1][a-1][b][c][d]等四种状态转移过来</p>
+</li>
+<li><p>状态优化</p>
+<p>上面的状态很容易想,但是350 <em> 40 </em> 40 <em> 40 </em> 40复杂度很高,我们可以发现,这五个变量只要确定四个,那么第五个变量是确定的,所以我们可以减少一维,dp[a][b][c][d]就好了,复杂度40 <em> 40 </em> 40 * 40完美过题</p>
+</li>
+<li><p>超时原因</p>
+<p>由于建立状态思维定式,所以建立的状态是dp[350][40][40][40],超时了,但仔细发现这里的350有很多状态达不到</p>
+</li>
+</ul>
+<h4 id="思考-2"><a href="#思考-2" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><p>技巧</p>
+<ul>
+<li>对于这种固定形式的转移,记忆化搜索写起来最快</li>
+<li>建立状态的时候如果有多种选择首先找范围小的,其次找容易实现的</li>
+</ul>
+</li>
+</ul>
+<h3 id="D-任务"><a href="#D-任务" class="headerlink" title="D 任务"></a>D 任务</h3><h4 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>有两台机器n个任务,每个任务i在机器A完成时间是a[i],B上面完成时间是b[i],任务i可以被处理当前仅当每个任务j(i&gt;j)已经被完成或者正在进行.求最少完成任务的时间(n&lt;2000,a[i],b[i]&lt;=3000)</li>
+</ul>
+<h4 id="分析-3"><a href="#分析-3" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>首先读清楚题目意思</p>
+<p><strong>任务i可以被处理当前仅当每个任务j(i&gt;j)已经被完成或者正在进行</strong></p>
+<p>上面这句话有什么用?</p>
+<p>仔细分析后可以发现上面这个性质确保了执行任意任务的时候机器AB时间差不会超过3000</p>
+<p>假如A比B将少运行时间超过3000,那么现在放置任务i+1</p>
+<ul>
+<li>那么任务i+1不能放置机器A最开始空闲的时候,因为这样B机器必然(B多A3000时间)有任务j(j&lt;i)还没有没执行;那么任务i+1只能当道B机器运行最后一个任务j的起始时间上去,这样的方案必然没有比任务j放置到A机器方案优(可以画图模拟一下)</li>
+<li>把任务i+1放置到机器B,那么这种方案将继续造成恶性循环又进入此状态,显然最终这种方案不优</li>
+</ul>
+<p>所以任一个任务选择的时候AB机器运行结束时间差不能够3000</p>
+<p><strong>建立状态</strong></p>
+<p>dp[i][j]表示完成任务i并且机器AB运行结束时间差为j的最少时间,(j&gt;0表示A比B多j,否则B比A多-j,后面右移3000,保证都是正数)</p>
+<p><strong>状态转移</strong></p>
+<p>dp[i][j]由dp[i-1][j+a[i]和dp[i-1][j-b[i]]转移过来,其中要注意任务i放到机器A或B中可能对时间没有影响</p>
+</li>
+</ul>
+<h4 id="思考-3"><a href="#思考-3" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><p><strong>错误分析</strong></p>
+<ul>
+<li>没有对非法状态进行限制,比如状态转移的时候,放置任务i到机器A,必须设定任务i时间当值 &gt;= B机器最后一个任务j放置时间!!!确保i之前的任务被处理完或正被处理</li>
+<li>没有考虑任务i放置到机器A后对时间无影响的情况</li>
+</ul>
+</li>
+</ul>
+<h3 id="E-goozy搭积木"><a href="#E-goozy搭积木" class="headerlink" title="E goozy搭积木"></a>E goozy搭积木</h3><h4 id="题意-4"><a href="#题意-4" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>goozy对积木十分的狂热，今天他想搭一个双子塔（就是两个高度一样的塔）！他想知道，用现有的积木，能不能实现这个想法.积木个数n(1 &lt;= n &lt;= 50)，每个积木的高度hi(1 &lt;= hi &lt;= 500000),题目保证所有积木高度总和不超过500000。</li>
+</ul>
+<h4 id="分析-4"><a href="#分析-4" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>建立状态</p>
+<p>这题和能不能把所有的平分是不一样的,因而我只要保证有一种方案把积木部分平分就好了</p>
+<p>所以建立状态不能用dp[i][j]表示i木块j高度是否可达</p>
+<p>状态是dp[i][j]表示前i个木块使得两份木块高度差为j的最大可达高度是多少.</p>
+</li>
+<li><p>状态转移</p>
+<p>状态转移就很简单了,积木i放到比较高的那一方或者比较低的那一方</p>
+<p>   放到比较高的一方</p>
+<p>   dp[now][j+h] = max(dp[now][j+h],dp[1-now][j]+h);</p>
+<p>   放到比较低的一方</p>
+<p>   newh = max(dp[1-now][j]-j+h, dp[1-now][j]);</p>
+<p>   dp[now][abs(h-j)] = max(dp[now][abs(h-j)], newh);</p>
+</li>
+</ul>
+<h4 id="思考-4"><a href="#思考-4" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>有时候dp建立状态后发现某一位范围过大,不能直接dp[i][j]的时候可以考虑特殊性质,然后对他们的差进行状态转移,正如D题一样</li>
+</ul>
+<h3 id="F-先锋看烟花"><a href="#F-先锋看烟花" class="headerlink" title="F 先锋看烟花"></a>F 先锋看烟花</h3><h4 id="题意-5"><a href="#题意-5" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>一共有n个地点（1到n排列），一共有m个烟花，每个烟花放出的地点ai和时间ti，每个烟花有观赏值bi，对于每个烟花，对先锋的幸福度贡献bi-|ai-cur|，其中cur表示放第i个烟花时先锋所处的位置，因此，当先锋离烟花太远时，幸福度甚至会下降！已知先锋每秒最多运动d距离，问这个晚上先锋看烟花能获得的最大幸福度。</li>
+</ul>
+<h4 id="分析-5"><a href="#分析-5" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>这相当于是一道移动接苹果的题目,只不过每秒移动范围为d并且烟花放的每一个点都有一个贡献值可为负数</p>
+</li>
+<li><p><strong>状态建立</strong></p>
+<p>dp[i][j]表示第i个烟花位于j位置最多能够获得多少幸福感</p>
+<p><strong>状态转移</strong></p>
+<p>   dp[i][j]=min(dp[i-1][k]+bi-|ai-j|);</p>
+<p>   k和j差值不超过(t[i] - t[i-1]) * d</p>
+<p><strong>转移优化</strong></p>
+<p>直接转移显然不行,那么就可以分成两种情况并进行单调队列优化了<br>若ai&gt;cur</p>
+<p>   dp[i][j]=min(dp[i-1][k]+bi-ai+j);<br>那么维护一个和j差范围处于(t[i]-t[i-1])*d的队列</p>
+<p>如果 dp[i-1][k] 和 dp[i-1][kk] 都在队列中并且 k &lt; k &amp;&amp;  dp[i-1][k] &lt; dp[i-1][kk] 那么在对i时刻烟花j以后的位置,都不会选择dp[i-1][k]了,因为dp[i-1][kk] 一定比他优,所以dp[i-1][k]这个状态就要从队列中间pop出来</p>
+<p>所以队首的只要处于范围之内一定最优</p>
+<p>这个队列最多插入n次pop n次,因而复杂度是O(n)</p>
+</li>
+</ul>
+<h4 id="思考-5"><a href="#思考-5" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>当遇到一种可以由很多种状态转移过来的时候,考虑一下nlogn线段树或树状数组查询或单调队列或斜率优化</li>
+</ul>
+<h3 id="H-又见背包"><a href="#H-又见背包" class="headerlink" title="H 又见背包"></a>H 又见背包</h3><h4 id="题意-6"><a href="#题意-6" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>有n种大小不同的数字a_i,每种m_i个，判断是否可以从这些数字中选出若干使它们的和恰好为k。(0&lt;n&lt;=100,0&lt;k&lt;=1e5)</li>
+</ul>
+<h4 id="分析-6"><a href="#分析-6" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p><strong>建立状态</strong></p>
+<p>dp[i][j]表示前i个物品能不能组成和是j</p>
+</li>
+<li><p><strong>状态转移</strong></p>
+<p>dp[i][j] |= dp[i-1][j-a[i]];</p>
+</li>
+<li><p><strong>状态优化</strong></p>
+<p>上面的状态首先可以二进制对个数进行优化,然后可以发现单独的一次转移居然只是转移一个bool,太浪费时间了,所以充分使用int或ll的位数,我们可以把j分成64位一组,一次性转移一组这样转移负责度就除以64了相当于降了两个数量级了</p>
+<p>现在复杂度是n<em>k</em>logm/64,这样相当于消去logm而且转移过程还是位运算很快,所以就过了</p>
+</li>
+</ul>
+<h4 id="思考-6"><a href="#思考-6" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>如果以后遇到bool为dp存的状态的时候,那么这个状态肯定是不好的,这时候要么像这题一样压缩一下转移,要么重新建一个状态</li>
+</ul>
+<h3 id="I-Mingo的游戏"><a href="#I-Mingo的游戏" class="headerlink" title="I Mingo的游戏"></a>I Mingo的游戏</h3><h4 id="题意-7"><a href="#题意-7" class="headerlink" title="题意"></a>题意</h4><ul>
+<li><p>Mingo 最近迷上了一款电子游戏。这款游戏有N个关卡，编号为1到n。这些关卡可以被玩家分为K(1&lt;=K&lt;=N)组，每组包含至少一个并且编号连续的关卡。<br>这款游戏有些很奇怪的规则： </p>
+<p>1.如果所有的关卡都被通关，那么这个游戏立即结束，否则系统会找到第一个包含还没有通过的关卡的那组，设X是这组的编号。 </p>
+<p>2.设在X组里，已经通关的关卡编号为i,i+1，i+2,…,j。那么j+1为最早的一个没有通关的关卡。每一个关卡都有一个权重ti。此时系统会随机以<br>的概率进入关卡k。 </p>
+<p>3.Mingo是一个富有天赋的玩家，每一关都能轻松过关，但是每一关都会消耗她一个小时去过关。</p>
+<p>Mingo想以最快的速度通关所有的关卡，但是她非常困惑到底如何分组才能使她尽可能的尽早通关所有关卡呢。你能帮她计算一下如何分组才能使她通关所有关卡所用时间的期望最小么。</p>
+</li>
+</ul>
+<h4 id="分析-7"><a href="#分析-7" class="headerlink" title="分析"></a>分析</h4><pre><code>CF原题,第一次遇到的斜率dp,详解见B
+</code></pre><h4 id="思考-7"><a href="#思考-7" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>这题后面我CF过了,但是scu一直过不了,可能因为我写错了,然后CF用相对误差,SCU用绝对误差</li>
+</ul>
+<h3 id="L-来签个到吧"><a href="#L-来签个到吧" class="headerlink" title="L 来签个到吧"></a>L 来签个到吧</h3><h4 id="题意-8"><a href="#题意-8" class="headerlink" title="题意"></a>题意</h4><ul>
+<li><p>给你 n (2 &lt;= n &lt;= 60,000) 个球,每球上都写有互不相同的数字t ( 0 &lt;= t &lt; 100,000),这些球放在一个盒子里.开始你能执行一种加球操作:选择任意两个球: x 和y,然后看| x - y |在已经有的球中是否存在,如果不存在,就把|x - y|写在一个球上,把这个球加入这个盒子,这里就成功完成了一次加球操作.<br>你就一直加球,直到盒子中任意两个数的差,在集合中已经存在</p>
+<p>现在摸求,问你摸完所有球的所进行操作次数的期望</p>
+</li>
+</ul>
+<h4 id="分析-8"><a href="#分析-8" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p><strong>最终状态会有多少个球?</strong></p>
+<p>显然加球操作很像辗转相减的过程,我们只需要对这题求最大公约数,然后最大值除以这个最大公约数就是最终的个数</p>
+</li>
+<li><p><strong>期望怎么求?</strong></p>
+<p>如果当前摸过了i个球,还剩下n-i个就没有摸,那么摸到i+1球的期望是多少?</p>
+<ul>
+<li><p>可以用无穷级数来求</p>
+</li>
+<li><p>可以感性认识一下,n 个球我要摸到n-i球中的一个期望是多少,就是n / (n-i)</p>
+</li>
+</ul>
+<p>所以最后ans = sum(n/i) + 加球操作数</p>
+</li>
+</ul>
+<h4 id="思考-8"><a href="#思考-8" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>这题要注意对0的处理</li>
+<li>这题实际不难,但是读错题意,以为操作只包括摸球</li>
+</ul>
+
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/24/dp解题报告/" data-id="ciokys7zo000u0qjsqjtjctny" class="article-share-link" data-share="baidu" data-title="">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/24/dp解题报告/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-字符串和搜索解题报告" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/24/字符串和搜索解题报告/" class="article-date">
+  <time datetime="2016-05-24T04:50:42.851Z" itemprop="datePublished">2016-05-24</time>
 </a>
     
   </div>
@@ -254,11 +491,11 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/05/11/解题报告/" data-id="cio8gy8jx000xisjsama0gzi0" class="article-share-link" data-share="baidu" data-title="">分享到</a>
+        <a data-url="http://zerolxf.github.io/2016/05/24/字符串和搜索解题报告/" data-id="ciokys80q001z0qjs7ilxw0ga" class="article-share-link" data-share="baidu" data-title="">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/05/11/解题报告/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://zerolxf.github.io/2016/05/24/字符串和搜索解题报告/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
@@ -269,10 +506,10 @@
 
 
   
-    <article id="post-奶牛情书" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-L" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/11/奶牛情书/" class="article-date">
-  <time datetime="2016-05-10T20:50:00.000Z" itemprop="datePublished">2016-05-11</time>
+    <a href="/2016/05/24/L/" class="article-date">
+  <time datetime="2016-05-24T02:11:50.000Z" itemprop="datePublished">2016-05-24</time>
 </a>
     
   </div>
@@ -283,7 +520,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/奶牛情书/">奶牛情书</a>
+      <a class="article-title" href="/2016/05/24/L/">来签个到吧</a>
     </h1>
   
 
@@ -293,162 +530,317 @@
       
 		<!-- Table of Contents -->
 			    
-        <h3 id="N-奶牛情书"><a href="#N-奶牛情书" class="headerlink" title="N. 奶牛情书"></a>N. 奶牛情书</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
-<li>一个奶牛知道一些单词，现在有一个长度n的文本，问你这个文本至少包含一个奶牛会的单词的方案数。</li>
+        <h3 id="L-来签个到吧"><a href="#L-来签个到吧" class="headerlink" title="L 来签个到吧"></a>L 来签个到吧</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li><p>给你 n (2 &lt;= n &lt;= 60,000) 个球,每球上都写有互不相同的数字t ( 0 &lt;= t &lt; 100,000),这些球放在一个盒子里.开始你能执行一种加球操作:选择任意两个球: x 和y,然后看| x - y |在已经有的球中是否存在,如果不存在,就把|x - y|写在一个球上,把这个球加入这个盒子,这里就成功完成了一次加球操作.<br>你就一直加球,直到盒子中任意两个数的差,在集合中已经存在</p>
+<p>现在摸求,问你摸完所有球的所进行操作次数的期望</p>
+</li>
 </ul>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>1.</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p><strong>最终状态会有多少个球?</strong></p>
+<p>显然加球操作很像辗转相减的过程,我们只需要对这题求最大公约数,然后最大值除以这个最大公约数就是最终的个数</p>
+</li>
+<li><p><strong>期望怎么求?</strong></p>
+<p>如果当前摸过了i个球,还剩下n-i个就没有摸,那么摸到i+1球的期望是多少?</p>
 <ul>
-<li><p>正向算至少包含一个太麻烦了，所以就逆向算，算出总的(快速幂取模)，再算出一个都不包含的情况。而怎么才能算出一个都不包含的情况呢。这个就涉及了自动机套dp。</p>
+<li><p>可以用无穷级数来求</p>
 </li>
-<li><p>方案数用到dp这个都能够想到，可是字符串如何用状态表示呢。这个就要用到前缀了，把每一个前缀看做一个状态，那么添加一个字符之后所形成的前缀成为了另外一种状态（这里需要注意的是空串也是一种特殊的前缀）。</p>
+<li><p>可以感性认识一下,n 个球我要摸到n-i球中的一个期望是多少,就是n / (n-i)</p>
 </li>
-<li>但是怎么很快得到所有的前缀并能得到他们的转移方向呢，很简单，那就是ac自动机。他把每一个字符串的前缀都体现出来了，ac自动机的节点数就是这里的状态数，ac自动机另外也可以叫做<strong>有限状态机</strong>，状态就这样来了</li>
 </ul>
-<ol>
-<li></li>
-</ol>
+<p>所以最后ans = sum(n/i) + 加球操作数</p>
+</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>这题要注意对0的处理</li>
+<li>这题实际不难,但是读错题意,以为操作只包括摸球</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br></pre></td><td class="code"><pre><span class="line">/*************************************************************************</span><br><span class="line">	&gt; File Name: l.cpp</span><br><span class="line">	&gt; Author: liangxianfeng</span><br><span class="line">	&gt; Mail:   641587852@qq.com</span><br><span class="line">	&gt; Created Time: 2016年05月14日 星期六 02时01分00秒</span><br><span class="line"> ************************************************************************/</span><br><span class="line"></span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstdlib&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;stack&gt;</span><br><span class="line">#include&lt;map&gt;</span><br><span class="line">#include&lt;set&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;string&gt;</span><br><span class="line">#include&lt;cmath&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define ll long long</span><br><span class="line">#define rep(i,n) for(int i =0; i &lt; n; ++i)</span><br><span class="line">#define CLR(x) memset(x,0,sizeof x)</span><br><span class="line">#define MEM(a,b) memset(a,b,sizeof a)</span><br><span class="line">#define pr(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">#define prln(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt;  endl; </span><br><span class="line">const int maxn = 4e5+100;</span><br><span class="line">const int INF = 0x3f3f3f3f;</span><br><span class="line">int a[maxn];</span><br><span class="line">int main()&#123;</span><br><span class="line">#ifdef LOCAL</span><br><span class="line">	freopen(&quot;/home/zeroxf/桌面/in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	//freopen(&quot;/home/zeroxf/桌面/out.txt&quot;,&quot;w&quot;,stdout);</span><br><span class="line">#endif</span><br><span class="line">    int t,n;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;t);</span><br><span class="line">    while(t--)&#123;</span><br><span class="line">        scanf(&quot;%d&quot;, &amp;n);</span><br><span class="line">        double ans = 0;</span><br><span class="line">        int b = 0, x;</span><br><span class="line">        for(int i = 0; i &lt; n; ++i)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;a[i]);</span><br><span class="line">            if(a[i] &gt; b) b = a[i];</span><br><span class="line">        &#125;</span><br><span class="line">        x = b;</span><br><span class="line">        bool ok = true;</span><br><span class="line">        for(int i = 0; i &lt; n; ++i)&#123;</span><br><span class="line">            if(a[i] == 0) &#123;</span><br><span class="line">                ok = false;</span><br><span class="line">                continue;</span><br><span class="line">            &#125;</span><br><span class="line">            x = __gcd(x, a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        int num = b/x;</span><br><span class="line">        if(!ok) num++;</span><br><span class="line">        ans = num-n;</span><br><span class="line">        for(int i = 1; i &lt;= num; ++i)&#123;</span><br><span class="line">            ans = ans +num*1.0/i;</span><br><span class="line">        &#125;</span><br><span class="line">        int temp = ans;</span><br><span class="line">        printf(&quot;%d\n&quot;,temp);</span><br><span class="line">    &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/24/L/" data-id="ciokys7za000h0qjsrleo9m1j" class="article-share-link" data-share="baidu" data-title="来签个到吧">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/24/L/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/期望dp/">期望dp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-H" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/24/H/" class="article-date">
+  <time datetime="2016-05-23T16:51:50.000Z" itemprop="datePublished">2016-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/24/H/">又见背包</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="H-又见背包"><a href="#H-又见背包" class="headerlink" title="H 又见背包"></a>H 又见背包</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>有n种大小不同的数字a_i,每种m_i个，判断是否可以从这些数字中选出若干使它们的和恰好为k。(0&lt;n&lt;=100,0&lt;k&lt;=1e5)</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p><strong>建立状态</strong></p>
+<p>dp[i][j]表示前i个物品能不能组成和是j</p>
+</li>
+<li><p><strong>状态转移</strong></p>
+<p>dp[i][j] |= dp[i-1][j-a[i]];</p>
+</li>
+<li><p><strong>状态优化</strong></p>
+<p>上面的状态首先可以二进制对个数进行优化,然后可以发现单独的一次转移居然只是转移一个bool,太浪费时间了,所以充分使用int或ll的位数,我们可以把j分成64位一组,一次性转移一组这样转移负责度就除以64了相当于降了两个数量级了</p>
+<p>现在复杂度是n<em>k</em>logm/64,这样相当于消去logm而且转移过程还是位运算很快,所以就过了</p>
+</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>如果以后遇到bool为dp存的状态的时候,那么这个状态肯定是不好的,这时候要么像这题一样压缩一下转移,要么重新建一个状态</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br></pre></td><td class="code"><pre><span class="line">/*************************************************************************</span><br><span class="line">	&gt; File Name: h.cpp</span><br><span class="line">	&gt; Author: liangxianfeng</span><br><span class="line">	&gt; Mail:   641587852@qq.com</span><br><span class="line">	&gt; Created Time: 2016年05月14日 星期六 00时14分48秒</span><br><span class="line"> ************************************************************************/</span><br><span class="line"></span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstdlib&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;stack&gt;</span><br><span class="line">#include&lt;map&gt;</span><br><span class="line">#include&lt;set&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;string&gt;</span><br><span class="line">#include&lt;cmath&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define ll long long</span><br><span class="line">#define rep(i,n) for(int i =0; i &lt; n; ++i)</span><br><span class="line">#define CLR(x) memset(x,0,sizeof x)</span><br><span class="line">#define MEM(a,b) memset(a,b,sizeof a)</span><br><span class="line">#define pr(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">#define prln(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt;  endl; </span><br><span class="line">const int maxn = 2e5+100;</span><br><span class="line">const int INF = 0x3f3f3f3f;</span><br><span class="line">int cnt[maxn], num[maxn];</span><br><span class="line">int kase, m;</span><br><span class="line">unsigned long long dp[maxn&gt;&gt;6];</span><br><span class="line">int a[100], b[100];</span><br><span class="line">int q[maxn];</span><br><span class="line">int main()&#123;</span><br><span class="line">#ifdef LOCAL</span><br><span class="line">	freopen(&quot;/home/zeroxf/桌面/in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	//freopen(&quot;/home/zeroxf/桌面/out.txt&quot;,&quot;w&quot;,stdout);</span><br><span class="line">#endif</span><br><span class="line">    int t, n;</span><br><span class="line">    ll k;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;t);</span><br><span class="line">    while(t--)&#123;</span><br><span class="line">        scanf(&quot;%d%lld&quot;, &amp;n, &amp;k);</span><br><span class="line">        for(int i = 0; i &lt; n; ++i)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;a[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i = 0; i &lt; n; ++i)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;b[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        int p = 0;</span><br><span class="line">        for(int i= 0; i &lt; n; ++i)&#123;</span><br><span class="line">            ll base = a[i], cnt = 1;</span><br><span class="line">            while(cnt &lt;= b[i]) &#123;</span><br><span class="line">                if(cnt*base &lt;= k)&#123;</span><br><span class="line">                    q[p++] = cnt*base;</span><br><span class="line">                &#125;</span><br><span class="line">                b[i] -= cnt;</span><br><span class="line">                cnt&lt;&lt;=1;</span><br><span class="line">            &#125;</span><br><span class="line">            if(b[i] &gt; 0 &amp;&amp; base*b[i] &lt;= k)&#123;</span><br><span class="line">                q[p++] = base*b[i];</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        int sz = (k&gt;&gt;6)+1;</span><br><span class="line">        memset(dp, 0, sizeof dp);</span><br><span class="line">        dp[0] = 1;</span><br><span class="line">        for(int i = 0; i &lt; p; ++i)&#123;</span><br><span class="line">            int x = q[i]&gt;&gt;6, y = q[i]&amp;63;</span><br><span class="line">            for(int j = 0; j &lt;= sz; ++j)&#123;</span><br><span class="line">                if(x+j&gt;sz) break;</span><br><span class="line">                dp[x+j] = dp[x+j] | (dp[j] &lt;&lt; y);</span><br><span class="line">                if(y) dp[x+j+1] = dp[x+j+1] | (dp[j] &gt;&gt; (64-y));</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        int x = k &gt;&gt; 6, y = k&amp;63;</span><br><span class="line">        bool ok = false;</span><br><span class="line">        if(dp[x] &amp; (1&lt;&lt;y)) ok = true;</span><br><span class="line">        if(ok) printf(&quot;yes\n&quot;);</span><br><span class="line">        else printf(&quot;no\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/24/H/" data-id="ciokys7yz000d0qjsnn0xer6t" class="article-share-link" data-share="baidu" data-title="又见背包">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/24/H/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dp/">-dp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-F" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/24/F/" class="article-date">
+  <time datetime="2016-05-23T16:21:50.000Z" itemprop="datePublished">2016-05-24</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/24/F/">先锋看烟花</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="F-先锋看烟花"><a href="#F-先锋看烟花" class="headerlink" title="F 先锋看烟花"></a>F 先锋看烟花</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>一共有n个地点（1到n排列），一共有m个烟花，每个烟花放出的地点ai和时间ti，每个烟花有观赏值bi，对于每个烟花，对先锋的幸福度贡献bi-|ai-cur|，其中cur表示放第i个烟花时先锋所处的位置，因此，当先锋离烟花太远时，幸福度甚至会下降！已知先锋每秒最多运动d距离，问这个晚上先锋看烟花能获得的最大幸福度。</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>这相当于是一道移动接苹果的题目,只不过每秒移动范围为d并且烟花放的每一个点都有一个贡献值可为负数</p>
+</li>
+<li><p><strong>状态建立</strong></p>
+<p>dp[i][j]表示第i个烟花位于j位置最多能够获得多少幸福感</p>
+<p><strong>状态转移</strong></p>
+<p>   dp[i][j]=min(dp[i-1][k]+bi-|ai-j|);</p>
+<p>   k和j差值不超过(t[i] - t[i-1]) * d</p>
+<p><strong>转移优化</strong></p>
+<p>直接转移显然不行,那么就可以分成两种情况并进行单调队列优化了<br>若ai&gt;cur</p>
+<p>   dp[i][j]=min(dp[i-1][k]+bi-ai+j);<br>那么维护一个和j差范围处于(t[i]-t[i-1])*d的队列</p>
+<p>如果 dp[i-1][k] 和 dp[i-1][kk] 都在队列中并且 k &lt; k &amp;&amp;  dp[i-1][k] &lt; dp[i-1][kk] 那么在对i时刻烟花j以后的位置,都不会选择dp[i-1][k]了,因为dp[i-1][kk] 一定比他优,所以dp[i-1][k]这个状态就要从队列中间pop出来</p>
+<p>所以队首的只要处于范围之内一定最优</p>
+<p>这个队列最多插入n次pop n次,因而复杂度是O(n)</p>
+</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>当遇到一种可以由很多种状态转移过来的时候,考虑一下nlogn线段树或树状数组查询或单调队列或斜率优化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">/*********************************************************************</span><br><span class="line">	&gt; File Name: f.cpp</span><br><span class="line">	&gt; Author: liangxianfeng</span><br><span class="line">	&gt; Mail:   641587852@qq.com</span><br><span class="line">	&gt; Created Time: 2016年05月14日 星期六 19时37分51秒</span><br><span class="line"> ********************************************************************/</span><br><span class="line"></span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstdlib&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;stack&gt;</span><br><span class="line">#include&lt;map&gt;</span><br><span class="line">#include&lt;set&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;string&gt;</span><br><span class="line">#include&lt;cmath&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define ll long long</span><br><span class="line">#define rep(i,n) for(int i =0; i &lt; n; ++i)</span><br><span class="line">#define CLR(x) memset(x,0,sizeof x)</span><br><span class="line">#define MEM(a,b) memset(a,b,sizeof a)</span><br><span class="line">#define pr(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">#define prln(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt;  endl; </span><br><span class="line">const int maxn = 4e5+100;</span><br><span class="line">const int INF = 0x3f3f3f3f;</span><br><span class="line">ll dp[2][maxn];</span><br><span class="line">struct Node&#123;</span><br><span class="line">    ll num, pos;</span><br><span class="line">    Node()&#123;&#125;</span><br><span class="line">    Node(ll _num, ll _pos)&#123;</span><br><span class="line">        num = _num;</span><br><span class="line">        pos = _pos;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;q[maxn];</span><br><span class="line">ll b[maxn], a[maxn], t[maxn];</span><br><span class="line">bool get(const Node&amp; a, const Node&amp; b)&#123;</span><br><span class="line">    return a.num &lt; b.num;</span><br><span class="line">&#125;</span><br><span class="line">int main()&#123;</span><br><span class="line">#ifdef LOCAL</span><br><span class="line">	freopen(&quot;/home/zeroxf/桌面/in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	//freopen(&quot;/home/zeroxf/桌面/out.txt&quot;,&quot;w&quot;,stdout);</span><br><span class="line">#endif</span><br><span class="line">    int kase, m, d;</span><br><span class="line">    ll n;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;kase);</span><br><span class="line">    while(kase--)&#123;</span><br><span class="line">        scanf(&quot;%lld%d%d&quot;, &amp;n, &amp;m, &amp;d);</span><br><span class="line">        for(int i = 1; i &lt;= m; ++i)&#123;</span><br><span class="line">            scanf(&quot;%lld%lld%lld&quot;, &amp;a[i], &amp;b[i], &amp;t[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        int now = 0, pre = 1;</span><br><span class="line">        memset(dp, 0, sizeof dp);</span><br><span class="line">        int tail = -1, head = 0;</span><br><span class="line">        ll ma = n, last = 0;</span><br><span class="line">        for(int i = 1; i &lt;= m; ++i)&#123;</span><br><span class="line">            swap(now,pre);</span><br><span class="line">            ma = min(n, (t[i] - last)*d+1);</span><br><span class="line">            tail=-1;head =0;</span><br><span class="line">            for(int j = 1; j &lt;= ma; ++j) &#123;</span><br><span class="line">                Node nw = Node(dp[pre][j],j);</span><br><span class="line">                while(head &lt;= tail &amp;&amp; get(q[tail], nw)) tail--;</span><br><span class="line">                q[++tail] = nw;</span><br><span class="line">            &#125;</span><br><span class="line">            ma = (t[i] - last)*d;</span><br><span class="line">            for(int j = 1; j &lt;= n; ++j)&#123;</span><br><span class="line">                if(j+ma&lt;=n) &#123;</span><br><span class="line">                    Node nw = Node(dp[pre][j+ma], j+ma);</span><br><span class="line">                    while(head &lt;= tail &amp;&amp; get(q[tail], nw)) tail--;</span><br><span class="line">                    q[++tail] = nw;</span><br><span class="line">                &#125;</span><br><span class="line">                while(head &lt;= tail &amp;&amp; abs(q[head].pos - j) &gt; ma) head++;</span><br><span class="line">                dp[now][j] = q[head].num + b[i] - abs(a[i] - j);</span><br><span class="line">            &#125;</span><br><span class="line">            last = t[i];</span><br><span class="line">        &#125;</span><br><span class="line">        ll ans = -INF;</span><br><span class="line">        for(int i = 1; i &lt;= n; ++i)&#123;</span><br><span class="line">            ans = max(ans, dp[now][i]);</span><br><span class="line">        &#125;</span><br><span class="line">        cout &lt;&lt; ans &lt;&lt; &quot;\n&quot;;</span><br><span class="line">    &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/24/F/" data-id="ciokys7z7000e0qjs2jjsmhgo" class="article-share-link" data-share="baidu" data-title="先锋看烟花">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/24/F/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/单调队列优化dp-dp/">-单调队列优化dp -dp</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-E" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/23/E/" class="article-date">
+  <time datetime="2016-05-23T15:55:50.000Z" itemprop="datePublished">2016-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/23/E/">Goozy搭积木</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="E-goozy搭积木"><a href="#E-goozy搭积木" class="headerlink" title="E goozy搭积木"></a>E goozy搭积木</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>goozy对积木十分的狂热，今天他想搭一个双子塔（就是两个高度一样的塔）！他想知道，用现有的积木，能不能实现这个想法.积木个数n(1 &lt;= n &lt;= 50)，每个积木的高度hi(1 &lt;= hi &lt;= 500000),题目保证所有积木高度总和不超过500000。</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>建立状态</p>
+<p>这题和能不能把所有的平分是不一样的,因而我只要保证有一种方案把积木部分平分就好了</p>
+<p>所以建立状态不能用dp[i][j]表示i木块j高度是否可达</p>
+<p>状态是dp[i][j]表示前i个木块使得两份木块高度差为j的最大可达高度是多少.</p>
+</li>
+<li><p>状态转移</p>
+<p>状态转移就很简单了,积木i放到比较高的那一方或者比较低的那一方</p>
+<p>   放到比较高的一方</p>
+<p>   dp[now][j+h] = max(dp[now][j+h],dp[1-now][j]+h);</p>
+<p>   放到比较低的一方</p>
+<p>   newh = max(dp[1-now][j]-j+h, dp[1-now][j]);</p>
+<p>   dp[now][abs(h-j)] = max(dp[now][abs(h-j)], newh);</p>
+</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>有时候dp建立状态后发现某一位范围过大,不能直接dp[i][j]的时候可以考虑特殊性质,然后对他们的差进行状态转移,正如D题一样</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br></pre></td><td class="code"><pre><span class="line">/*************************************************************************</span><br><span class="line">	&gt; File Name: e.cpp</span><br><span class="line">	&gt; Author: liangxianfeng</span><br><span class="line">	&gt; Mail:   641587852@qq.com</span><br><span class="line">	&gt; Created Time: 2016年05月14日 星期六 03时07分49秒</span><br><span class="line"> ************************************************************************/</span><br><span class="line"></span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstdlib&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;stack&gt;</span><br><span class="line">#include&lt;map&gt;</span><br><span class="line">#include&lt;set&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;string&gt;</span><br><span class="line">#include&lt;cmath&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define ll long long</span><br><span class="line">#define rep(i,n) for(int i =0; i &lt; n; ++i)</span><br><span class="line">#define CLR(x) memset(x,0,sizeof x)</span><br><span class="line">#define MEM(a,b) memset(a,b,sizeof a)</span><br><span class="line">#define pr(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">#define prln(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt;  endl; </span><br><span class="line">const int maxn = 4e5+100;</span><br><span class="line">const int INF = 0x3f3f3f3f;</span><br><span class="line">int dp[2][250010];</span><br><span class="line">int main()&#123;</span><br><span class="line">#ifdef LOCAL</span><br><span class="line">	freopen(&quot;/home/zeroxf/桌面/in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">//	freopen(&quot;/home/zeroxf/桌面/out.txt&quot;,&quot;w&quot;,stdout);</span><br><span class="line">#endif</span><br><span class="line">    int t, n, h;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;t);</span><br><span class="line">    while(t--)&#123;</span><br><span class="line">        scanf(&quot;%d&quot;, &amp;n);</span><br><span class="line">        for(int i = 0; i &lt; 250010; ++i) dp[0][i] = dp[1][i] = -INF;</span><br><span class="line">        int now = 1;</span><br><span class="line">        dp[now][0] = 0;</span><br><span class="line">        for(int i = 0; i &lt; n; ++i)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;h);</span><br><span class="line">            now = now^1;</span><br><span class="line">            for(int j = 0; j &lt; 250010; ++j)&#123;</span><br><span class="line">                dp[now][j] = max(dp[now][j], dp[1-now][j]);</span><br><span class="line">                if(dp[1-now][j] &lt; j) continue;</span><br><span class="line">                if(h&gt;=250010) continue;</span><br><span class="line">                if(j+h&lt;250010) dp[now][j+h] = max(dp[now][j+h],dp[1-now][j]+h);</span><br><span class="line">                dp[now][abs(h-j)] = max(dp[now][abs(h-j)], max(dp[1-now][j]-j+h, dp[1-now][j]));</span><br><span class="line">//                pr(abs(h-j));pr(h);pr(j);prln(dp[now][abs(h-j)]);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        int ans = dp[now][0];</span><br><span class="line">        if(ans &gt; 0) printf(&quot;%d\n&quot;,ans);</span><br><span class="line">        else printf(&quot;GG\n&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/23/E/" data-id="ciokys7yw000b0qjsmiubhqs2" class="article-share-link" data-share="baidu" data-title="Goozy搭积木">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/23/E/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dp-dp差值状态/">-dp -dp差值状态</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-D" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/23/D/" class="article-date">
+  <time datetime="2016-05-23T15:31:50.000Z" itemprop="datePublished">2016-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/23/D/">任务</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="D-任务"><a href="#D-任务" class="headerlink" title="D 任务"></a>D 任务</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>有两台机器n个任务,每个任务i在机器A完成时间是a[i],B上面完成时间是b[i],任务i可以被处理当前仅当每个任务j(i&gt;j)已经被完成或者正在进行.求最少完成任务的时间(n&lt;2000,a[i],b[i]&lt;=3000)</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>首先读清楚题目意思</p>
+<p><strong>任务i可以被处理当前仅当每个任务j(i&gt;j)已经被完成或者正在进行</strong></p>
+<p>上面这句话有什么用?</p>
+<p>仔细分析后可以发现上面这个性质确保了执行任意任务的时候机器AB时间差不会超过3000</p>
+<p>假如A比B将少运行时间超过3000,那么现在放置任务i+1</p>
 <ul>
-<li>在禁止一些字符串时，少考虑了把包含这个字符串的其他前缀串都禁止了。比如aba和ccabac，我们现在要把这两个串禁止用，但是单禁止这两个串还不行，因为我们的一个前缀状态是ccaba,ccaba就包含了禁止串，所以我们要这样禁止一个串：如果他的失配后指向的串被禁止了那么当前的串也要禁止。    if(cnt[fail[u]]) cnt[u] = 1;</li>
+<li>那么任务i+1不能放置机器A最开始空闲的时候,因为这样B机器必然(B多A3000时间)有任务j(j&lt;i)还没有没执行;那么任务i+1只能当道B机器运行最后一个任务j的起始时间上去,这样的方案必然没有比任务j放置到A机器方案优(可以画图模拟一下)</li>
+<li>把任务i+1放置到机器B,那么这种方案将继续造成恶性循环又进入此状态,显然最终这种方案不优</li>
 </ul>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li><p>只要懂了原理就很简单了，没有坑点</p>
+<p>所以任一个任务选择的时候AB机器运行结束时间差不能够3000</p>
+<p><strong>建立状态</strong></p>
+<p>dp[i][j]表示完成任务i并且机器AB运行结束时间差为j的最少时间,(j&gt;0表示A比B多j,否则B比A多-j,后面右移3000,保证都是正数)</p>
+<p><strong>状态转移</strong></p>
+<p>dp[i][j]由dp[i-1][j+a[i]和dp[i-1][j-b[i]]转移过来,其中要注意任务i放到机器A或B中可能对时间没有影响</p>
 </li>
-<li><p>这个类型的ac自动机加dp帮我更好理解自动机。之前对于ac自动机的根节点和fail数组并不是很理解，现在想就是root节点就是空节点。fail指针就相当于在这个节点添加一个字符匹配失配后我还能够匹配哪里。</p>
-</li>
-</ol>
-
-      
-	  
-
-
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛情书/" data-id="cio8gy8jk000kisjsju0a9i5g" class="article-share-link" data-share="baidu" data-title="奶牛情书">分享到</a>
-      
-
-      
-        <a href="http://zerolxf.github.io/2016/05/11/奶牛情书/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ac自动机-dp/">ac自动机 dp</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-奶牛硬盘" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/11/奶牛硬盘/" class="article-date">
-  <time datetime="2016-05-10T20:44:00.000Z" itemprop="datePublished">2016-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/奶牛硬盘/">奶牛硬盘</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-		<!-- Table of Contents -->
-			    
-        <h3 id="M-奶牛硬盘"><a href="#M-奶牛硬盘" class="headerlink" title="M. 奶牛硬盘"></a>M. 奶牛硬盘</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
-<li>硬盘的制造商认为”一千” 是1000，但是操作系统认为”一千”是1024.单位分别有“B”, “KB”, “MB”, “GB”, “TB”, “PB”, “EB”, “ZB”, “YB” </li>
 </ul>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
-<li>很简单的一道题，只和单位有关系和前面数值没关系，先求出保存率，然后1-保存率，base[0]= 1, base[1] = （1000）/1024;…</li>
-</ol>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li>我在想0MB的丢失百分比是多少？？？我反正没考虑直接过了</li>
-</ol>
-
-      
-	  
-
-
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛硬盘/" data-id="cio8gy8jl000misjsof190erk" class="article-share-link" data-share="baidu" data-title="奶牛硬盘">分享到</a>
-      
-
-      
-        <a href="http://zerolxf.github.io/2016/05/11/奶牛硬盘/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/简单题/">简单题</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-奶牛序列" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/11/奶牛序列/" class="article-date">
-  <time datetime="2016-05-10T20:09:00.000Z" itemprop="datePublished">2016-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/奶牛序列/">奶牛序列</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-		<!-- Table of Contents -->
-			    
-        <h3 id="L-奶牛序列"><a href="#L-奶牛序列" class="headerlink" title="L. 奶牛序列"></a>L. 奶牛序列</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
-<li>约翰刚帮奶牛们拍完照，拿着合影的他，看着奶牛队列，又莫名想到了一个字符串问题：<br>我们将n头奶牛的队列看成一个长为n的字符串S，让Ti表示从第i的字符开始的后缀。求：    <img src="http://7xread.com1.z0.glb.clouddn.com/3fd06cf9-7253-40fd-ad13-f076195d35e7" alt="图片描述"></li>
-<li>其中，len(a)表示字符串a的长度，lcp(a,b)表示字符串a和字符串b的最长公共前缀，输入字符串长度不超过5e5</li>
-</ul>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
-<li></li>
-</ol>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><p><strong>错误分析</strong></p>
 <ul>
-<li><p>首先前面的len(Ti)和len(Tj)可以提取出来一步算出来，剩下主要就是求<br>lcp(Ti,Tj)的和，在后缀数组中求两个后缀的最长前缀长度，就是求各自对应h[i]数组间的最小值。由于这里i和j把所有的一对Ti和Tj组合都取遍，所以这里可以转换成求所有h[i]和h[j]数组中间的最小值的和的两倍</p>
-</li>
-<li><p>那么问题转换成求所有h[i]和h[j]数组中间的最小值的和，，如何快速的求出所有和呢，因为枚举会T。这里用到nlogn求最长公共子序列的思想。每一次我只求所有h[j]和h[i]之间的最小值的和(其中j&lt;i).</p>
-</li>
-<li><p>然后不断的放入h[i],h[i]放入到第一个大于等于他的位置并把当前位置的值更新为 h[i]（因为所有大于h[i]的h[j]的值在和h[i]取最小之后多出来的那部分无效了，即使是在求i之后h[k]的所有lcp和也一样，由于存在h[i],那么h[j]在h[i]的左边并大于h[i]的部分无效，所以就直接用h[i]代替了h[j]）.同在在那个位置记录下最新的位置信息pos[k] = i。同时用一个数组sum[i]记录到位置i的lcp的和。</p>
-</li>
-<li><p>如何计算sum（lcp(Tj,Ti)） j&lt;i？，就拿h[i]插入后举例子，他的前一个h[i-1]一定小于h[i],那么那个位置的sum[i-1]就不需要更新了，直接拿来用。pos[i-1]和pos[i]之间的值就全部都是h[i]了，然后再更新sum[i].</p>
+<li>没有对非法状态进行限制,比如状态转移的时候,放置任务i到机器A,必须设定任务i时间当值 &gt;= B机器最后一个任务j放置时间!!!确保i之前的任务被处理完或正被处理</li>
+<li>没有考虑任务i放置到机器A后对时间无影响的情况</li>
+</ul>
 </li>
 </ul>
-<ol>
-<li>好了经过上面很长的分析之后，我忘记sum(lcp)*2了</li>
-</ol>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li><p>这题想到就不难了，当然实现的时候还是要想半天的</p>
-</li>
-<li><p>求最长公共子序列这种nlogn的思想很实用。</p>
-</li>
-</ol>
 
       
 	  
@@ -457,15 +849,15 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛序列/" data-id="cio8gy8ji000iisjsv0mrmggj" class="article-share-link" data-share="baidu" data-title="奶牛序列">分享到</a>
+        <a data-url="http://zerolxf.github.io/2016/05/23/D/" data-id="ciokys7ys00080qjsrmzfd4e5" class="article-share-link" data-share="baidu" data-title="任务">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/05/11/奶牛序列/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://zerolxf.github.io/2016/05/23/D/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/后缀数组/">后缀数组</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dp-dp差值状态/">-dp -dp差值状态</a></li></ul>
 
     </footer>
   </div>
@@ -474,10 +866,10 @@
 
 
   
-    <article id="post-奶牛合影" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-B" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/11/奶牛合影/" class="article-date">
-  <time datetime="2016-05-10T20:03:00.000Z" itemprop="datePublished">2016-05-11</time>
+    <a href="/2016/05/23/B/" class="article-date">
+  <time datetime="2016-05-23T14:31:50.000Z" itemprop="datePublished">2016-05-23</time>
 </a>
     
   </div>
@@ -488,7 +880,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/奶牛合影/">奶牛合影</a>
+      <a class="article-title" href="/2016/05/23/B/">修长廊</a>
     </h1>
   
 
@@ -498,288 +890,50 @@
       
 		<!-- Table of Contents -->
 			    
-        <h3 id="K-奶牛合影"><a href="#K-奶牛合影" class="headerlink" title="K. 奶牛合影"></a>K. 奶牛合影</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
-<li>每个牛有一瑕疵值，我想再平移之后，得到一种排序他字典序最小，也就是最裸的最小表示法</li>
+        <h3 id="B-Snowd-修长廊"><a href="#B-Snowd-修长廊" class="headerlink" title="B Snowd 修长廊"></a>B Snowd 修长廊</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>现在要修长廊覆盖n个点，第i个点可以单独修一个长廊，也可以修到前面第j个点（覆盖j到i之间的点），现在修i和j之间的长廊花费cost(i,j) = W + (x $<em>{i}$ － x$</em>{j}$ ) $^_{2}$,其中W是固有花费,现在求最小花费是多少</li>
 </ul>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
-<li><p>直接用模板</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>我们状态很好建立,dp[i]表示覆盖到第i个点为止至少需要花费多少,但是他可以有很多状态转移过来.</p>
 </li>
-<li><p>只要模板没有写错，几乎不会错</p>
+<li><p>dp[i] = min(dp[j-1]+cost(j,i));</p>
 </li>
-</ol>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li><p>没坑点</p>
+<li><p>如果现在有两个状态j和k(其中j&gt;k)可以转移过来.那么用单调队列dp思想把这两个相减</p>
+<pre><code>dp[j] + cost(j,i) - dp[k] - cost(k,i)
+
+ =(dp[j] +x[j]*x[j])-(dp[k]+ x[k]*x[k]) -　2*x[i]*(x[j]-x[k])
+</code></pre><p>  那么也就是说如果dp[j]转移过来比dp[k]更优的话,就有上式小于 0,那么我们在更新最优的dp[y]的时候,如果前面存在一个状态x比状态i差,那么便有上式成立</p>
+<p>  同时可以发现如果现在就已经成立,那么这个式子对y以后的状态都会成立,因为对y以后的x<a href="i&gt;=y">i</a>上式也成立(这个就是斜率dp的特点,总会有一个自变量一直递增或递减),那么状态x就属于无用状态应该从队列中剔除</p>
+<p>  <strong>判定条件一:如果i点没有j点优(也就是说j点比i点更优)的条件是i和j(i&lt;j)斜率小于2x[i]</strong></p>
 </li>
-<li><p>这题其实还可以用后缀数组写的，不过效率不划算</p>
-</li>
-</ol>
-
-      
-	  
-
-
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://zerolxf.github.io/2016/05/11/奶牛合影/" data-id="cio8gy8jg000gisjso33t1gea" class="article-share-link" data-share="baidu" data-title="奶牛合影">分享到</a>
-      
-
-      
-        <a href="http://zerolxf.github.io/2016/05/11/奶牛合影/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/最小表示法/">最小表示法</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-TooEasyOrTooDifficult" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/11/TooEasyOrTooDifficult/" class="article-date">
-  <time datetime="2016-05-10T19:49:00.000Z" itemprop="datePublished">2016-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/TooEasyOrTooDifficult/">TooEasy Or TooDifficult</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-		<!-- Table of Contents -->
-			    
-        <h3 id="J-TooEasy-Or-TooDifficult"><a href="#J-TooEasy-Or-TooDifficult" class="headerlink" title="J. TooEasy Or TooDifficult"></a>J. TooEasy Or TooDifficult</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
-<li>给你定义两类值，P[i]表示以第i个字符为中心的最长回文串长度，MZ和max{P[i]}有关，FJD为连续若干个P[i]异或和的最大值。问你MZ和FJD谁大</li>
-</ul>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
-<li><p>解决MZ就是最裸的manacher算法，FJD则利用到一个性质sum[j]^sum[i] = p[i]^…P[j];这样转换之后就是求最大的sum[j]^sum[i],这个问题在问题A中谈论过了，就是建立01二叉树，然后把sum[i]全部插入，再全部走一遍</p>
-</li>
-<li><p>当时生成插入01树的时候写挫了，一直死循环，debug半天</p>
-</li>
-</ol>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li><p>没啥坑点</p>
-</li>
-<li><p>常规题</p>
-</li>
-</ol>
-
-      
-	  
-
-
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://zerolxf.github.io/2016/05/11/TooEasyOrTooDifficult/" data-id="cio8gy8j50007isjseug589xt" class="article-share-link" data-share="baidu" data-title="TooEasy Or TooDifficult">分享到</a>
-      
-
-      
-        <a href="http://zerolxf.github.io/2016/05/11/TooEasyOrTooDifficult/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/manacher-异或/">manacher 异或</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-DNA序列" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/11/DNA序列/" class="article-date">
-  <time datetime="2016-05-10T19:18:00.000Z" itemprop="datePublished">2016-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/DNA序列/">DNA序列</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-		<!-- Table of Contents -->
-			    
-        <h3 id="H-DNA序列"><a href="#H-DNA序列" class="headerlink" title="H. DNA序列"></a>H. DNA序列</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
-<li>就是让你找这样一个字符串，让所给的串是目标串的子串，那么目标串最短应该是多少 （最多8个串，每个串长度最大为5）</li>
-</ul>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
-<li><p>这个题我只用了迭代加深搜索，但是没剪枝过了，数据没卡我（AAAA GGGG CCCCC TTTTT就T了）。后面想了一下状态压缩记忆化搜索是可以在有限时间搜索出来的。用8个六进制的数字表示每一个串的当前位置。然后这个状态只有四种转移方向ATGC，然后从最终状态往前记忆化搜索就好了。</p>
-</li>
-<li><p>搜索一直没想出来怎么剪枝…,所以就使用迭代加深思想，然后暴力的枚举8个队列串首字符，比如枚举当前字符为A，那么谁队首是A的就POP出来，如果没有队首是A那就没必要搜索了。</p>
-</li>
-</ol>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li><p>没啥坑点，就是不好好剪枝你会T在上面那个样例</p>
-</li>
-<li><p>在用状态压缩转移的时候，要用记忆化从最后搜，因为最初状态往后转移的话，初状态不好枚举。</p>
-</li>
-</ol>
-
-      
-	  
-
-
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://zerolxf.github.io/2016/05/11/DNA序列/" data-id="cio8gy8j30006isjsb5xoswkf" class="article-share-link" data-share="baidu" data-title="DNA序列">分享到</a>
-      
-
-      
-        <a href="http://zerolxf.github.io/2016/05/11/DNA序列/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/状压-搜索/">状压 搜索</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-小冰和小娜" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/11/小冰和小娜/" class="article-date">
-  <time datetime="2016-05-10T19:18:00.000Z" itemprop="datePublished">2016-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/小冰和小娜/">小冰和小娜</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-		<!-- Table of Contents -->
-			    
-        <h3 id="I-小冰和小娜"><a href="#I-小冰和小娜" class="headerlink" title="I. 小冰和小娜"></a>I. 小冰和小娜</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
-<li>这题就是一个车有方向的放在某一个位置，现在转向和前进都会消耗一点时间，问你从起点到达终点的最短时间</li>
-</ul>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
-<li><p>这题就是我E题说到的，带附加属性的最短路，这个附加属性范围大小是4（4个方向）。那么直接在原先最短路的基础上面增加一维方向就好，然后就从初状态跑最短路就好。</p>
-</li>
-<li><p>当时写的太挫了，wa了几发，太粗心了</p>
-</li>
-</ol>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li><p>没啥坑点</p>
-</li>
-<li><p>在状态转移的时候使用dx[i],dy[i],dd[i].这样三种操作弄成一个循环了简洁不出错</p>
-</li>
-</ol>
-
-      
-	  
-
-
-    </div>
-    <footer class="article-footer">
-      
-        <a data-url="http://zerolxf.github.io/2016/05/11/小冰和小娜/" data-id="cio8gy8jn000oisjstb0rmlhh" class="article-share-link" data-share="baidu" data-title="小冰和小娜">分享到</a>
-      
-
-      
-        <a href="http://zerolxf.github.io/2016/05/11/小冰和小娜/#ds-thread" class="article-comment-link">评论</a>
-      
-
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/最短路/">最短路</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-神舟的宝藏" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/05/11/神舟的宝藏/" class="article-date">
-  <time datetime="2016-05-10T18:40:00.000Z" itemprop="datePublished">2016-05-11</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/神舟的宝藏/">神舟的宝藏</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-		<!-- Table of Contents -->
-			    
-        <h3 id="G-神舟的宝藏"><a href="#G-神舟的宝藏" class="headerlink" title="G 神舟的宝藏"></a>G 神舟的宝藏</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>让你找这样一个密码：</p>
+<li><p>那么如何保证队列起第一个就是最优的呢?</p>
 <ul>
-<li>密码是一个C进制的数； </li>
-<li>密码由给定的M个数字构成；</li>
-<li>密码是一个给定N的十进制整数的正整数倍；</li>
-<li>如果存在多个满足上面所有条件的数字，值最小数字就是密码； </li>
-<li>系统输入上限为500位数字，如果求出的密码长度大于500位，则也不能打开房门。</li>
+<li><p><strong>感性的认识:</strong></p>
+<p>  根据上面的式子我们可以一直判断第一个和第二个元素然后剔除,从而使得保证队队列第一个一定比第二个更优,那么剩下的就需要保证第一个比第三个,第一个比第四个更优…这个性质一直成立就好了</p>
+<p>  假设上面这个性质成立则有:23点的斜率大于12点,34点斜率大于12点…<br>但是确保每相邻两个点斜率大于12点不具有<strong>传递性</strong>,所以我们可以缩小简化:23点的斜率大于12点,34点斜率大于23点…从而形成了<strong>下凸包</strong></p>
+<p>  从结果看:斜率递增保证了下凸包,而下凸包其实是保证了<strong>:第三个点没有第二个点优,第四个点没有三个点优..</strong>,因为第一个破坏下凸包性质的点一定不是最优,可参考理性认识的证明</p>
+</li>
 </ul>
-<p>其中C，M不超过16，N不超过5000</p>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ol>
-<li><p>这题相当于01的时间的<strong>进阶版</strong>。写起来就很简单了：我们预处理的时候要以C进制为基础预处理第i为是M个数字中的某一个是对N取模的余数是多少。dp[i][j]表示长度为i，对N余数是j这样状态第i位是哪一个数字</p>
 </li>
-<li><p>这题和之前的有两个不一样是</p>
-</li>
-</ol>
+</ul>
+<pre><code>所以我们要维护上面两个性质:1:第一个点比第二个点优,2:第三个点没有第二个点优,第四个点没有三个点优...(用维护斜率递增实现)**
+</code></pre><h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><p>如何证明维护的队列的第一个就是最优的呢?</p>
 <ul>
-<li>我不确定0有没有，如果有0的话我要特殊判断当前是0.状态转移的时候从最小数值开始转移<strong>(当余数j是0的时候不包含0，因为这个时候如果能用其他数值更新那么后面就不需要再添加数字了，如果用0更新的话就会出现前导0还需要继续添加位数这样就不是最小的)</strong>，就能够保证后面得到相同状态的时候值最小。</li>
-<li>状态使用dp[i][j]而不像C题那样使用dp[i][j][k]多出来的K表示当前位取第K个数字，这样的添加了状态数和转移数，使得转移复杂度变得高很多，内存也不划算</li>
+<li><p><strong>理性认识:</strong></p>
+<p>dp[i] = dp[j] + x[j] $^<em>{2}$ + x[i]$^</em>{2}$ +　2x[i]*x[j] + W</p>
+<p>dp[i] - W - x[i]$^<em>{2}$  = dp[j] + x[j] $^</em>{2}$ +　2x[i]*x[j] </p>
+<p>从上面这个式子看出dp[i] , x[i]$^_{2}$ ,Ｗ这三个相对于i是定值</p>
+<p><strong>问题转换:</strong>我们要找到这样一个 x[j] 和 dp[j] + x[j] $^<em>{2}$ 使得 dp[i] 最小,看成b = y - kx,也就是b最小.从而我们可以画出一些点(2x[j],dp[j] + x[j] $^</em>{2}$),用斜率固定k的直线从下面往上面开始扫描,第一个接触到的点就是我们要找的最优点.这样找的话就会发现一个特点,上凸包的转折点永远不会被扫到,所以也应该剔除.</p>
+<p>如果我们在每一次插入的时候一直这样判断,那么就能够保证最后两个斜率一定大于前两个点的斜率,由于插入斜率大小具有<strong>传递性</strong>,所以能够保证<strong>斜率递增</strong></p>
+<p><strong>但是光斜率递增就一定能够使得第一个最优吗?</strong></p>
+<p>确保第一个最优的充分必要条件是每个点和第一个点的斜率大于等于2x[i],这样看来显然不能够确保第一个最优.(<strong>举一个极限的例子,所有点和第一个点的斜率都小于2x[i]但是却递增</strong>)</p>
+<p>为了弥补上面的不足,可以让第一个优于第二个,也就是12斜率大于2x[i],由于上面凸包的性质使得第一个点和所有点斜率都大于2x[i]也就是说,以后的点不能够比第一个点更优.所以:<strong>第一个是最优的</strong></p>
+</li>
 </ul>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ol>
-<li><p>像上面所说的那样从最小数字更新，这样一旦更新了，我就不准二次更新了，不需要比较值了，这样dp就可以“安心”记录上一个状态的值了</p>
 </li>
-<li><p>这题容易处理错0这个数字，如果更新的时候把0放在最先，那么dp[i][0]永远都只会被0更新，而这是非法的（就好比是00000000…）。如果不把0放到最前面，那么处理余数非0的状态时候明可以用0来更新，而被用非0数字更新这样会导致所求的不是最小的数值。</p>
-</li>
-</ol>
-
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">/*************************************************************************</span><br><span class="line">	&gt; File Name: b.cpp</span><br><span class="line">	&gt; Author: liangxianfeng</span><br><span class="line">	&gt; Mail:   641587852@qq.com</span><br><span class="line">	&gt; Created Time: 2016年05月13日 星期五 16时20分14秒</span><br><span class="line"> ************************************************************************/</span><br><span class="line"></span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstdlib&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;stack&gt;</span><br><span class="line">#include&lt;map&gt;</span><br><span class="line">#include&lt;set&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;string&gt;</span><br><span class="line">#include&lt;cmath&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define ll long long</span><br><span class="line">#define rep(i,n) for(int i =0; i &lt; n; ++i)</span><br><span class="line">#define CLR(x) memset(x,0,sizeof x)</span><br><span class="line">#define MEM(a,b) memset(a,b,sizeof a)</span><br><span class="line">#define pr(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">#define prln(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt;  endl; </span><br><span class="line">const int maxn = 4e5+100;</span><br><span class="line">const int INF = 0x3f3f3f3f;</span><br><span class="line"></span><br><span class="line">struct Node&#123;</span><br><span class="line">    ll num, x;</span><br><span class="line">    Node ()&#123;&#125;</span><br><span class="line">    Node(ll _num, ll _x)&#123;</span><br><span class="line">        num = _num;</span><br><span class="line">        x = _x;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;q[maxn];</span><br><span class="line">ll dp[maxn];</span><br><span class="line">ll x[maxn];</span><br><span class="line">bool get(const Node&amp; a, const Node &amp;b, const ll&amp; x)&#123;</span><br><span class="line">    return b.num - a.num &lt;= x*(b.x-a.x)*2;</span><br><span class="line">&#125;</span><br><span class="line">bool get2(const Node&amp; a, const Node&amp; b, const Node&amp; c)&#123;</span><br><span class="line">    return (b.num - a.num)*(c.x - a.x) &gt;= (c.num - a.num)*(b.x - a.x);</span><br><span class="line">&#125;</span><br><span class="line">int main()&#123;</span><br><span class="line">#ifdef LOCAL</span><br><span class="line">	freopen(&quot;/home/zeroxf/桌面/in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	//freopen(&quot;/home/zeroxf/桌面/out.txt&quot;,&quot;w&quot;,stdout);</span><br><span class="line">#endif</span><br><span class="line">    int t;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;t);</span><br><span class="line">    while(t--)&#123;</span><br><span class="line">        ll w;</span><br><span class="line">        int n;</span><br><span class="line">        scanf(&quot;%d%lld&quot;, &amp;n, &amp;w);</span><br><span class="line">        for(int i = 1; i &lt;= n; ++i)&#123;</span><br><span class="line">            scanf(&quot;%lld&quot;, &amp;x[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        int tail = -1,head = 0;</span><br><span class="line">        dp[0] = 0;</span><br><span class="line">        dp[1] = w;</span><br><span class="line">        q[++tail] = Node(x[1]*x[1], x[1]);</span><br><span class="line">        q[++tail] = Node(w+x[2]*x[2],x[2]);</span><br><span class="line">        for(int i = 2; i &lt;= n; ++i)&#123;</span><br><span class="line">            while(head &lt; tail &amp;&amp; get(q[head], q[head+1], x[i])) head++;</span><br><span class="line">            dp[i] = q[head].num + w + (x[i]*x[i]) - 2*x[i]*q[head].x;</span><br><span class="line">            dp[i] = min(dp[i], dp[i-1] + w);</span><br><span class="line">            Node qnum = Node(dp[i] + (x[i+1]*x[i+1]), x[i+1]);</span><br><span class="line">            while(head &lt; tail &amp;&amp; get2(q[tail-1], q[tail], qnum)) tail--;</span><br><span class="line">            q[++tail] = qnum;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">        printf(&quot;%lld\n&quot;, dp[n]);</span><br><span class="line">    &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
 	  
 
@@ -787,15 +941,15 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/05/11/神舟的宝藏/" data-id="cio8gy8jt000sisjsy8iaqldr" class="article-share-link" data-share="baidu" data-title="神舟的宝藏">分享到</a>
+        <a data-url="http://zerolxf.github.io/2016/05/23/B/" data-id="ciokys7yq00060qjsmskxxxn5" class="article-share-link" data-share="baidu" data-title="修长廊">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/05/11/神舟的宝藏/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://zerolxf.github.io/2016/05/23/B/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/数位dp/">数位dp</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/斜率dp/">斜率dp</a></li></ul>
 
     </footer>
   </div>
@@ -804,10 +958,10 @@
 
 
   
-    <article id="post-表达式" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-A" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2016/05/11/表达式/" class="article-date">
-  <time datetime="2016-05-10T18:05:00.000Z" itemprop="datePublished">2016-05-11</time>
+    <a href="/2016/05/23/A/" class="article-date">
+  <time datetime="2016-05-23T14:01:50.000Z" itemprop="datePublished">2016-05-23</time>
 </a>
     
   </div>
@@ -818,7 +972,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/11/表达式/">表达式</a>
+      <a class="article-title" href="/2016/05/23/A/">雷神之路</a>
     </h1>
   
 
@@ -828,11 +982,15 @@
       
 		<!-- Table of Contents -->
 			    
-        <h3 id="F-表达式"><a href="#F-表达式" class="headerlink" title="F 表达式"></a>F 表达式</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>最快多少次才能够最快的得到$x^k$，可以从已经得到的数中乘除，最初只有x，比如 $x^31$,他最快可以通过通过6次操作</p>
-<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>1.为了能够知道当前搜索的解x是最优解，那么我能够做的就只有把比x小的解全部枚举一遍。所以就用到迭代加深搜索。</p>
-<p>2.刚拿到这题，有很多种贪心策略，可惜后面发现都不对。然后试着用最短路的姿势来写，不过问题是你怎么才能确认这是最短路。这个搜索的空间无穷大，所以一直搜下去永远不能够确定。但这个就告诉我们不能把搜索空间弄的太深因为这样容易在某一个解空间里面无限搜下去，同时我们还要能确保当前搜到某一个解一定是最优解。由此，迭代加深搜索就凸现出来了</p>
-<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>1.对这类搜索复杂度一直很迷。而且有一个细节问题一直不能理解，为什么搜的时候一定要从当前最新的值a和前面的值进行运算得到新的值，而不能是以前的值b和c得出d，然后d和a再得出我想要的值呢？</p>
-<p>2.搜的时候可以保留记录。以后对这类迷糊不确定上界的搜索首先就想到迭代加深吧！！！</p>
+        <h3 id="A-雷神之路"><a href="#A-雷神之路" class="headerlink" title="A 雷神之路"></a>A 雷神之路</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>在一个坐标轴上面起始位置是0，你可以往右走一步，两步，三步。其中某些位置不能走，问你走到位置n有多少种方法（1&lt;= n &lt;= 1e18）</p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li>这题是走楼梯的进阶版，状态很好想dp[n]，转移有三种：走一步两步三步转移过来。不过由于n太大，很容易想到矩阵加速。</li>
+<li>用矩阵A表示第i个可走，矩阵B表示第i个不可走。有些地方x不能走，那么我只要用矩阵加速求出第x-1个矩阵C，那么第x个矩阵就是C*B，最后得出第n个矩阵</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>dp[n] = dp[n-1] + dp[n-2] + dp[n-3] (n&gt;=3)所以我们第一个矩阵是从2开始的，小于2的方案要手动打出来</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line">/*************************************************************************</span><br><span class="line">	&gt; File Name: a.cpp</span><br><span class="line">	&gt; Author: liangxianfeng</span><br><span class="line">	&gt; Mail:   641587852@qq.com</span><br><span class="line">	&gt; Created Time: 2016年05月13日 星期五 18时57分55秒</span><br><span class="line"> ************************************************************************/</span><br><span class="line"></span><br><span class="line">#include &lt;iostream&gt;</span><br><span class="line">#include &lt;cstdio&gt;</span><br><span class="line">#include&lt;cstdlib&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;stack&gt;</span><br><span class="line">#include&lt;map&gt;</span><br><span class="line">#include&lt;set&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;string&gt;</span><br><span class="line">#include&lt;cmath&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define ll long long</span><br><span class="line">#define rep(i,n) for(int i =0; i &lt; n; ++i)</span><br><span class="line">#define CLR(x) memset(x,0,sizeof x)</span><br><span class="line">#define MEM(a,b) memset(a,b,sizeof a)</span><br><span class="line">#define pr(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">#define prln(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt;  endl; </span><br><span class="line">const int maxn = 4e5+100;</span><br><span class="line">const int INF = 0x3f3f3f3f;</span><br><span class="line">const int MOD = 1e9+7;</span><br><span class="line">struct Rec&#123;</span><br><span class="line">    ll num[3][3];</span><br><span class="line">    Rec()&#123;</span><br><span class="line">        for(int i = 0; i &lt; 3; ++i)&#123;</span><br><span class="line">            for(int j = 0; j &lt; 3; ++j)&#123;</span><br><span class="line">                if(i==j) num[i][j] = 1;</span><br><span class="line">                else num[i][j] = 0;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Rec(int x)&#123;</span><br><span class="line">        for(int i = 0; i &lt; 3; ++i)&#123;</span><br><span class="line">            for(int j = 0; j &lt; 3; ++j)&#123;</span><br><span class="line">                num[i][j] = x;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    Rec operator * (const Rec&amp; rhs)const&#123;</span><br><span class="line">        Rec ans(0);</span><br><span class="line">        for(int i = 0; i &lt; 3; ++i)&#123;</span><br><span class="line">            for(int j = 0; j &lt; 3; ++j)&#123;</span><br><span class="line">                for(int k = 0; k &lt; 3; ++k)&#123;</span><br><span class="line">                    ans.num[i][j] += num[i][k]*rhs.num[k][j]; </span><br><span class="line">                &#125;</span><br><span class="line">                ans.num[i][j] %= MOD;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        return ans;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;init;</span><br><span class="line">Rec ret(const Rec &amp;x, ll y)&#123;</span><br><span class="line">    Rec ans, base = x;</span><br><span class="line">    while(y)&#123;</span><br><span class="line">        if(y&amp;1) ans = ans*base;</span><br><span class="line">        y&gt;&gt;=1;</span><br><span class="line">        base = base*base;</span><br><span class="line">    &#125;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line">bool vis[10];</span><br><span class="line">ll x[600];</span><br><span class="line">int main()&#123;</span><br><span class="line">#ifdef LOCAL</span><br><span class="line">	freopen(&quot;/home/zeroxf/桌面/in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">	//freopen(&quot;/home/zeroxf/桌面/out.txt&quot;,&quot;w&quot;,stdout);</span><br><span class="line">#endif</span><br><span class="line">    int t;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;t);</span><br><span class="line">    while(t--)&#123;</span><br><span class="line">        int  m;</span><br><span class="line">        ll n;</span><br><span class="line">        scanf(&quot;%lld%d&quot;, &amp;n, &amp;m);</span><br><span class="line">        memset(x, 0, sizeof x);</span><br><span class="line">        memset(vis, 0, sizeof vis);</span><br><span class="line">        for(int i = 1; i &lt;= m; ++i) scanf(&quot;%lld&quot;, &amp;x[i]);</span><br><span class="line">        sort(x+1, x+m+1);</span><br><span class="line">        if(x[1] &lt; 3) vis[x[1]] = true;</span><br><span class="line">        if(x[2] &lt; 3) vis[x[2]] = true;</span><br><span class="line">        ll ans1, ans2;</span><br><span class="line">        if(vis[1]) ans1 = 0;</span><br><span class="line">        else ans1 = 1;</span><br><span class="line">        if(vis[2]) ans2 = 0;</span><br><span class="line">        else ans2 = ans1 + 1;</span><br><span class="line">        if(n &lt;= 2) &#123;</span><br><span class="line">            if(n==1) printf(&quot;%lld\n&quot;, ans1);</span><br><span class="line">            else printf(&quot;%lld\n&quot;, ans2);</span><br><span class="line">            continue;</span><br><span class="line">        &#125;</span><br><span class="line">        Rec a(1);</span><br><span class="line">        Rec b(0);</span><br><span class="line">        a.num[0][2] = 0;</span><br><span class="line">        a.num[1][1] = 0;</span><br><span class="line">        a.num[2][1] = 0;</span><br><span class="line">        a.num[2][2] = 0;</span><br><span class="line">        b.num[0][1] = 1;</span><br><span class="line">        b.num[1][2] = 1;</span><br><span class="line">        Rec ans;</span><br><span class="line">        ll last = 2;</span><br><span class="line">        for(int i = 1; i &lt;= m; ++i)&#123;</span><br><span class="line">            if(x[i] &lt;= 2) continue;</span><br><span class="line">            ans = ans*ret(a,x[i]-last-1);</span><br><span class="line">            ans = ans*b;</span><br><span class="line">            last = x[i];</span><br><span class="line">        &#125;</span><br><span class="line">        ans = ans*ret(a,n-last);</span><br><span class="line">        ll c = ans2*ans.num[0][0] + ans1*ans.num[1][0] + ans.num[2][0];</span><br><span class="line">        c = c%MOD;</span><br><span class="line">        printf(&quot;%lld\n&quot;, c);</span><br><span class="line">    &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 	  
@@ -841,15 +999,88 @@
     </div>
     <footer class="article-footer">
       
-        <a data-url="http://zerolxf.github.io/2016/05/11/表达式/" data-id="cio8gy8jv000uisjsyavgd6da" class="article-share-link" data-share="baidu" data-title="表达式">分享到</a>
+        <a data-url="http://zerolxf.github.io/2016/05/23/A/" data-id="ciokys7xu00020qjswh36iqim" class="article-share-link" data-share="baidu" data-title="雷神之路">Share</a>
       
 
       
-        <a href="http://zerolxf.github.io/2016/05/11/表达式/#ds-thread" class="article-comment-link">评论</a>
+        <a href="http://zerolxf.github.io/2016/05/23/A/#ds-thread" class="article-comment-link">Comments</a>
       
 
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/IDA/">IDA*</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dp-矩阵优化/">-dp -矩阵优化</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-C" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/05/23/C/" class="article-date">
+  <time datetime="2016-05-23T03:01:50.000Z" itemprop="datePublished">2016-05-23</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/05/23/C/">Taosama和煎饼</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+		<!-- Table of Contents -->
+			    
+        <h3 id="C-Taosama和煎饼"><a href="#C-Taosama和煎饼" class="headerlink" title="C  Taosama和煎饼"></a>C  Taosama和煎饼</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>韬韬想吃煎饼但是有急事,一个煎饼有n个工序,每个工序i有着A[i]美味度,韬韬有m个道具,每个道具用一次可以前进b[i]个单位,每个工序一旦被跳过得不到美味度,问你使用这些工具最多获得多少美味度<em>(0&lt;=b[i]&lt;=4,0&lt;=a[i]&lt;=100,0&lt;=n&lt;=350,0&lt;=m&lt;=120)</em>,确保b[i]的和是n-1</li>
+</ul>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>建立状态</p>
+<p>dp[i][a][b][c][d]表示处于i位置还剩abcd个四种道具(a表示前进b[1]个道具)最多能够获得多少美味度</p>
+<p>状态转移</p>
+<p>dp[i][a][b][c][d]可以由dp[i-1][a-1][b][c][d]等四种状态转移过来</p>
+</li>
+<li><p>状态优化</p>
+<p>上面的状态很容易想,但是350 <em> 40 </em> 40 <em> 40 </em> 40复杂度很高,我们可以发现,这五个变量只要确定四个,那么第五个变量是确定的,所以我们可以减少一维,dp[a][b][c][d]就好了,复杂度40 <em> 40 </em> 40 * 40完美过题</p>
+</li>
+<li><p>超时原因</p>
+<p>由于建立状态思维定式,所以建立的状态是dp[350][40][40][40],超时了,但仔细发现这里的350有很多状态达不到</p>
+</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><p>技巧</p>
+<ul>
+<li>对于这种固定形式的转移,记忆化搜索写起来最快</li>
+<li>建立状态的时候如果有多种选择首先找范围小的,其次找容易实现的</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br></pre></td><td class="code"><pre><span class="line">/*************************************************************************</span><br><span class="line">	&gt; File Name: c.cpp</span><br><span class="line">	&gt; Author: liangxianfeng</span><br><span class="line">	&gt; Mail:   641587852@qq.com</span><br><span class="line">	&gt; Created Time: 2016年05月13日 星期五 23时22分57秒</span><br><span class="line"> ************************************************************************/</span><br><span class="line"></span><br><span class="line">#include&lt;iostream&gt;</span><br><span class="line">#include&lt;cstdio&gt;</span><br><span class="line">#include&lt;cstdlib&gt;</span><br><span class="line">#include&lt;cstring&gt;</span><br><span class="line">#include&lt;algorithm&gt;</span><br><span class="line">#include&lt;stack&gt;</span><br><span class="line">#include&lt;map&gt;</span><br><span class="line">#include&lt;set&gt;</span><br><span class="line">#include&lt;vector&gt;</span><br><span class="line">#include&lt;queue&gt;</span><br><span class="line">#include&lt;string&gt;</span><br><span class="line">#include&lt;cmath&gt;</span><br><span class="line">using namespace std;</span><br><span class="line">#define ll long long</span><br><span class="line">#define rep(i,n) for(int i =0; i &lt; n; ++i)</span><br><span class="line">#define CLR(x) memset(x,0,sizeof x)</span><br><span class="line">#define MEM(a,b) memset(a,b,sizeof a)</span><br><span class="line">#define pr(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt; &quot; &quot;;</span><br><span class="line">#define prln(x) cout &lt;&lt; #x &lt;&lt; &quot; = &quot; &lt;&lt; x &lt;&lt;  endl; </span><br><span class="line">const int maxn = 4e5+100;</span><br><span class="line">const int INF = 0x3f3f3f3f;</span><br><span class="line">int n, dp[41][41][41][41], cnt[41][41][41][41];</span><br><span class="line">int num[400];</span><br><span class="line">int kase;</span><br><span class="line">int dfs(int a, int b, int c, int d)&#123;</span><br><span class="line">    int &amp;ans = dp[a][b][c][d];</span><br><span class="line">    if(ans &gt;= 0 &amp;&amp; cnt[a][b][c][d] == kase) return ans;</span><br><span class="line">    ans = 0;</span><br><span class="line">    if(a+b+c+d==0) return ans=num[n];</span><br><span class="line">    int temp;</span><br><span class="line">    if(a &gt;= 1)&#123;</span><br><span class="line">        temp = dfs(a-1, b, c, d);</span><br><span class="line">        if(temp &gt; ans) ans = temp;</span><br><span class="line">    &#125;;</span><br><span class="line">    if(b &gt;= 1) &#123;</span><br><span class="line">        temp = dfs(a, b-1, c, d);</span><br><span class="line">        if(temp &gt; ans) ans = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    if(c &gt;= 1)&#123;</span><br><span class="line">        temp = dfs(a, b, c-1, d);</span><br><span class="line">        if(temp &gt; ans) ans = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    if(d &gt;= 1) &#123;</span><br><span class="line">        temp =  dfs(a, b, c, d-1);</span><br><span class="line">        if(temp &gt; ans) ans = temp;</span><br><span class="line">    &#125;</span><br><span class="line">    ans += num[n-a-b*2-c*3-d*4];</span><br><span class="line">    //pr(a);pr(b);pr(c);prln(d);</span><br><span class="line">  //  prln(ans);</span><br><span class="line">    cnt[a][b][c][d] = kase;</span><br><span class="line">    return ans;</span><br><span class="line">&#125;</span><br><span class="line">int e[5];</span><br><span class="line">int main()&#123;</span><br><span class="line">#ifdef LOCAL</span><br><span class="line">	freopen(&quot;/home/zeroxf/桌面/in.txt&quot;,&quot;r&quot;,stdin);</span><br><span class="line">//	freopen(&quot;/home/zeroxf/桌面/out.txt&quot;,&quot;w&quot;,stdout);</span><br><span class="line">#endif</span><br><span class="line">    int t, x, m;</span><br><span class="line">    scanf(&quot;%d&quot;, &amp;t);</span><br><span class="line">    while(t--)&#123;</span><br><span class="line">        scanf(&quot;%d%d&quot;, &amp;n, &amp;m);</span><br><span class="line">        kase++;</span><br><span class="line">        memset(e,0,sizeof e);</span><br><span class="line">        for(int i = 1; i &lt;= n; ++i)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;num[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        for(int i = 0; i &lt; m; ++i)&#123;</span><br><span class="line">            scanf(&quot;%d&quot;, &amp;x);</span><br><span class="line">            e[x]++;</span><br><span class="line">        &#125;</span><br><span class="line">        int ans = dfs(e[1],e[2],e[3],e[4]);</span><br><span class="line">        printf(&quot;%d\n&quot;,ans);</span><br><span class="line">    &#125;</span><br><span class="line">	return 0;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+	  
+
+
+    </div>
+    <footer class="article-footer">
+      
+        <a data-url="http://zerolxf.github.io/2016/05/23/C/" data-id="ciokys7yn00050qjs0j1r0qaq" class="article-share-link" data-share="baidu" data-title="Taosama和煎饼">Share</a>
+      
+
+      
+        <a href="http://zerolxf.github.io/2016/05/23/C/#ds-thread" class="article-comment-link">Comments</a>
+      
+
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/dp-记忆化搜索/">-dp -记忆化搜索</a></li></ul>
 
     </footer>
   </div>
@@ -860,7 +1091,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </section>
@@ -869,7 +1100,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">推荐文章</h3>
+    <h3 class="widget-title">Recommend Posts</h3>
     <div class="widget">
       <ul>
         
@@ -886,7 +1117,7 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">友情链接</h3>
+    <h3 class="widget-title">Links</h3>
     <div class="widget">
       <ul>
         
@@ -903,25 +1134,25 @@
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">标签云</h3>
+    <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/01异或/" style="font-size: 10px;">01异或</a> <a href="/tags/IDA/" style="font-size: 10px;">IDA*</a> <a href="/tags/ac自动机-dp/" style="font-size: 10px;">ac自动机 dp</a> <a href="/tags/dp/" style="font-size: 10px;">dp</a> <a href="/tags/kmp/" style="font-size: 10px;">kmp</a> <a href="/tags/manacher-异或/" style="font-size: 10px;">manacher 异或</a> <a href="/tags/后缀数组/" style="font-size: 10px;">后缀数组</a> <a href="/tags/感想/" style="font-size: 10px;">感想</a> <a href="/tags/数位dp/" style="font-size: 10px;">数位dp</a> <a href="/tags/最小表示法/" style="font-size: 10px;">最小表示法</a> <a href="/tags/最短路/" style="font-size: 20px;">最短路</a> <a href="/tags/状压-搜索/" style="font-size: 10px;">状压 搜索</a> <a href="/tags/简单题/" style="font-size: 10px;">简单题</a>
+      <a href="/tags/dp/" style="font-size: 10px;">-dp</a> <a href="/tags/dp-dp差值状态/" style="font-size: 20px;">-dp -dp差值状态</a> <a href="/tags/dp-矩阵优化/" style="font-size: 10px;">-dp -矩阵优化</a> <a href="/tags/dp-记忆化搜索/" style="font-size: 10px;">-dp -记忆化搜索</a> <a href="/tags/单调队列优化dp-dp/" style="font-size: 10px;">-单调队列优化dp -dp</a> <a href="/tags/01异或/" style="font-size: 10px;">01异或</a> <a href="/tags/IDA/" style="font-size: 10px;">IDA*</a> <a href="/tags/ac自动机-dp/" style="font-size: 10px;">ac自动机 dp</a> <a href="/tags/dp/" style="font-size: 10px;">dp</a> <a href="/tags/kmp/" style="font-size: 10px;">kmp</a> <a href="/tags/manacher-异或/" style="font-size: 10px;">manacher 异或</a> <a href="/tags/后缀数组/" style="font-size: 10px;">后缀数组</a> <a href="/tags/感想/" style="font-size: 10px;">感想</a> <a href="/tags/数位dp/" style="font-size: 10px;">数位dp</a> <a href="/tags/斜率dp/" style="font-size: 10px;">斜率dp</a> <a href="/tags/最小表示法/" style="font-size: 10px;">最小表示法</a> <a href="/tags/最短路/" style="font-size: 20px;">最短路</a> <a href="/tags/期望dp/" style="font-size: 10px;">期望dp</a> <a href="/tags/状压-搜索/" style="font-size: 10px;">状压 搜索</a> <a href="/tags/简单题/" style="font-size: 10px;">简单题</a>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">归档</h3>
+    <h3 class="widget-title">Archives</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">2016年 05月</a><span class="archive-list-count">15</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">2016年 04月</a><span class="archive-list-count">2</span></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">2016年 05月</a><span class="archive-list-count">24</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/04/">2016年 04月</a><span class="archive-list-count">2</span></li></ul>
     </div>
   </div>
 
   
     
   <div class="widget-wrap">
-    <h3 class="widget-title">最近评论</h3>
+    <h3 class="widget-title">Recent Comments</h3>
     <div class="widget">
       <!-- 多说最新评论 start -->
       <div class="ds-recent-comments" data-num-items="5" data-show-avatars="0" data-show-time="1" data-show-title="1" data-show-admin="1" data-excerpt-length="70"></div>
@@ -986,7 +1217,7 @@
 </nav>
   <!-- totop start -->
 <div id="totop">
-<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+<a title="totop"><img src="/img/scrollup.png"/></a>
 </div>
 
 <!-- totop end -->

@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://zerolxf.github.io/"/>
-  <updated>2016-05-10T21:16:18.603Z</updated>
+  <updated>2016-05-23T10:32:16.268Z</updated>
   <id>http://zerolxf.github.io/</id>
   
   <author>
@@ -17,9 +17,227 @@
   
   <entry>
     <title></title>
-    <link href="http://zerolxf.github.io/2016/05/11/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/"/>
-    <id>http://zerolxf.github.io/2016/05/11/解题报告/</id>
-    <published>2016-05-11T06:26:18.792Z</published>
+    <link href="http://zerolxf.github.io/2016/05/24/dp%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/"/>
+    <id>http://zerolxf.github.io/2016/05/24/dp解题报告/</id>
+    <published>2016-05-24T04:50:57.625Z</published>
+    <updated>2016-05-23T10:32:16.268Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;A-雷神之路&quot;&gt;&lt;a href=&quot;#A-雷神之路&quot; class=&quot;headerlink&quot; title=&quot;A 雷神之路&quot;&gt;&lt;/a&gt;A 雷神之路&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;在一个坐标轴上面起始位置是0，你可以往右走一步，两步，三步。其中某些位置不能走，问你走到位置n有多少种方法（1&amp;lt;= n &amp;lt;= 1e18）&lt;/p&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这题是走楼梯的进阶版，状态很好想dp[n]，转移有三种：走一步两步三步转移过来。不过由于n太大，很容易想到矩阵加速。&lt;/li&gt;
+&lt;li&gt;用矩阵A表示第i个可走，矩阵B表示第i个不可走。有些地方x不能走，那么我只要用矩阵加速求出第x-1个矩阵C，那么第x个矩阵就是C*B，最后得出第n个矩阵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;dp[n] = dp[n-1] + dp[n-2] + dp[n-3] (n&amp;gt;=3)所以我们第一个矩阵是从2开始的，小于2的方案要手动打出来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;B-Snowd-修长廊&quot;&gt;&lt;a href=&quot;#B-Snowd-修长廊&quot; class=&quot;headerlink&quot; title=&quot;B Snowd 修长廊&quot;&gt;&lt;/a&gt;B Snowd 修长廊&lt;/h3&gt;&lt;h4 id=&quot;题意-1&quot;&gt;&lt;a href=&quot;#题意-1&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;现在要修长廊覆盖n个点，第i个点可以单独修一个长廊，也可以修到前面第j个点（覆盖j到i之间的点），现在修i和j之间的长廊花费cost(i,j) = W + (x $&lt;em&gt;{i}$ － x$&lt;/em&gt;{j}$ ) $^_{2}$,其中W是固有花费,现在求最小花费是多少&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-1&quot;&gt;&lt;a href=&quot;#分析-1&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;我们状态很好建立,dp[i]表示覆盖到第i个点为止至少需要花费多少,但是他可以有很多状态转移过来.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;dp[i] = min(dp[j-1]+cost(j,i));&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果现在有两个状态j和k(其中j&amp;gt;k)可以转移过来.那么用单调队列dp思想把这两个相减&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;dp[j] + cost(j,i) - dp[k] - cost(k,i)
+
+ =(dp[j] +x[j]*x[j])-(dp[k]+ x[k]*x[k]) -　2*x[i]*(x[j]-x[k])
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  那么也就是说如果dp[j]转移过来比dp[k]更优的话,就有上式小于 0,那么我们在更新最优的dp[y]的时候,如果前面存在一个状态x比状态i差,那么便有上式成立&lt;/p&gt;
+&lt;p&gt;  同时可以发现如果现在就已经成立,那么这个式子对y以后的状态都会成立,因为对y以后的x&lt;a href=&quot;i&amp;gt;=y&quot;&gt;i&lt;/a&gt;上式也成立(这个就是斜率dp的特点,总会有一个自变量一直递增或递减),那么状态x就属于无用状态应该从队列中剔除&lt;/p&gt;
+&lt;p&gt;  &lt;strong&gt;判定条件一:如果i点没有j点优(也就是说j点比i点更优)的条件是i和j(i&amp;lt;j)斜率小于2x[i]&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;那么如何保证队列起第一个就是最优的呢?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;感性的认识:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;  根据上面的式子我们可以一直判断第一个和第二个元素然后剔除,从而使得保证队队列第一个一定比第二个更优,那么剩下的就需要保证第一个比第三个,第一个比第四个更优…这个性质一直成立就好了&lt;/p&gt;
+&lt;p&gt;  假设上面这个性质成立则有:23点的斜率大于12点,34点斜率大于12点…&lt;br&gt;但是确保每相邻两个点斜率大于12点不具有&lt;strong&gt;传递性&lt;/strong&gt;,所以我们可以缩小简化:23点的斜率大于12点,34点斜率大于23点…从而形成了&lt;strong&gt;下凸包&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;  从结果看:斜率递增保证了下凸包,而下凸包其实是保证了&lt;strong&gt;:第三个点没有第二个点优,第四个点没有三个点优..&lt;/strong&gt;,因为第一个破坏下凸包性质的点一定不是最优,可参考理性认识的证明&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;所以我们要维护上面两个性质:1:第一个点比第二个点优,2:第三个点没有第二个点优,第四个点没有三个点优...(用维护斜率递增实现)**
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;思考-1&quot;&gt;&lt;a href=&quot;#思考-1&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;如何证明维护的队列的第一个就是最优的呢?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;理性认识:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i] = dp[j] + x[j] $^&lt;em&gt;{2}$ + x[i]$^&lt;/em&gt;{2}$ +　2x[i]*x[j] + W&lt;/p&gt;
+&lt;p&gt;dp[i] - W - x[i]$^&lt;em&gt;{2}$  = dp[j] + x[j] $^&lt;/em&gt;{2}$ +　2x[i]*x[j] &lt;/p&gt;
+&lt;p&gt;从上面这个式子看出dp[i] , x[i]$^_{2}$ ,Ｗ这三个相对于i是定值&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;问题转换:&lt;/strong&gt;我们要找到这样一个 x[j] 和 dp[j] + x[j] $^&lt;em&gt;{2}$ 使得 dp[i] 最小,看成b = y - kx,也就是b最小.从而我们可以画出一些点(2x[j],dp[j] + x[j] $^&lt;/em&gt;{2}$),用斜率固定k的直线从下面往上面开始扫描,第一个接触到的点就是我们要找的最优点.这样找的话就会发现一个特点,上凸包的转折点永远不会被扫到,所以也应该剔除.&lt;/p&gt;
+&lt;p&gt;如果我们在每一次插入的时候一直这样判断,那么就能够保证最后两个斜率一定大于前两个点的斜率,由于插入斜率大小具有&lt;strong&gt;传递性&lt;/strong&gt;,所以能够保证&lt;strong&gt;斜率递增&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;但是光斜率递增就一定能够使得第一个最优吗?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;确保第一个最优的充分必要条件是每个点和第一个点的斜率大于等于2x[i],这样看来显然不能够确保第一个最优.(&lt;strong&gt;举一个极限的例子,所有点和第一个点的斜率都小于2x[i]但是却递增&lt;/strong&gt;)&lt;/p&gt;
+&lt;p&gt;为了弥补上面的不足,可以让第一个优于第二个,也就是12斜率大于2x[i],由于上面凸包的性质使得第一个点和所有点斜率都大于2x[i]也就是说,以后的点不能够比第一个点更优.所以:&lt;strong&gt;第一个是最优的&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;C-Taosama和煎饼&quot;&gt;&lt;a href=&quot;#C-Taosama和煎饼&quot; class=&quot;headerlink&quot; title=&quot;C  Taosama和煎饼&quot;&gt;&lt;/a&gt;C  Taosama和煎饼&lt;/h3&gt;&lt;h4 id=&quot;题意-2&quot;&gt;&lt;a href=&quot;#题意-2&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;韬韬想吃煎饼但是有急事,一个煎饼有n个工序,每个工序i有着A[i]美味度,韬韬有m个道具,每个道具用一次可以前进b[i]个单位,每个工序一旦被跳过得不到美味度,问你使用这些工具最多获得多少美味度&lt;em&gt;(0&amp;lt;=b[i]&amp;lt;=4,0&amp;lt;=a[i]&amp;lt;=100,0&amp;lt;=n&amp;lt;=350,0&amp;lt;=m&amp;lt;=120)&lt;/em&gt;,确保b[i]的和是n-1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-2&quot;&gt;&lt;a href=&quot;#分析-2&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;建立状态&lt;/p&gt;
+&lt;p&gt;dp[i][a][b][c][d]表示处于i位置还剩abcd个四种道具(a表示前进b[1]个道具)最多能够获得多少美味度&lt;/p&gt;
+&lt;p&gt;状态转移&lt;/p&gt;
+&lt;p&gt;dp[i][a][b][c][d]可以由dp[i-1][a-1][b][c][d]等四种状态转移过来&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;状态优化&lt;/p&gt;
+&lt;p&gt;上面的状态很容易想,但是350 &lt;em&gt; 40 &lt;/em&gt; 40 &lt;em&gt; 40 &lt;/em&gt; 40复杂度很高,我们可以发现,这五个变量只要确定四个,那么第五个变量是确定的,所以我们可以减少一维,dp[a][b][c][d]就好了,复杂度40 &lt;em&gt; 40 &lt;/em&gt; 40 * 40完美过题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;超时原因&lt;/p&gt;
+&lt;p&gt;由于建立状态思维定式,所以建立的状态是dp[350][40][40][40],超时了,但仔细发现这里的350有很多状态达不到&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考-2&quot;&gt;&lt;a href=&quot;#思考-2&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;技巧&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于这种固定形式的转移,记忆化搜索写起来最快&lt;/li&gt;
+&lt;li&gt;建立状态的时候如果有多种选择首先找范围小的,其次找容易实现的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;D-任务&quot;&gt;&lt;a href=&quot;#D-任务&quot; class=&quot;headerlink&quot; title=&quot;D 任务&quot;&gt;&lt;/a&gt;D 任务&lt;/h3&gt;&lt;h4 id=&quot;题意-3&quot;&gt;&lt;a href=&quot;#题意-3&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;有两台机器n个任务,每个任务i在机器A完成时间是a[i],B上面完成时间是b[i],任务i可以被处理当前仅当每个任务j(i&amp;gt;j)已经被完成或者正在进行.求最少完成任务的时间(n&amp;lt;2000,a[i],b[i]&amp;lt;=3000)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-3&quot;&gt;&lt;a href=&quot;#分析-3&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先读清楚题目意思&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务i可以被处理当前仅当每个任务j(i&amp;gt;j)已经被完成或者正在进行&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;上面这句话有什么用?&lt;/p&gt;
+&lt;p&gt;仔细分析后可以发现上面这个性质确保了执行任意任务的时候机器AB时间差不会超过3000&lt;/p&gt;
+&lt;p&gt;假如A比B将少运行时间超过3000,那么现在放置任务i+1&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那么任务i+1不能放置机器A最开始空闲的时候,因为这样B机器必然(B多A3000时间)有任务j(j&amp;lt;i)还没有没执行;那么任务i+1只能当道B机器运行最后一个任务j的起始时间上去,这样的方案必然没有比任务j放置到A机器方案优(可以画图模拟一下)&lt;/li&gt;
+&lt;li&gt;把任务i+1放置到机器B,那么这种方案将继续造成恶性循环又进入此状态,显然最终这种方案不优&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以任一个任务选择的时候AB机器运行结束时间差不能够3000&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;建立状态&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]表示完成任务i并且机器AB运行结束时间差为j的最少时间,(j&amp;gt;0表示A比B多j,否则B比A多-j,后面右移3000,保证都是正数)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;状态转移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]由dp[i-1][j+a[i]和dp[i-1][j-b[i]]转移过来,其中要注意任务i放到机器A或B中可能对时间没有影响&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考-3&quot;&gt;&lt;a href=&quot;#思考-3&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;错误分析&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;没有对非法状态进行限制,比如状态转移的时候,放置任务i到机器A,必须设定任务i时间当值 &amp;gt;= B机器最后一个任务j放置时间!!!确保i之前的任务被处理完或正被处理&lt;/li&gt;
+&lt;li&gt;没有考虑任务i放置到机器A后对时间无影响的情况&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;E-goozy搭积木&quot;&gt;&lt;a href=&quot;#E-goozy搭积木&quot; class=&quot;headerlink&quot; title=&quot;E goozy搭积木&quot;&gt;&lt;/a&gt;E goozy搭积木&lt;/h3&gt;&lt;h4 id=&quot;题意-4&quot;&gt;&lt;a href=&quot;#题意-4&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;goozy对积木十分的狂热，今天他想搭一个双子塔（就是两个高度一样的塔）！他想知道，用现有的积木，能不能实现这个想法.积木个数n(1 &amp;lt;= n &amp;lt;= 50)，每个积木的高度hi(1 &amp;lt;= hi &amp;lt;= 500000),题目保证所有积木高度总和不超过500000。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-4&quot;&gt;&lt;a href=&quot;#分析-4&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;建立状态&lt;/p&gt;
+&lt;p&gt;这题和能不能把所有的平分是不一样的,因而我只要保证有一种方案把积木部分平分就好了&lt;/p&gt;
+&lt;p&gt;所以建立状态不能用dp[i][j]表示i木块j高度是否可达&lt;/p&gt;
+&lt;p&gt;状态是dp[i][j]表示前i个木块使得两份木块高度差为j的最大可达高度是多少.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;状态转移&lt;/p&gt;
+&lt;p&gt;状态转移就很简单了,积木i放到比较高的那一方或者比较低的那一方&lt;/p&gt;
+&lt;p&gt;   放到比较高的一方&lt;/p&gt;
+&lt;p&gt;   dp[now][j+h] = max(dp[now][j+h],dp[1-now][j]+h);&lt;/p&gt;
+&lt;p&gt;   放到比较低的一方&lt;/p&gt;
+&lt;p&gt;   newh = max(dp[1-now][j]-j+h, dp[1-now][j]);&lt;/p&gt;
+&lt;p&gt;   dp[now][abs(h-j)] = max(dp[now][abs(h-j)], newh);&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考-4&quot;&gt;&lt;a href=&quot;#思考-4&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;有时候dp建立状态后发现某一位范围过大,不能直接dp[i][j]的时候可以考虑特殊性质,然后对他们的差进行状态转移,正如D题一样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;F-先锋看烟花&quot;&gt;&lt;a href=&quot;#F-先锋看烟花&quot; class=&quot;headerlink&quot; title=&quot;F 先锋看烟花&quot;&gt;&lt;/a&gt;F 先锋看烟花&lt;/h3&gt;&lt;h4 id=&quot;题意-5&quot;&gt;&lt;a href=&quot;#题意-5&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;一共有n个地点（1到n排列），一共有m个烟花，每个烟花放出的地点ai和时间ti，每个烟花有观赏值bi，对于每个烟花，对先锋的幸福度贡献bi-|ai-cur|，其中cur表示放第i个烟花时先锋所处的位置，因此，当先锋离烟花太远时，幸福度甚至会下降！已知先锋每秒最多运动d距离，问这个晚上先锋看烟花能获得的最大幸福度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-5&quot;&gt;&lt;a href=&quot;#分析-5&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;这相当于是一道移动接苹果的题目,只不过每秒移动范围为d并且烟花放的每一个点都有一个贡献值可为负数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;状态建立&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]表示第i个烟花位于j位置最多能够获得多少幸福感&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;状态转移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;   dp[i][j]=min(dp[i-1][k]+bi-|ai-j|);&lt;/p&gt;
+&lt;p&gt;   k和j差值不超过(t[i] - t[i-1]) * d&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;转移优化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;直接转移显然不行,那么就可以分成两种情况并进行单调队列优化了&lt;br&gt;若ai&amp;gt;cur&lt;/p&gt;
+&lt;p&gt;   dp[i][j]=min(dp[i-1][k]+bi-ai+j);&lt;br&gt;那么维护一个和j差范围处于(t[i]-t[i-1])*d的队列&lt;/p&gt;
+&lt;p&gt;如果 dp[i-1][k] 和 dp[i-1][kk] 都在队列中并且 k &amp;lt; k &amp;amp;&amp;amp;  dp[i-1][k] &amp;lt; dp[i-1][kk] 那么在对i时刻烟花j以后的位置,都不会选择dp[i-1][k]了,因为dp[i-1][kk] 一定比他优,所以dp[i-1][k]这个状态就要从队列中间pop出来&lt;/p&gt;
+&lt;p&gt;所以队首的只要处于范围之内一定最优&lt;/p&gt;
+&lt;p&gt;这个队列最多插入n次pop n次,因而复杂度是O(n)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考-5&quot;&gt;&lt;a href=&quot;#思考-5&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;当遇到一种可以由很多种状态转移过来的时候,考虑一下nlogn线段树或树状数组查询或单调队列或斜率优化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;H-又见背包&quot;&gt;&lt;a href=&quot;#H-又见背包&quot; class=&quot;headerlink&quot; title=&quot;H 又见背包&quot;&gt;&lt;/a&gt;H 又见背包&lt;/h3&gt;&lt;h4 id=&quot;题意-6&quot;&gt;&lt;a href=&quot;#题意-6&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;有n种大小不同的数字a_i,每种m_i个，判断是否可以从这些数字中选出若干使它们的和恰好为k。(0&amp;lt;n&amp;lt;=100,0&amp;lt;k&amp;lt;=1e5)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-6&quot;&gt;&lt;a href=&quot;#分析-6&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;建立状态&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]表示前i个物品能不能组成和是j&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;状态转移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j] |= dp[i-1][j-a[i]];&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;状态优化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;上面的状态首先可以二进制对个数进行优化,然后可以发现单独的一次转移居然只是转移一个bool,太浪费时间了,所以充分使用int或ll的位数,我们可以把j分成64位一组,一次性转移一组这样转移负责度就除以64了相当于降了两个数量级了&lt;/p&gt;
+&lt;p&gt;现在复杂度是n&lt;em&gt;k&lt;/em&gt;logm/64,这样相当于消去logm而且转移过程还是位运算很快,所以就过了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考-6&quot;&gt;&lt;a href=&quot;#思考-6&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;如果以后遇到bool为dp存的状态的时候,那么这个状态肯定是不好的,这时候要么像这题一样压缩一下转移,要么重新建一个状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;I-Mingo的游戏&quot;&gt;&lt;a href=&quot;#I-Mingo的游戏&quot; class=&quot;headerlink&quot; title=&quot;I Mingo的游戏&quot;&gt;&lt;/a&gt;I Mingo的游戏&lt;/h3&gt;&lt;h4 id=&quot;题意-7&quot;&gt;&lt;a href=&quot;#题意-7&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;Mingo 最近迷上了一款电子游戏。这款游戏有N个关卡，编号为1到n。这些关卡可以被玩家分为K(1&amp;lt;=K&amp;lt;=N)组，每组包含至少一个并且编号连续的关卡。&lt;br&gt;这款游戏有些很奇怪的规则： &lt;/p&gt;
+&lt;p&gt;1.如果所有的关卡都被通关，那么这个游戏立即结束，否则系统会找到第一个包含还没有通过的关卡的那组，设X是这组的编号。 &lt;/p&gt;
+&lt;p&gt;2.设在X组里，已经通关的关卡编号为i,i+1，i+2,…,j。那么j+1为最早的一个没有通关的关卡。每一个关卡都有一个权重ti。此时系统会随机以&lt;br&gt;的概率进入关卡k。 &lt;/p&gt;
+&lt;p&gt;3.Mingo是一个富有天赋的玩家，每一关都能轻松过关，但是每一关都会消耗她一个小时去过关。&lt;/p&gt;
+&lt;p&gt;Mingo想以最快的速度通关所有的关卡，但是她非常困惑到底如何分组才能使她尽可能的尽早通关所有关卡呢。你能帮她计算一下如何分组才能使她通关所有关卡所用时间的期望最小么。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-7&quot;&gt;&lt;a href=&quot;#分析-7&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;pre&gt;&lt;code&gt;CF原题,第一次遇到的斜率dp,详解见B
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;思考-7&quot;&gt;&lt;a href=&quot;#思考-7&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这题后面我CF过了,但是scu一直过不了,可能因为我写错了,然后CF用相对误差,SCU用绝对误差&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;L-来签个到吧&quot;&gt;&lt;a href=&quot;#L-来签个到吧&quot; class=&quot;headerlink&quot; title=&quot;L 来签个到吧&quot;&gt;&lt;/a&gt;L 来签个到吧&lt;/h3&gt;&lt;h4 id=&quot;题意-8&quot;&gt;&lt;a href=&quot;#题意-8&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;给你 n (2 &amp;lt;= n &amp;lt;= 60,000) 个球,每球上都写有互不相同的数字t ( 0 &amp;lt;= t &amp;lt; 100,000),这些球放在一个盒子里.开始你能执行一种加球操作:选择任意两个球: x 和y,然后看| x - y |在已经有的球中是否存在,如果不存在,就把|x - y|写在一个球上,把这个球加入这个盒子,这里就成功完成了一次加球操作.&lt;br&gt;你就一直加球,直到盒子中任意两个数的差,在集合中已经存在&lt;/p&gt;
+&lt;p&gt;现在摸求,问你摸完所有球的所进行操作次数的期望&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析-8&quot;&gt;&lt;a href=&quot;#分析-8&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;最终状态会有多少个球?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;显然加球操作很像辗转相减的过程,我们只需要对这题求最大公约数,然后最大值除以这个最大公约数就是最终的个数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;期望怎么求?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果当前摸过了i个球,还剩下n-i个就没有摸,那么摸到i+1球的期望是多少?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;可以用无穷级数来求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;可以感性认识一下,n 个球我要摸到n-i球中的一个期望是多少,就是n / (n-i)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以最后ans = sum(n/i) + 加球操作数&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考-8&quot;&gt;&lt;a href=&quot;#思考-8&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这题要注意对0的处理&lt;/li&gt;
+&lt;li&gt;这题实际不难,但是读错题意,以为操作只包括摸球&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;A-雷神之路&quot;&gt;&lt;a href=&quot;#A-雷神之路&quot; class=&quot;headerlink&quot; title=&quot;A 雷神之路&quot;&gt;&lt;/a&gt;A 雷神之路&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://zerolxf.github.io/2016/05/24/%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8C%E6%90%9C%E7%B4%A2%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/"/>
+    <id>http://zerolxf.github.io/2016/05/24/字符串和搜索解题报告/</id>
+    <published>2016-05-24T04:50:42.851Z</published>
     <updated>2016-05-10T21:16:18.603Z</updated>
     
     <content type="html">&lt;h3 id=&quot;A-双剑合并&quot;&gt;&lt;a href=&quot;#A-双剑合并&quot; class=&quot;headerlink&quot; title=&quot;A.双剑合并&quot;&gt;&lt;/a&gt;A.双剑合并&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9&lt;/p&gt;
@@ -198,6 +416,357 @@
     
     </summary>
     
+    
+  </entry>
+  
+  <entry>
+    <title>来签个到吧</title>
+    <link href="http://zerolxf.github.io/2016/05/24/L/"/>
+    <id>http://zerolxf.github.io/2016/05/24/L/</id>
+    <published>2016-05-24T02:11:50.000Z</published>
+    <updated>2016-05-23T10:27:34.977Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;L-来签个到吧&quot;&gt;&lt;a href=&quot;#L-来签个到吧&quot; class=&quot;headerlink&quot; title=&quot;L 来签个到吧&quot;&gt;&lt;/a&gt;L 来签个到吧&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;给你 n (2 &amp;lt;= n &amp;lt;= 60,000) 个球,每球上都写有互不相同的数字t ( 0 &amp;lt;= t &amp;lt; 100,000),这些球放在一个盒子里.开始你能执行一种加球操作:选择任意两个球: x 和y,然后看| x - y |在已经有的球中是否存在,如果不存在,就把|x - y|写在一个球上,把这个球加入这个盒子,这里就成功完成了一次加球操作.&lt;br&gt;你就一直加球,直到盒子中任意两个数的差,在集合中已经存在&lt;/p&gt;
+&lt;p&gt;现在摸求,问你摸完所有球的所进行操作次数的期望&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;最终状态会有多少个球?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;显然加球操作很像辗转相减的过程,我们只需要对这题求最大公约数,然后最大值除以这个最大公约数就是最终的个数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;期望怎么求?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果当前摸过了i个球,还剩下n-i个就没有摸,那么摸到i+1球的期望是多少?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;可以用无穷级数来求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;可以感性认识一下,n 个球我要摸到n-i球中的一个期望是多少,就是n / (n-i)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以最后ans = sum(n/i) + 加球操作数&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这题要注意对0的处理&lt;/li&gt;
+&lt;li&gt;这题实际不难,但是读错题意,以为操作只包括摸球&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;/*************************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; File Name: l.cpp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Author: liangxianfeng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Mail:   641587852@qq.com&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Created Time: 2016年05月14日 星期六 02时01分00秒&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; ************************************************************************/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;stack&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;set&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;queue&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;string&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;using namespace std;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define ll long long&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define rep(i,n) for(int i =0; i &amp;lt; n; ++i)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define CLR(x) memset(x,0,sizeof x)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define MEM(a,b) memset(a,b,sizeof a)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define pr(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &amp;quot; &amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define prln(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt;  endl; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int maxn = 4e5+100;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int INF = 0x3f3f3f3f;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int a[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#ifdef LOCAL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	freopen(&amp;quot;/home/zeroxf/桌面/in.txt&amp;quot;,&amp;quot;r&amp;quot;,stdin);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	//freopen(&amp;quot;/home/zeroxf/桌面/out.txt&amp;quot;,&amp;quot;w&amp;quot;,stdout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#endif&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int t,n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&amp;quot;%d&amp;quot;, &amp;amp;t);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(t--)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        scanf(&amp;quot;%d&amp;quot;, &amp;amp;n);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        double ans = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int b = 0, x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%d&amp;quot;, &amp;amp;a[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if(a[i] &amp;gt; b) b = a[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        x = b;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        bool ok = true;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if(a[i] == 0) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                ok = false;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                continue;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            x = __gcd(x, a[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int num = b/x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(!ok) num++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ans = num-n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= num; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ans = ans +num*1.0/i;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int temp = ans;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&amp;quot;%d\n&amp;quot;,temp);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;L-来签个到吧&quot;&gt;&lt;a href=&quot;#L-来签个到吧&quot; class=&quot;headerlink&quot; title=&quot;L 来签个到吧&quot;&gt;&lt;/a&gt;L 来签个到吧&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题
+    
+    </summary>
+    
+    
+      <category term="期望dp" scheme="http://zerolxf.github.io/tags/%E6%9C%9F%E6%9C%9Bdp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>又见背包</title>
+    <link href="http://zerolxf.github.io/2016/05/24/H/"/>
+    <id>http://zerolxf.github.io/2016/05/24/H/</id>
+    <published>2016-05-23T16:51:50.000Z</published>
+    <updated>2016-05-23T10:28:20.565Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;H-又见背包&quot;&gt;&lt;a href=&quot;#H-又见背包&quot; class=&quot;headerlink&quot; title=&quot;H 又见背包&quot;&gt;&lt;/a&gt;H 又见背包&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;有n种大小不同的数字a_i,每种m_i个，判断是否可以从这些数字中选出若干使它们的和恰好为k。(0&amp;lt;n&amp;lt;=100,0&amp;lt;k&amp;lt;=1e5)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;建立状态&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]表示前i个物品能不能组成和是j&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;状态转移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j] |= dp[i-1][j-a[i]];&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;状态优化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;上面的状态首先可以二进制对个数进行优化,然后可以发现单独的一次转移居然只是转移一个bool,太浪费时间了,所以充分使用int或ll的位数,我们可以把j分成64位一组,一次性转移一组这样转移负责度就除以64了相当于降了两个数量级了&lt;/p&gt;
+&lt;p&gt;现在复杂度是n&lt;em&gt;k&lt;/em&gt;logm/64,这样相当于消去logm而且转移过程还是位运算很快,所以就过了&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;如果以后遇到bool为dp存的状态的时候,那么这个状态肯定是不好的,这时候要么像这题一样压缩一下转移,要么重新建一个状态&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;/*************************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; File Name: h.cpp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Author: liangxianfeng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Mail:   641587852@qq.com&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Created Time: 2016年05月14日 星期六 00时14分48秒&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; ************************************************************************/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;stack&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;set&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;queue&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;string&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;using namespace std;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define ll long long&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define rep(i,n) for(int i =0; i &amp;lt; n; ++i)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define CLR(x) memset(x,0,sizeof x)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define MEM(a,b) memset(a,b,sizeof a)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define pr(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &amp;quot; &amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define prln(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt;  endl; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int maxn = 2e5+100;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int INF = 0x3f3f3f3f;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int cnt[maxn], num[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int kase, m;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;unsigned long long dp[maxn&amp;gt;&amp;gt;6];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int a[100], b[100];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int q[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#ifdef LOCAL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	freopen(&amp;quot;/home/zeroxf/桌面/in.txt&amp;quot;,&amp;quot;r&amp;quot;,stdin);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	//freopen(&amp;quot;/home/zeroxf/桌面/out.txt&amp;quot;,&amp;quot;w&amp;quot;,stdout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#endif&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int t, n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ll k;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&amp;quot;%d&amp;quot;, &amp;amp;t);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(t--)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        scanf(&amp;quot;%d%lld&amp;quot;, &amp;amp;n, &amp;amp;k);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%d&amp;quot;, &amp;amp;a[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%d&amp;quot;, &amp;amp;b[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int p = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i= 0; i &amp;lt; n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ll base = a[i], cnt = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            while(cnt &amp;lt;= b[i]) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(cnt*base &amp;lt;= k)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    q[p++] = cnt*base;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                b[i] -= cnt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                cnt&amp;lt;&amp;lt;=1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if(b[i] &amp;gt; 0 &amp;amp;&amp;amp; base*b[i] &amp;lt;= k)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                q[p++] = base*b[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int sz = (k&amp;gt;&amp;gt;6)+1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        memset(dp, 0, sizeof dp);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        dp[0] = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; p; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            int x = q[i]&amp;gt;&amp;gt;6, y = q[i]&amp;amp;63;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            for(int j = 0; j &amp;lt;= sz; ++j)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(x+j&amp;gt;sz) break;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                dp[x+j] = dp[x+j] | (dp[j] &amp;lt;&amp;lt; y);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(y) dp[x+j+1] = dp[x+j+1] | (dp[j] &amp;gt;&amp;gt; (64-y));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int x = k &amp;gt;&amp;gt; 6, y = k&amp;amp;63;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        bool ok = false;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(dp[x] &amp;amp; (1&amp;lt;&amp;lt;y)) ok = true;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(ok) printf(&amp;quot;yes\n&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        else printf(&amp;quot;no\n&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;H-又见背包&quot;&gt;&lt;a href=&quot;#H-又见背包&quot; class=&quot;headerlink&quot; title=&quot;H 又见背包&quot;&gt;&lt;/a&gt;H 又见背包&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;
+    
+    </summary>
+    
+    
+      <category term="-dp" scheme="http://zerolxf.github.io/tags/dp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>先锋看烟花</title>
+    <link href="http://zerolxf.github.io/2016/05/24/F/"/>
+    <id>http://zerolxf.github.io/2016/05/24/F/</id>
+    <published>2016-05-23T16:21:50.000Z</published>
+    <updated>2016-05-23T10:21:49.716Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;F-先锋看烟花&quot;&gt;&lt;a href=&quot;#F-先锋看烟花&quot; class=&quot;headerlink&quot; title=&quot;F 先锋看烟花&quot;&gt;&lt;/a&gt;F 先锋看烟花&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;一共有n个地点（1到n排列），一共有m个烟花，每个烟花放出的地点ai和时间ti，每个烟花有观赏值bi，对于每个烟花，对先锋的幸福度贡献bi-|ai-cur|，其中cur表示放第i个烟花时先锋所处的位置，因此，当先锋离烟花太远时，幸福度甚至会下降！已知先锋每秒最多运动d距离，问这个晚上先锋看烟花能获得的最大幸福度。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;这相当于是一道移动接苹果的题目,只不过每秒移动范围为d并且烟花放的每一个点都有一个贡献值可为负数&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;状态建立&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]表示第i个烟花位于j位置最多能够获得多少幸福感&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;状态转移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;   dp[i][j]=min(dp[i-1][k]+bi-|ai-j|);&lt;/p&gt;
+&lt;p&gt;   k和j差值不超过(t[i] - t[i-1]) * d&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;转移优化&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;直接转移显然不行,那么就可以分成两种情况并进行单调队列优化了&lt;br&gt;若ai&amp;gt;cur&lt;/p&gt;
+&lt;p&gt;   dp[i][j]=min(dp[i-1][k]+bi-ai+j);&lt;br&gt;那么维护一个和j差范围处于(t[i]-t[i-1])*d的队列&lt;/p&gt;
+&lt;p&gt;如果 dp[i-1][k] 和 dp[i-1][kk] 都在队列中并且 k &amp;lt; k &amp;amp;&amp;amp;  dp[i-1][k] &amp;lt; dp[i-1][kk] 那么在对i时刻烟花j以后的位置,都不会选择dp[i-1][k]了,因为dp[i-1][kk] 一定比他优,所以dp[i-1][k]这个状态就要从队列中间pop出来&lt;/p&gt;
+&lt;p&gt;所以队首的只要处于范围之内一定最优&lt;/p&gt;
+&lt;p&gt;这个队列最多插入n次pop n次,因而复杂度是O(n)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;当遇到一种可以由很多种状态转移过来的时候,考虑一下nlogn线段树或树状数组查询或单调队列或斜率优化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;83&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;84&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;85&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;86&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;87&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;/*********************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; File Name: f.cpp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Author: liangxianfeng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Mail:   641587852@qq.com&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Created Time: 2016年05月14日 星期六 19时37分51秒&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; ********************************************************************/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;stack&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;set&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;queue&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;string&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;using namespace std;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define ll long long&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define rep(i,n) for(int i =0; i &amp;lt; n; ++i)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define CLR(x) memset(x,0,sizeof x)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define MEM(a,b) memset(a,b,sizeof a)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define pr(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &amp;quot; &amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define prln(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt;  endl; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int maxn = 4e5+100;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int INF = 0x3f3f3f3f;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ll dp[2][maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;struct Node&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ll num, pos;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Node()&amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Node(ll _num, ll _pos)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        num = _num;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        pos = _pos;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;q[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ll b[maxn], a[maxn], t[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bool get(const Node&amp;amp; a, const Node&amp;amp; b)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return a.num &amp;lt; b.num;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#ifdef LOCAL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	freopen(&amp;quot;/home/zeroxf/桌面/in.txt&amp;quot;,&amp;quot;r&amp;quot;,stdin);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	//freopen(&amp;quot;/home/zeroxf/桌面/out.txt&amp;quot;,&amp;quot;w&amp;quot;,stdout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#endif&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int kase, m, d;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ll n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&amp;quot;%d&amp;quot;, &amp;amp;kase);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(kase--)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        scanf(&amp;quot;%lld%d%d&amp;quot;, &amp;amp;n, &amp;amp;m, &amp;amp;d);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= m; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%lld%lld%lld&amp;quot;, &amp;amp;a[i], &amp;amp;b[i], &amp;amp;t[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int now = 0, pre = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        memset(dp, 0, sizeof dp);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int tail = -1, head = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ll ma = n, last = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= m; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            swap(now,pre);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ma = min(n, (t[i] - last)*d+1);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            tail=-1;head =0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            for(int j = 1; j &amp;lt;= ma; ++j) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                Node nw = Node(dp[pre][j],j);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                while(head &amp;lt;= tail &amp;amp;&amp;amp; get(q[tail], nw)) tail--;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                q[++tail] = nw;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ma = (t[i] - last)*d;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            for(int j = 1; j &amp;lt;= n; ++j)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(j+ma&amp;lt;=n) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    Node nw = Node(dp[pre][j+ma], j+ma);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    while(head &amp;lt;= tail &amp;amp;&amp;amp; get(q[tail], nw)) tail--;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    q[++tail] = nw;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                while(head &amp;lt;= tail &amp;amp;&amp;amp; abs(q[head].pos - j) &amp;gt; ma) head++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                dp[now][j] = q[head].num + b[i] - abs(a[i] - j);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            last = t[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ll ans = -INF;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ans = max(ans, dp[now][i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        cout &amp;lt;&amp;lt; ans &amp;lt;&amp;lt; &amp;quot;\n&amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;F-先锋看烟花&quot;&gt;&lt;a href=&quot;#F-先锋看烟花&quot; class=&quot;headerlink&quot; title=&quot;F 先锋看烟花&quot;&gt;&lt;/a&gt;F 先锋看烟花&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题
+    
+    </summary>
+    
+    
+      <category term="-单调队列优化dp -dp" scheme="http://zerolxf.github.io/tags/%E5%8D%95%E8%B0%83%E9%98%9F%E5%88%97%E4%BC%98%E5%8C%96dp-dp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Goozy搭积木</title>
+    <link href="http://zerolxf.github.io/2016/05/23/E/"/>
+    <id>http://zerolxf.github.io/2016/05/23/E/</id>
+    <published>2016-05-23T15:55:50.000Z</published>
+    <updated>2016-05-23T10:20:12.003Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;E-goozy搭积木&quot;&gt;&lt;a href=&quot;#E-goozy搭积木&quot; class=&quot;headerlink&quot; title=&quot;E goozy搭积木&quot;&gt;&lt;/a&gt;E goozy搭积木&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;goozy对积木十分的狂热，今天他想搭一个双子塔（就是两个高度一样的塔）！他想知道，用现有的积木，能不能实现这个想法.积木个数n(1 &amp;lt;= n &amp;lt;= 50)，每个积木的高度hi(1 &amp;lt;= hi &amp;lt;= 500000),题目保证所有积木高度总和不超过500000。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;建立状态&lt;/p&gt;
+&lt;p&gt;这题和能不能把所有的平分是不一样的,因而我只要保证有一种方案把积木部分平分就好了&lt;/p&gt;
+&lt;p&gt;所以建立状态不能用dp[i][j]表示i木块j高度是否可达&lt;/p&gt;
+&lt;p&gt;状态是dp[i][j]表示前i个木块使得两份木块高度差为j的最大可达高度是多少.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;状态转移&lt;/p&gt;
+&lt;p&gt;状态转移就很简单了,积木i放到比较高的那一方或者比较低的那一方&lt;/p&gt;
+&lt;p&gt;   放到比较高的一方&lt;/p&gt;
+&lt;p&gt;   dp[now][j+h] = max(dp[now][j+h],dp[1-now][j]+h);&lt;/p&gt;
+&lt;p&gt;   放到比较低的一方&lt;/p&gt;
+&lt;p&gt;   newh = max(dp[1-now][j]-j+h, dp[1-now][j]);&lt;/p&gt;
+&lt;p&gt;   dp[now][abs(h-j)] = max(dp[now][abs(h-j)], newh);&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;有时候dp建立状态后发现某一位范围过大,不能直接dp[i][j]的时候可以考虑特殊性质,然后对他们的差进行状态转移,正如D题一样&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;/*************************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; File Name: e.cpp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Author: liangxianfeng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Mail:   641587852@qq.com&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Created Time: 2016年05月14日 星期六 03时07分49秒&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; ************************************************************************/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;stack&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;set&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;queue&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;string&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;using namespace std;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define ll long long&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define rep(i,n) for(int i =0; i &amp;lt; n; ++i)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define CLR(x) memset(x,0,sizeof x)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define MEM(a,b) memset(a,b,sizeof a)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define pr(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &amp;quot; &amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define prln(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt;  endl; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int maxn = 4e5+100;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int INF = 0x3f3f3f3f;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int dp[2][250010];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#ifdef LOCAL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	freopen(&amp;quot;/home/zeroxf/桌面/in.txt&amp;quot;,&amp;quot;r&amp;quot;,stdin);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;//	freopen(&amp;quot;/home/zeroxf/桌面/out.txt&amp;quot;,&amp;quot;w&amp;quot;,stdout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#endif&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int t, n, h;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&amp;quot;%d&amp;quot;, &amp;amp;t);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(t--)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        scanf(&amp;quot;%d&amp;quot;, &amp;amp;n);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; 250010; ++i) dp[0][i] = dp[1][i] = -INF;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int now = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        dp[now][0] = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%d&amp;quot;, &amp;amp;h);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            now = now^1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            for(int j = 0; j &amp;lt; 250010; ++j)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                dp[now][j] = max(dp[now][j], dp[1-now][j]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(dp[1-now][j] &amp;lt; j) continue;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(h&amp;gt;=250010) continue;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(j+h&amp;lt;250010) dp[now][j+h] = max(dp[now][j+h],dp[1-now][j]+h);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                dp[now][abs(h-j)] = max(dp[now][abs(h-j)], max(dp[1-now][j]-j+h, dp[1-now][j]));&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;//                pr(abs(h-j));pr(h);pr(j);prln(dp[now][abs(h-j)]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int ans = dp[now][0];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(ans &amp;gt; 0) printf(&amp;quot;%d\n&amp;quot;,ans);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        else printf(&amp;quot;GG\n&amp;quot;);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;E-goozy搭积木&quot;&gt;&lt;a href=&quot;#E-goozy搭积木&quot; class=&quot;headerlink&quot; title=&quot;E goozy搭积木&quot;&gt;&lt;/a&gt;E goozy搭积木&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerli
+    
+    </summary>
+    
+    
+      <category term="-dp -dp差值状态" scheme="http://zerolxf.github.io/tags/dp-dp%E5%B7%AE%E5%80%BC%E7%8A%B6%E6%80%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>任务</title>
+    <link href="http://zerolxf.github.io/2016/05/23/D/"/>
+    <id>http://zerolxf.github.io/2016/05/23/D/</id>
+    <published>2016-05-23T15:31:50.000Z</published>
+    <updated>2016-05-23T10:18:29.222Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;D-任务&quot;&gt;&lt;a href=&quot;#D-任务&quot; class=&quot;headerlink&quot; title=&quot;D 任务&quot;&gt;&lt;/a&gt;D 任务&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;有两台机器n个任务,每个任务i在机器A完成时间是a[i],B上面完成时间是b[i],任务i可以被处理当前仅当每个任务j(i&amp;gt;j)已经被完成或者正在进行.求最少完成任务的时间(n&amp;lt;2000,a[i],b[i]&amp;lt;=3000)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;首先读清楚题目意思&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;任务i可以被处理当前仅当每个任务j(i&amp;gt;j)已经被完成或者正在进行&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;上面这句话有什么用?&lt;/p&gt;
+&lt;p&gt;仔细分析后可以发现上面这个性质确保了执行任意任务的时候机器AB时间差不会超过3000&lt;/p&gt;
+&lt;p&gt;假如A比B将少运行时间超过3000,那么现在放置任务i+1&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;那么任务i+1不能放置机器A最开始空闲的时候,因为这样B机器必然(B多A3000时间)有任务j(j&amp;lt;i)还没有没执行;那么任务i+1只能当道B机器运行最后一个任务j的起始时间上去,这样的方案必然没有比任务j放置到A机器方案优(可以画图模拟一下)&lt;/li&gt;
+&lt;li&gt;把任务i+1放置到机器B,那么这种方案将继续造成恶性循环又进入此状态,显然最终这种方案不优&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;所以任一个任务选择的时候AB机器运行结束时间差不能够3000&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;建立状态&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]表示完成任务i并且机器AB运行结束时间差为j的最少时间,(j&amp;gt;0表示A比B多j,否则B比A多-j,后面右移3000,保证都是正数)&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;状态转移&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i][j]由dp[i-1][j+a[i]和dp[i-1][j-b[i]]转移过来,其中要注意任务i放到机器A或B中可能对时间没有影响&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;错误分析&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;没有对非法状态进行限制,比如状态转移的时候,放置任务i到机器A,必须设定任务i时间当值 &amp;gt;= B机器最后一个任务j放置时间!!!确保i之前的任务被处理完或正被处理&lt;/li&gt;
+&lt;li&gt;没有考虑任务i放置到机器A后对时间无影响的情况&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;D-任务&quot;&gt;&lt;a href=&quot;#D-任务&quot; class=&quot;headerlink&quot; title=&quot;D 任务&quot;&gt;&lt;/a&gt;D 任务&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h
+    
+    </summary>
+    
+    
+      <category term="-dp -dp差值状态" scheme="http://zerolxf.github.io/tags/dp-dp%E5%B7%AE%E5%80%BC%E7%8A%B6%E6%80%81/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>修长廊</title>
+    <link href="http://zerolxf.github.io/2016/05/23/B/"/>
+    <id>http://zerolxf.github.io/2016/05/23/B/</id>
+    <published>2016-05-23T14:31:50.000Z</published>
+    <updated>2016-05-23T10:15:25.998Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;B-Snowd-修长廊&quot;&gt;&lt;a href=&quot;#B-Snowd-修长廊&quot; class=&quot;headerlink&quot; title=&quot;B Snowd 修长廊&quot;&gt;&lt;/a&gt;B Snowd 修长廊&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;现在要修长廊覆盖n个点，第i个点可以单独修一个长廊，也可以修到前面第j个点（覆盖j到i之间的点），现在修i和j之间的长廊花费cost(i,j) = W + (x $&lt;em&gt;{i}$ － x$&lt;/em&gt;{j}$ ) $^_{2}$,其中W是固有花费,现在求最小花费是多少&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;我们状态很好建立,dp[i]表示覆盖到第i个点为止至少需要花费多少,但是他可以有很多状态转移过来.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;dp[i] = min(dp[j-1]+cost(j,i));&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;如果现在有两个状态j和k(其中j&amp;gt;k)可以转移过来.那么用单调队列dp思想把这两个相减&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;dp[j] + cost(j,i) - dp[k] - cost(k,i)
+
+ =(dp[j] +x[j]*x[j])-(dp[k]+ x[k]*x[k]) -　2*x[i]*(x[j]-x[k])
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;  那么也就是说如果dp[j]转移过来比dp[k]更优的话,就有上式小于 0,那么我们在更新最优的dp[y]的时候,如果前面存在一个状态x比状态i差,那么便有上式成立&lt;/p&gt;
+&lt;p&gt;  同时可以发现如果现在就已经成立,那么这个式子对y以后的状态都会成立,因为对y以后的x&lt;a href=&quot;i&amp;gt;=y&quot;&gt;i&lt;/a&gt;上式也成立(这个就是斜率dp的特点,总会有一个自变量一直递增或递减),那么状态x就属于无用状态应该从队列中剔除&lt;/p&gt;
+&lt;p&gt;  &lt;strong&gt;判定条件一:如果i点没有j点优(也就是说j点比i点更优)的条件是i和j(i&amp;lt;j)斜率小于2x[i]&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;那么如何保证队列起第一个就是最优的呢?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;感性的认识:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;  根据上面的式子我们可以一直判断第一个和第二个元素然后剔除,从而使得保证队队列第一个一定比第二个更优,那么剩下的就需要保证第一个比第三个,第一个比第四个更优…这个性质一直成立就好了&lt;/p&gt;
+&lt;p&gt;  假设上面这个性质成立则有:23点的斜率大于12点,34点斜率大于12点…&lt;br&gt;但是确保每相邻两个点斜率大于12点不具有&lt;strong&gt;传递性&lt;/strong&gt;,所以我们可以缩小简化:23点的斜率大于12点,34点斜率大于23点…从而形成了&lt;strong&gt;下凸包&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;  从结果看:斜率递增保证了下凸包,而下凸包其实是保证了&lt;strong&gt;:第三个点没有第二个点优,第四个点没有三个点优..&lt;/strong&gt;,因为第一个破坏下凸包性质的点一定不是最优,可参考理性认识的证明&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;pre&gt;&lt;code&gt;所以我们要维护上面两个性质:1:第一个点比第二个点优,2:第三个点没有第二个点优,第四个点没有三个点优...(用维护斜率递增实现)**
+&lt;/code&gt;&lt;/pre&gt;&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;如何证明维护的队列的第一个就是最优的呢?&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;&lt;strong&gt;理性认识:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;dp[i] = dp[j] + x[j] $^&lt;em&gt;{2}$ + x[i]$^&lt;/em&gt;{2}$ +　2x[i]*x[j] + W&lt;/p&gt;
+&lt;p&gt;dp[i] - W - x[i]$^&lt;em&gt;{2}$  = dp[j] + x[j] $^&lt;/em&gt;{2}$ +　2x[i]*x[j] &lt;/p&gt;
+&lt;p&gt;从上面这个式子看出dp[i] , x[i]$^_{2}$ ,Ｗ这三个相对于i是定值&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;问题转换:&lt;/strong&gt;我们要找到这样一个 x[j] 和 dp[j] + x[j] $^&lt;em&gt;{2}$ 使得 dp[i] 最小,看成b = y - kx,也就是b最小.从而我们可以画出一些点(2x[j],dp[j] + x[j] $^&lt;/em&gt;{2}$),用斜率固定k的直线从下面往上面开始扫描,第一个接触到的点就是我们要找的最优点.这样找的话就会发现一个特点,上凸包的转折点永远不会被扫到,所以也应该剔除.&lt;/p&gt;
+&lt;p&gt;如果我们在每一次插入的时候一直这样判断,那么就能够保证最后两个斜率一定大于前两个点的斜率,由于插入斜率大小具有&lt;strong&gt;传递性&lt;/strong&gt;,所以能够保证&lt;strong&gt;斜率递增&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;但是光斜率递增就一定能够使得第一个最优吗?&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;确保第一个最优的充分必要条件是每个点和第一个点的斜率大于等于2x[i],这样看来显然不能够确保第一个最优.(&lt;strong&gt;举一个极限的例子,所有点和第一个点的斜率都小于2x[i]但是却递增&lt;/strong&gt;)&lt;/p&gt;
+&lt;p&gt;为了弥补上面的不足,可以让第一个优于第二个,也就是12斜率大于2x[i],由于上面凸包的性质使得第一个点和所有点斜率都大于2x[i]也就是说,以后的点不能够比第一个点更优.所以:&lt;strong&gt;第一个是最优的&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;/*************************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; File Name: b.cpp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Author: liangxianfeng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Mail:   641587852@qq.com&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Created Time: 2016年05月13日 星期五 16时20分14秒&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; ************************************************************************/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;stack&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;set&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;queue&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;string&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;using namespace std;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define ll long long&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define rep(i,n) for(int i =0; i &amp;lt; n; ++i)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define CLR(x) memset(x,0,sizeof x)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define MEM(a,b) memset(a,b,sizeof a)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define pr(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &amp;quot; &amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define prln(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt;  endl; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int maxn = 4e5+100;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int INF = 0x3f3f3f3f;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;struct Node&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ll num, x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Node ()&amp;#123;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Node(ll _num, ll _x)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        num = _num;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        x = _x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;q[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ll dp[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ll x[maxn];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bool get(const Node&amp;amp; a, const Node &amp;amp;b, const ll&amp;amp; x)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return b.num - a.num &amp;lt;= x*(b.x-a.x)*2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bool get2(const Node&amp;amp; a, const Node&amp;amp; b, const Node&amp;amp; c)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return (b.num - a.num)*(c.x - a.x) &amp;gt;= (c.num - a.num)*(b.x - a.x);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#ifdef LOCAL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	freopen(&amp;quot;/home/zeroxf/桌面/in.txt&amp;quot;,&amp;quot;r&amp;quot;,stdin);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	//freopen(&amp;quot;/home/zeroxf/桌面/out.txt&amp;quot;,&amp;quot;w&amp;quot;,stdout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#endif&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int t;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&amp;quot;%d&amp;quot;, &amp;amp;t);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(t--)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ll w;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        scanf(&amp;quot;%d%lld&amp;quot;, &amp;amp;n, &amp;amp;w);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%lld&amp;quot;, &amp;amp;x[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int tail = -1,head = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        dp[0] = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        dp[1] = w;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        q[++tail] = Node(x[1]*x[1], x[1]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        q[++tail] = Node(w+x[2]*x[2],x[2]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 2; i &amp;lt;= n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            while(head &amp;lt; tail &amp;amp;&amp;amp; get(q[head], q[head+1], x[i])) head++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            dp[i] = q[head].num + w + (x[i]*x[i]) - 2*x[i]*q[head].x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            dp[i] = min(dp[i], dp[i-1] + w);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            Node qnum = Node(dp[i] + (x[i+1]*x[i+1]), x[i+1]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            while(head &amp;lt; tail &amp;amp;&amp;amp; get2(q[tail-1], q[tail], qnum)) tail--;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            q[++tail] = qnum;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&amp;quot;%lld\n&amp;quot;, dp[n]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;B-Snowd-修长廊&quot;&gt;&lt;a href=&quot;#B-Snowd-修长廊&quot; class=&quot;headerlink&quot; title=&quot;B Snowd 修长廊&quot;&gt;&lt;/a&gt;B Snowd 修长廊&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;head
+    
+    </summary>
+    
+    
+      <category term="斜率dp" scheme="http://zerolxf.github.io/tags/%E6%96%9C%E7%8E%87dp/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>雷神之路</title>
+    <link href="http://zerolxf.github.io/2016/05/23/A/"/>
+    <id>http://zerolxf.github.io/2016/05/23/A/</id>
+    <published>2016-05-23T14:01:50.000Z</published>
+    <updated>2016-05-23T10:17:34.817Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;A-雷神之路&quot;&gt;&lt;a href=&quot;#A-雷神之路&quot; class=&quot;headerlink&quot; title=&quot;A 雷神之路&quot;&gt;&lt;/a&gt;A 雷神之路&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;在一个坐标轴上面起始位置是0，你可以往右走一步，两步，三步。其中某些位置不能走，问你走到位置n有多少种方法（1&amp;lt;= n &amp;lt;= 1e18）&lt;/p&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;这题是走楼梯的进阶版，状态很好想dp[n]，转移有三种：走一步两步三步转移过来。不过由于n太大，很容易想到矩阵加速。&lt;/li&gt;
+&lt;li&gt;用矩阵A表示第i个可走，矩阵B表示第i个不可走。有些地方x不能走，那么我只要用矩阵加速求出第x-1个矩阵C，那么第x个矩阵就是C*B，最后得出第n个矩阵&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;dp[n] = dp[n-1] + dp[n-2] + dp[n-3] (n&amp;gt;=3)所以我们第一个矩阵是从2开始的，小于2的方案要手动打出来&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;83&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;84&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;85&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;86&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;87&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;88&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;89&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;90&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;91&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;92&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;93&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;94&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;95&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;96&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;97&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;98&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;99&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;100&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;101&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;102&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;103&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;104&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;105&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;106&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;107&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;108&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;109&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;110&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;111&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;112&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;113&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;114&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;115&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;116&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;117&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;118&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;119&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;120&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;/*************************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; File Name: a.cpp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Author: liangxianfeng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Mail:   641587852@qq.com&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Created Time: 2016年05月13日 星期五 18时57分55秒&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; ************************************************************************/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include &amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include &amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;stack&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;set&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;queue&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;string&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;using namespace std;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define ll long long&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define rep(i,n) for(int i =0; i &amp;lt; n; ++i)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define CLR(x) memset(x,0,sizeof x)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define MEM(a,b) memset(a,b,sizeof a)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define pr(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &amp;quot; &amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define prln(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt;  endl; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int maxn = 4e5+100;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int INF = 0x3f3f3f3f;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int MOD = 1e9+7;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;struct Rec&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ll num[3][3];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Rec()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; 3; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            for(int j = 0; j &amp;lt; 3; ++j)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                if(i==j) num[i][j] = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                else num[i][j] = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Rec(int x)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; 3; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            for(int j = 0; j &amp;lt; 3; ++j)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                num[i][j] = x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Rec operator * (const Rec&amp;amp; rhs)const&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Rec ans(0);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; 3; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            for(int j = 0; j &amp;lt; 3; ++j)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                for(int k = 0; k &amp;lt; 3; ++k)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                    ans.num[i][j] += num[i][k]*rhs.num[k][j]; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;                ans.num[i][j] %= MOD;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        return ans;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;init;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;Rec ret(const Rec &amp;amp;x, ll y)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    Rec ans, base = x;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(y)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(y&amp;amp;1) ans = ans*base;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        y&amp;gt;&amp;gt;=1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        base = base*base;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return ans;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;bool vis[10];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;ll x[600];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#ifdef LOCAL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	freopen(&amp;quot;/home/zeroxf/桌面/in.txt&amp;quot;,&amp;quot;r&amp;quot;,stdin);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	//freopen(&amp;quot;/home/zeroxf/桌面/out.txt&amp;quot;,&amp;quot;w&amp;quot;,stdout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#endif&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int t;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&amp;quot;%d&amp;quot;, &amp;amp;t);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(t--)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int  m;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ll n;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        scanf(&amp;quot;%lld%d&amp;quot;, &amp;amp;n, &amp;amp;m);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        memset(x, 0, sizeof x);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        memset(vis, 0, sizeof vis);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= m; ++i) scanf(&amp;quot;%lld&amp;quot;, &amp;amp;x[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        sort(x+1, x+m+1);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(x[1] &amp;lt; 3) vis[x[1]] = true;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(x[2] &amp;lt; 3) vis[x[2]] = true;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ll ans1, ans2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(vis[1]) ans1 = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        else ans1 = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(vis[2]) ans2 = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        else ans2 = ans1 + 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(n &amp;lt;= 2) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if(n==1) printf(&amp;quot;%lld\n&amp;quot;, ans1);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            else printf(&amp;quot;%lld\n&amp;quot;, ans2);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            continue;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Rec a(1);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Rec b(0);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        a.num[0][2] = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        a.num[1][1] = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        a.num[2][1] = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        a.num[2][2] = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        b.num[0][1] = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        b.num[1][2] = 1;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        Rec ans;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ll last = 2;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= m; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            if(x[i] &amp;lt;= 2) continue;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ans = ans*ret(a,x[i]-last-1);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            ans = ans*b;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            last = x[i];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ans = ans*ret(a,n-last);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        ll c = ans2*ans.num[0][0] + ans1*ans.num[1][0] + ans.num[2][0];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        c = c%MOD;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&amp;quot;%lld\n&amp;quot;, c);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;A-雷神之路&quot;&gt;&lt;a href=&quot;#A-雷神之路&quot; class=&quot;headerlink&quot; title=&quot;A 雷神之路&quot;&gt;&lt;/a&gt;A 雷神之路&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;
+    
+    </summary>
+    
+    
+      <category term="-dp -矩阵优化" scheme="http://zerolxf.github.io/tags/dp-%E7%9F%A9%E9%98%B5%E4%BC%98%E5%8C%96/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Taosama和煎饼</title>
+    <link href="http://zerolxf.github.io/2016/05/23/C/"/>
+    <id>http://zerolxf.github.io/2016/05/23/C/</id>
+    <published>2016-05-23T03:01:50.000Z</published>
+    <updated>2016-05-23T10:17:41.758Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;C-Taosama和煎饼&quot;&gt;&lt;a href=&quot;#C-Taosama和煎饼&quot; class=&quot;headerlink&quot; title=&quot;C  Taosama和煎饼&quot;&gt;&lt;/a&gt;C  Taosama和煎饼&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;韬韬想吃煎饼但是有急事,一个煎饼有n个工序,每个工序i有着A[i]美味度,韬韬有m个道具,每个道具用一次可以前进b[i]个单位,每个工序一旦被跳过得不到美味度,问你使用这些工具最多获得多少美味度&lt;em&gt;(0&amp;lt;=b[i]&amp;lt;=4,0&amp;lt;=a[i]&amp;lt;=100,0&amp;lt;=n&amp;lt;=350,0&amp;lt;=m&amp;lt;=120)&lt;/em&gt;,确保b[i]的和是n-1&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;建立状态&lt;/p&gt;
+&lt;p&gt;dp[i][a][b][c][d]表示处于i位置还剩abcd个四种道具(a表示前进b[1]个道具)最多能够获得多少美味度&lt;/p&gt;
+&lt;p&gt;状态转移&lt;/p&gt;
+&lt;p&gt;dp[i][a][b][c][d]可以由dp[i-1][a-1][b][c][d]等四种状态转移过来&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;状态优化&lt;/p&gt;
+&lt;p&gt;上面的状态很容易想,但是350 &lt;em&gt; 40 &lt;/em&gt; 40 &lt;em&gt; 40 &lt;/em&gt; 40复杂度很高,我们可以发现,这五个变量只要确定四个,那么第五个变量是确定的,所以我们可以减少一维,dp[a][b][c][d]就好了,复杂度40 &lt;em&gt; 40 &lt;/em&gt; 40 * 40完美过题&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;超时原因&lt;/p&gt;
+&lt;p&gt;由于建立状态思维定式,所以建立的状态是dp[350][40][40][40],超时了,但仔细发现这里的350有很多状态达不到&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;技巧&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;对于这种固定形式的转移,记忆化搜索写起来最快&lt;/li&gt;
+&lt;li&gt;建立状态的时候如果有多种选择首先找范围小的,其次找容易实现的&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;4&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;5&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;6&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;7&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;8&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;9&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;10&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;11&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;12&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;13&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;14&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;15&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;16&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;17&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;18&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;19&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;20&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;21&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;22&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;23&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;24&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;25&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;26&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;27&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;28&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;29&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;30&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;31&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;32&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;33&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;34&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;35&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;36&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;37&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;38&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;39&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;40&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;41&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;42&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;43&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;44&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;45&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;46&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;47&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;48&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;49&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;50&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;51&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;52&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;53&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;54&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;55&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;56&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;57&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;58&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;59&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;60&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;61&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;62&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;63&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;64&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;65&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;66&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;67&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;68&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;69&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;70&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;71&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;72&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;73&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;74&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;75&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;76&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;77&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;78&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;79&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;80&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;81&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;82&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;83&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;/*************************************************************************&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; File Name: c.cpp&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Author: liangxianfeng&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Mail:   641587852@qq.com&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	&amp;gt; Created Time: 2016年05月13日 星期五 23时22分57秒&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt; ************************************************************************/&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;iostream&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdio&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstdlib&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cstring&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;algorithm&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;stack&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;map&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;set&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;vector&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;queue&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;string&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#include&amp;lt;cmath&amp;gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;using namespace std;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define ll long long&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define rep(i,n) for(int i =0; i &amp;lt; n; ++i)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define CLR(x) memset(x,0,sizeof x)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define MEM(a,b) memset(a,b,sizeof a)&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define pr(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt; &amp;quot; &amp;quot;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#define prln(x) cout &amp;lt;&amp;lt; #x &amp;lt;&amp;lt; &amp;quot; = &amp;quot; &amp;lt;&amp;lt; x &amp;lt;&amp;lt;  endl; &lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int maxn = 4e5+100;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;const int INF = 0x3f3f3f3f;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int n, dp[41][41][41][41], cnt[41][41][41][41];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int num[400];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int kase;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int dfs(int a, int b, int c, int d)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int &amp;amp;ans = dp[a][b][c][d];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(ans &amp;gt;= 0 &amp;amp;&amp;amp; cnt[a][b][c][d] == kase) return ans;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ans = 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(a+b+c+d==0) return ans=num[n];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int temp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(a &amp;gt;= 1)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        temp = dfs(a-1, b, c, d);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(temp &amp;gt; ans) ans = temp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(b &amp;gt;= 1) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        temp = dfs(a, b-1, c, d);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(temp &amp;gt; ans) ans = temp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(c &amp;gt;= 1)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        temp = dfs(a, b, c-1, d);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(temp &amp;gt; ans) ans = temp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    if(d &amp;gt;= 1) &amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        temp =  dfs(a, b, c, d-1);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        if(temp &amp;gt; ans) ans = temp;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    ans += num[n-a-b*2-c*3-d*4];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    //pr(a);pr(b);pr(c);prln(d);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;  //  prln(ans);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    cnt[a][b][c][d] = kase;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    return ans;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int e[5];&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;int main()&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#ifdef LOCAL&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	freopen(&amp;quot;/home/zeroxf/桌面/in.txt&amp;quot;,&amp;quot;r&amp;quot;,stdin);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;//	freopen(&amp;quot;/home/zeroxf/桌面/out.txt&amp;quot;,&amp;quot;w&amp;quot;,stdout);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;#endif&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    int t, x, m;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    scanf(&amp;quot;%d&amp;quot;, &amp;amp;t);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    while(t--)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        scanf(&amp;quot;%d%d&amp;quot;, &amp;amp;n, &amp;amp;m);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        kase++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        memset(e,0,sizeof e);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 1; i &amp;lt;= n; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%d&amp;quot;, &amp;amp;num[i]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        for(int i = 0; i &amp;lt; m; ++i)&amp;#123;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            scanf(&amp;quot;%d&amp;quot;, &amp;amp;x);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;            e[x]++;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        int ans = dfs(e[1],e[2],e[3],e[4]);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;        printf(&amp;quot;%d\n&amp;quot;,ans);&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;    &amp;#125;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;	return 0;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&amp;#125;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;C-Taosama和煎饼&quot;&gt;&lt;a href=&quot;#C-Taosama和煎饼&quot; class=&quot;headerlink&quot; title=&quot;C  Taosama和煎饼&quot;&gt;&lt;/a&gt;C  Taosama和煎饼&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class
+    
+    </summary>
+    
+    
+      <category term="-dp -记忆化搜索" scheme="http://zerolxf.github.io/tags/dp-%E8%AE%B0%E5%BF%86%E5%8C%96%E6%90%9C%E7%B4%A2/"/>
     
   </entry>
   
@@ -390,41 +959,6 @@
   </entry>
   
   <entry>
-    <title>DNA序列</title>
-    <link href="http://zerolxf.github.io/2016/05/11/DNA%E5%BA%8F%E5%88%97/"/>
-    <id>http://zerolxf.github.io/2016/05/11/DNA序列/</id>
-    <published>2016-05-10T19:18:00.000Z</published>
-    <updated>2016-05-10T19:37:22.267Z</updated>
-    
-    <content type="html">&lt;h3 id=&quot;H-DNA序列&quot;&gt;&lt;a href=&quot;#H-DNA序列&quot; class=&quot;headerlink&quot; title=&quot;H. DNA序列&quot;&gt;&lt;/a&gt;H. DNA序列&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
-&lt;li&gt;就是让你找这样一个字符串，让所给的串是目标串的子串，那么目标串最短应该是多少 （最多8个串，每个串长度最大为5）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;这个题我只用了迭代加深搜索，但是没剪枝过了，数据没卡我（AAAA GGGG CCCCC TTTTT就T了）。后面想了一下状态压缩记忆化搜索是可以在有限时间搜索出来的。用8个六进制的数字表示每一个串的当前位置。然后这个状态只有四种转移方向ATGC，然后从最终状态往前记忆化搜索就好了。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;搜索一直没想出来怎么剪枝…,所以就使用迭代加深思想，然后暴力的枚举8个队列串首字符，比如枚举当前字符为A，那么谁队首是A的就POP出来，如果没有队首是A那就没必要搜索了。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;没啥坑点，就是不好好剪枝你会T在上面那个样例&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;在用状态压缩转移的时候，要用记忆化从最后搜，因为最初状态往后转移的话，初状态不好枚举。&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;H-DNA序列&quot;&gt;&lt;a href=&quot;#H-DNA序列&quot; class=&quot;headerlink&quot; title=&quot;H. DNA序列&quot;&gt;&lt;/a&gt;H. DNA序列&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=
-    
-    </summary>
-    
-    
-      <category term="状压 搜索" scheme="http://zerolxf.github.io/tags/%E7%8A%B6%E5%8E%8B-%E6%90%9C%E7%B4%A2/"/>
-    
-  </entry>
-  
-  <entry>
     <title>小冰和小娜</title>
     <link href="http://zerolxf.github.io/2016/05/11/%E5%B0%8F%E5%86%B0%E5%92%8C%E5%B0%8F%E5%A8%9C/"/>
     <id>http://zerolxf.github.io/2016/05/11/小冰和小娜/</id>
@@ -456,6 +990,41 @@
     
     
       <category term="最短路" scheme="http://zerolxf.github.io/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>DNA序列</title>
+    <link href="http://zerolxf.github.io/2016/05/11/DNA%E5%BA%8F%E5%88%97/"/>
+    <id>http://zerolxf.github.io/2016/05/11/DNA序列/</id>
+    <published>2016-05-10T19:18:00.000Z</published>
+    <updated>2016-05-10T19:37:22.267Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;H-DNA序列&quot;&gt;&lt;a href=&quot;#H-DNA序列&quot; class=&quot;headerlink&quot; title=&quot;H. DNA序列&quot;&gt;&lt;/a&gt;H. DNA序列&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;ul&gt;
+&lt;li&gt;就是让你找这样一个字符串，让所给的串是目标串的子串，那么目标串最短应该是多少 （最多8个串，每个串长度最大为5）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;这个题我只用了迭代加深搜索，但是没剪枝过了，数据没卡我（AAAA GGGG CCCCC TTTTT就T了）。后面想了一下状态压缩记忆化搜索是可以在有限时间搜索出来的。用8个六进制的数字表示每一个串的当前位置。然后这个状态只有四种转移方向ATGC，然后从最终状态往前记忆化搜索就好了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;搜索一直没想出来怎么剪枝…,所以就使用迭代加深思想，然后暴力的枚举8个队列串首字符，比如枚举当前字符为A，那么谁队首是A的就POP出来，如果没有队首是A那就没必要搜索了。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;没啥坑点，就是不好好剪枝你会T在上面那个样例&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;在用状态压缩转移的时候，要用记忆化从最后搜，因为最初状态往后转移的话，初状态不好枚举。&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;H-DNA序列&quot;&gt;&lt;a href=&quot;#H-DNA序列&quot; class=&quot;headerlink&quot; title=&quot;H. DNA序列&quot;&gt;&lt;/a&gt;H. DNA序列&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=
+    
+    </summary>
+    
+    
+      <category term="状压 搜索" scheme="http://zerolxf.github.io/tags/%E7%8A%B6%E5%8E%8B-%E6%90%9C%E7%B4%A2/"/>
     
   </entry>
   
@@ -551,146 +1120,6 @@
     
     
       <category term="最短路" scheme="http://zerolxf.github.io/tags/%E6%9C%80%E7%9F%AD%E8%B7%AF/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>01的时间</title>
-    <link href="http://zerolxf.github.io/2016/05/10/01%E7%9A%84%E6%97%B6%E9%97%B4/"/>
-    <id>http://zerolxf.github.io/2016/05/10/01的时间/</id>
-    <published>2016-05-10T14:01:50.000Z</published>
-    <updated>2016-05-10T21:12:09.142Z</updated>
-    
-    <content type="html">&lt;h3 id=&quot;C-01的时间&quot;&gt;&lt;a href=&quot;#C-01的时间&quot; class=&quot;headerlink&quot; title=&quot;C 01的时间&quot;&gt;&lt;/a&gt;C 01的时间&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;给你一个数x，让你找到x的倍数，同时这个倍数只能包含01数字(十进制)，输出最小的符合条件的&lt;/p&gt;
-&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;p&gt;1.这题本意是想让我们用搜索的，但写过数位dp后对这题第一反应就是可以dp啊。&lt;br&gt;dp[i][j][0]表示当前i长度余j并且第i位取0可不可达，同理dp[i][j][1]。&lt;/p&gt;
-&lt;p&gt;首先预处理出当第i位是1时对x取模的余数状态转移的话&lt;br&gt;&lt;em&gt;dp[i][j][0] |= dp[i-1][j][0] || dp[i-1][j][1];&lt;br&gt;dp[i][j][1] |= dp[i-1][(j-base[j]+x)%x][0] || dp[i-1][(j-base[j]+x)%x][1]; &lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;2.全部切记初始化0,dp[0][0][0] = 1;&lt;/p&gt;
-&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;p&gt;1.这里刚开始我把dp所存的值弄混淆了，存了当前的最小值是多少，同时还开了一个辅助flag作为标记能不能可达。但是，后面想一想，完全没必要。因为当状态转移好之后，第一个首位是1并且取余是0的状态就是最小的(这个可以反向想一下)。找到最小的状态之后，剩下的就是往回找，看前一个是由谁转移来的。&lt;/p&gt;
-&lt;p&gt;2.前面的转移式是最基本的转移，但实际转移中为了回溯更方便可以dp记录上一位的取值情况，不可到达初始为-1. 当有两种可选的状态的时候选较小的。&lt;/p&gt;
-&lt;p&gt;3.我曾经错误以为：上述过程有一个性质就是，对于所找到的第一个符合条件首位是1的数字，他的之前所有状态都只有一个前述状态。为什么？假如他可以由两个状态转移y,z转移过来，那么(y-z)%x==0,那么就会出现一个比当前更小的符合条件的。但是后面想一想（y-z）可能不符合只含01这个条件。（但是如果没有这个限制的话，这就是一个可以利用的性质）&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;C-01的时间&quot;&gt;&lt;a href=&quot;#C-01的时间&quot; class=&quot;headerlink&quot; title=&quot;C 01的时间&quot;&gt;&lt;/a&gt;C 01的时间&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题
-    
-    </summary>
-    
-    
-      <category term="dp" scheme="http://zerolxf.github.io/tags/dp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>单词替换</title>
-    <link href="http://zerolxf.github.io/2016/05/10/%E5%8D%95%E8%AF%8D%E6%9B%BF%E6%8D%A2/"/>
-    <id>http://zerolxf.github.io/2016/05/10/单词替换/</id>
-    <published>2016-05-10T13:47:51.000Z</published>
-    <updated>2016-05-10T17:43:11.484Z</updated>
-    
-    <content type="html">&lt;h3 id=&quot;B-单词替换&quot;&gt;&lt;a href=&quot;#B-单词替换&quot; class=&quot;headerlink&quot; title=&quot;B.单词替换&quot;&gt;&lt;/a&gt;B.单词替换&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;给出一个只包含小写字母的s字符串，和单词A,B。把s中的所有A替换成B，长度都小于5e6。PS:这题不需要考虑后效性&lt;/p&gt;
-&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;p&gt;1.这题就是最裸的KMP，当s中匹配到A的时候把匹配到A的首位置标记一下，输出的时候直接跳过lenA的长度同时输出B就好&lt;/p&gt;
-&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;p&gt;1.用KMP的时候一定要统一模板，以后就决定用f[0] = 0, f[1] = 0,这样的方式了，不需要纠结，也就不会有分歧&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;B-单词替换&quot;&gt;&lt;a href=&quot;#B-单词替换&quot; class=&quot;headerlink&quot; title=&quot;B.单词替换&quot;&gt;&lt;/a&gt;B.单词替换&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;
-    
-    </summary>
-    
-    
-      <category term="kmp" scheme="http://zerolxf.github.io/tags/kmp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>双剑合并</title>
-    <link href="http://zerolxf.github.io/2016/05/10/%E5%8F%8C%E5%89%91%E5%90%88%E5%B9%B6/"/>
-    <id>http://zerolxf.github.io/2016/05/10/双剑合并/</id>
-    <published>2016-05-10T12:36:17.000Z</published>
-    <updated>2016-05-10T17:38:45.849Z</updated>
-    
-    <content type="html">&lt;h3 id=&quot;A-双剑合并&quot;&gt;&lt;a href=&quot;#A-双剑合并&quot; class=&quot;headerlink&quot; title=&quot;A.双剑合并&quot;&gt;&lt;/a&gt;A.双剑合并&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;p&gt;n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9&lt;/p&gt;
-&lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;p&gt;1.根据这题范围肯定需要O(n)级别算法，基本上就是固定A，然后B中的每一个值必须要在常数时间内找到最大对应的匹配的A的值。从这个限制描述，隐隐约约能够感觉到要用一个类似于字典树的东西。同时，基于一种贪心策略，尽可能的要让我合并后的值的最高位为1。所以，我们可以以最高位为根建一个深度为31的01二叉树，首先让A中的值一个一个插进去，并在相应节点标记为可走。那么B的某一个值只需要从根节点开始走，尽可能的走和自己不同的位的路(比如当前B的位是0,那么如果有1我就走1否则再走0)，这样能够保证走过的一定是最优的。&lt;/p&gt;
-&lt;p&gt;2.这题没啥可错的，做这题之前读了一片论文，所以很有帮助：浅谈信息学竞赛中的0和1by武森&lt;/p&gt;
-&lt;h4 id=&quot;思考&quot;&gt;&lt;a href=&quot;#思考&quot; class=&quot;headerlink&quot; title=&quot;思考&quot;&gt;&lt;/a&gt;思考&lt;/h4&gt;&lt;p&gt;1.这题写的比较撮，每一个都特判了一下，后面看到汝佳的伸展树感觉写法挺好的。ch[2],0表示左儿子，1表示右儿子，值为-1表示不存在。这样的话就不用讨论当前是0还是1了，用一个变量o表示x当前的01位，ch[o]如果不存在就!o就好&lt;/p&gt;
-&lt;p&gt;2.以后遇到两个数值变成最大，那么优先考虑高位。同时异或的性质比较好，可以预处理后很快求出i项和j项的异或和，同时还有一个特点sum[i]^sum[j]=0 的话表明他们两个相等同时还表明第i项到第j项异或和是0&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;A-双剑合并&quot;&gt;&lt;a href=&quot;#A-双剑合并&quot; class=&quot;headerlink&quot; title=&quot;A.双剑合并&quot;&gt;&lt;/a&gt;A.双剑合并&lt;/h3&gt;&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;
-    
-    </summary>
-    
-    
-      <category term="01异或" scheme="http://zerolxf.github.io/tags/01%E5%BC%82%E6%88%96/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>test</title>
-    <link href="http://zerolxf.github.io/2016/05/01/test-1/"/>
-    <id>http://zerolxf.github.io/2016/05/01/test-1/</id>
-    <published>2016-05-01T06:30:22.000Z</published>
-    <updated>2016-05-01T06:30:22.473Z</updated>
-    
-    <content type="html"></content>
-    
-    <summary type="html">
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://zerolxf.github.io/2016/04/23/hello-world/"/>
-    <id>http://zerolxf.github.io/2016/04/23/hello-world/</id>
-    <published>2016-04-22T17:18:36.979Z</published>
-    <updated>2016-04-22T17:18:36.979Z</updated>
-    
-    <content type="html">&lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.io/docs/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;documentation&lt;/a&gt; for more info. If you get any problems when using Hexo, you can find the answer in &lt;a href=&quot;https://hexo.io/docs/troubleshooting.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;troubleshooting&lt;/a&gt; or you can ask me on &lt;a href=&quot;https://github.com/hexojs/hexo/issues&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-&lt;h2 id=&quot;Quick-Start&quot;&gt;&lt;a href=&quot;#Quick-Start&quot; class=&quot;headerlink&quot; title=&quot;Quick Start&quot;&gt;&lt;/a&gt;Quick Start&lt;/h2&gt;&lt;h3 id=&quot;Create-a-new-post&quot;&gt;&lt;a href=&quot;#Create-a-new-post&quot; class=&quot;headerlink&quot; title=&quot;Create a new post&quot;&gt;&lt;/a&gt;Create a new post&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo new &lt;span class=&quot;string&quot;&gt;&quot;My New Post&quot;&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/writing.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Writing&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Run-server&quot;&gt;&lt;a href=&quot;#Run-server&quot; class=&quot;headerlink&quot; title=&quot;Run server&quot;&gt;&lt;/a&gt;Run server&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo server&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/server.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Server&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Generate-static-files&quot;&gt;&lt;a href=&quot;#Generate-static-files&quot; class=&quot;headerlink&quot; title=&quot;Generate static files&quot;&gt;&lt;/a&gt;Generate static files&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo generate&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/generating.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Generating&lt;/a&gt;&lt;/p&gt;
-&lt;h3 id=&quot;Deploy-to-remote-sites&quot;&gt;&lt;a href=&quot;#Deploy-to-remote-sites&quot; class=&quot;headerlink&quot; title=&quot;Deploy to remote sites&quot;&gt;&lt;/a&gt;Deploy to remote sites&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;$ hexo deploy&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
-&lt;p&gt;More info: &lt;a href=&quot;https://hexo.io/docs/deployment.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Deployment&lt;/a&gt;&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>搭建博客感想</title>
-    <link href="http://zerolxf.github.io/2016/04/16/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%E6%84%9F%E6%83%B3/"/>
-    <id>http://zerolxf.github.io/2016/04/16/搭建博客感想/</id>
-    <published>2016-04-16T07:05:11.000Z</published>
-    <updated>2016-05-10T15:41:26.990Z</updated>
-    
-    <content type="html">&lt;h1 id=&quot;搭建一个博客好麻烦&quot;&gt;&lt;a href=&quot;#搭建一个博客好麻烦&quot; class=&quot;headerlink&quot; title=&quot;搭建一个博客好麻烦&quot;&gt;&lt;/a&gt;搭建一个博客好麻烦&lt;/h1&gt;&lt;p&gt;… 不过我是直接复制别人主题的 ..&lt;/p&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h1 id=&quot;搭建一个博客好麻烦&quot;&gt;&lt;a href=&quot;#搭建一个博客好麻烦&quot; class=&quot;headerlink&quot; title=&quot;搭建一个博客好麻烦&quot;&gt;&lt;/a&gt;搭建一个博客好麻烦&lt;/h1&gt;&lt;p&gt;… 不过我是直接复制别人主题的 ..&lt;/p&gt;
-
-    
-    </summary>
-    
-    
-      <category term="感想" scheme="http://zerolxf.github.io/tags/%E6%84%9F%E6%83%B3/"/>
     
   </entry>
   
