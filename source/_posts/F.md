@@ -1,0 +1,137 @@
+---
+title: 先锋看烟花
+date: 2016-05-24 00:21:50
+tags: -单调队列优化dp -dp
+---
+
+### F 先锋看烟花
+
+#### 题意
+
+-	一共有n个地点（1到n排列），一共有m个烟花，每个烟花放出的地点ai和时间ti，每个烟花有观赏值bi，对于每个烟花，对先锋的幸福度贡献bi-|ai-cur|，其中cur表示放第i个烟花时先锋所处的位置，因此，当先锋离烟花太远时，幸福度甚至会下降！已知先锋每秒最多运动d距离，问这个晚上先锋看烟花能获得的最大幸福度。
+
+#### 分析
+
+-	这相当于是一道移动接苹果的题目,只不过每秒移动范围为d并且烟花放的每一个点都有一个贡献值可为负数
+
+-	**状态建立**
+	
+	dp[i][j]表示第i个烟花位于j位置最多能够获得多少幸福感
+	
+	**状态转移**
+
+		dp[i][j]=min(dp[i-1][k]+bi-|ai-j|);
+		
+		k和j差值不超过(t[i] - t[i-1]) * d
+		
+	**转移优化**
+	
+	直接转移显然不行,那么就可以分成两种情况并进行单调队列优化了
+	若ai>cur
+		
+		dp[i][j]=min(dp[i-1][k]+bi-ai+j);
+	那么维护一个和j差范围处于(t[i]-t[i-1])*d的队列
+	
+	如果 dp[i-1][k] 和 dp[i-1][kk] 都在队列中并且 k < k &&  dp[i-1][k] < dp[i-1][kk] 那么在对i时刻烟花j以后的位置,都不会选择dp[i-1][k]了,因为dp[i-1][kk] 一定比他优,所以dp[i-1][k]这个状态就要从队列中间pop出来
+	
+	所以队首的只要处于范围之内一定最优
+	
+	这个队列最多插入n次pop n次,因而复杂度是O(n)
+	
+#### 思考
+
+-	当遇到一种可以由很多种状态转移过来的时候,考虑一下nlogn线段树或树状数组查询或单调队列或斜率优化
+
+```
+/*********************************************************************
+	> File Name: f.cpp
+	> Author: liangxianfeng
+	> Mail:   641587852@qq.com
+	> Created Time: 2016年05月14日 星期六 19时37分51秒
+ ********************************************************************/
+
+#include<iostream>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
+#include<algorithm>
+#include<stack>
+#include<map>
+#include<set>
+#include<vector>
+#include<queue>
+#include<string>
+#include<cmath>
+using namespace std;
+#define ll long long
+#define rep(i,n) for(int i =0; i < n; ++i)
+#define CLR(x) memset(x,0,sizeof x)
+#define MEM(a,b) memset(a,b,sizeof a)
+#define pr(x) cout << #x << " = " << x << " ";
+#define prln(x) cout << #x << " = " << x <<  endl; 
+const int maxn = 4e5+100;
+const int INF = 0x3f3f3f3f;
+ll dp[2][maxn];
+struct Node{
+    ll num, pos;
+    Node(){}
+    Node(ll _num, ll _pos){
+        num = _num;
+        pos = _pos;
+    }
+}q[maxn];
+ll b[maxn], a[maxn], t[maxn];
+bool get(const Node& a, const Node& b){
+    return a.num < b.num;
+}
+int main(){
+#ifdef LOCAL
+	freopen("/home/zeroxf/桌面/in.txt","r",stdin);
+	//freopen("/home/zeroxf/桌面/out.txt","w",stdout);
+#endif
+    int kase, m, d;
+    ll n;
+    scanf("%d", &kase);
+    while(kase--){
+        scanf("%lld%d%d", &n, &m, &d);
+        for(int i = 1; i <= m; ++i){
+            scanf("%lld%lld%lld", &a[i], &b[i], &t[i]);
+        }
+        int now = 0, pre = 1;
+        memset(dp, 0, sizeof dp);
+        int tail = -1, head = 0;
+        ll ma = n, last = 0;
+        for(int i = 1; i <= m; ++i){
+            swap(now,pre);
+            ma = min(n, (t[i] - last)*d+1);
+            tail=-1;head =0;
+            for(int j = 1; j <= ma; ++j) {
+                Node nw = Node(dp[pre][j],j);
+                while(head <= tail && get(q[tail], nw)) tail--;
+                q[++tail] = nw;
+            }
+            ma = (t[i] - last)*d;
+            for(int j = 1; j <= n; ++j){
+                if(j+ma<=n) {
+                    Node nw = Node(dp[pre][j+ma], j+ma);
+                    while(head <= tail && get(q[tail], nw)) tail--;
+                    q[++tail] = nw;
+                }
+                while(head <= tail && abs(q[head].pos - j) > ma) head++;
+                dp[now][j] = q[head].num + b[i] - abs(a[i] - j);
+            }
+            last = t[i];
+        }
+        ll ans = -INF;
+        for(int i = 1; i <= n; ++i){
+            ans = max(ans, dp[now][i]);
+        }
+        cout << ans << "\n";
+    }
+	return 0;
+}
+
+```
+
+	
+		
