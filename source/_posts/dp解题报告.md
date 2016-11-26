@@ -2,6 +2,7 @@
 title: 第二场联合总结
 date: 2016-05-11 4:4:00
 tags: 总结
+toc: true
 categories:
 - 川大重大联合赛
 - 第二场联合赛

@@ -1,7 +1,7 @@
 ---
 title: Goozy搭积木
 date: 2016-05-23 23:55:50
-tags: [dp, dp差值状态]
+tags: dp
 categories:
 - 川大重大联合赛
 - 第二场联合赛

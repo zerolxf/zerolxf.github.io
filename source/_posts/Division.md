@@ -1,7 +1,7 @@
 ---
 title: Division
 date: 2016-06-7 14:21:50
-tags: tarjan 最小路径覆盖
+tags: [tarjan, 最小路径覆盖]
 categories:
 - 川大重大联合赛
 - 第三场联合赛
