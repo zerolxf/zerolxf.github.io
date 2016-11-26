@@ -71,4 +71,4 @@ theme: landscape-plus
 deploy:
   type: git
   repo: git@github.com:zerolxf/zerolxf.github.io.git
-  branch: conf
+  branch: master

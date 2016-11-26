@@ -1,5 +1,5 @@
 ---
-title: list.md
+title: Ubuntu 安装必备
 date: 2016-11-09 23:26:49
 tags:
 ---
