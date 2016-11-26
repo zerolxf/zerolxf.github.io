@@ -2,6 +2,7 @@
 title: Ubuntu 安装必备
 date: 2016-11-09 23:26:49
 tags:
+toc:
 ---
 
 ### Ubuntu初始化
@@ -10,11 +11,11 @@ tags:
 
 #### 2. 安装新立得和gdebi
 `sudo apt-get install synaptic`
-
 #### 3.安装软件
 
 `sudo apt-get install git vim vim-gnome vim-gtk uget ariac`
 
+<!--more-->
 ### 初始化github
 
 #### 1. 安装ssh key
