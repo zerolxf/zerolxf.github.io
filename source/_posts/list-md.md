@@ -14,6 +14,7 @@ toc:
 #### 3.安装软件
 
 `sudo apt-get install git vim vim-gnome vim-gtk uget ariac`
+>> 这里用synaptic安装特别方便还不容易出事故
 
 <!--more-->
 ### 初始化github
@@ -21,7 +22,7 @@ toc:
 #### 1. 安装ssh key
 
 ##### (1) 生成ssh key
-`sh-keygen -t rsa -C "your_email@youremail.com"`
+`ssh-keygen -t rsa -C "your_email@youremail.com"`
 
 
 ##### （2）添加新的Key到ssh-agent
@@ -85,4 +86,5 @@ vim
 [淘宝镜像](https://npm.taobao.org/)
 
 
->nmp,nodejs直接用新立得安装
+> ~~nmp,nodejs直接用新立得安装~~ 
+>这里还是到[nodejs官网](https://nodejs.org/en/),直接下载压缩包,然后解压,把解压后的bin目录添加到PATH环境变量中去,记得PATH=$PATH:xxx/bin
