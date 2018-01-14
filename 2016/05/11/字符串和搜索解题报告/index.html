@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="总结," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="BigHead" type="application/atom+xml" />
+
+
+
+
+
+
+<meta name="description" content="题意n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9">
+<meta property="og:type" content="article">
+<meta property="og:title" content="联合第一场">
+<meta property="og:url" content="http://zerolxf.github.io/2016/05/11/字符串和搜索解题报告/index.html">
+<meta property="og:site_name" content="BigHead">
+<meta property="og:description" content="题意n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9">
+<meta property="og:image" content="http://7xread.com1.z0.glb.clouddn.com/3fd06cf9-7253-40fd-ad13-f076195d35e7">
+<meta property="og:updated_time" content="2017-08-23T07:34:34.047Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="联合第一场">
+<meta name="twitter:description" content="题意n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9">
+<meta name="twitter:image" content="http://7xread.com1.z0.glb.clouddn.com/3fd06cf9-7253-40fd-ad13-f076195d35e7">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"right","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://zerolxf.github.io/2016/05/11/字符串和搜索解题报告/"/>
+
+
+
+
+
+  <title>联合第一场 | BigHead</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?f2edfd9dc817b172552f808c312aca70";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">BigHead</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-schedule">
+          <a href="/schedule/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-calendar"></i> <br />
+            
+            日程表
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2016/05/11/字符串和搜索解题报告/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">联合第一场</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-05-11T04:44:00+08:00">
+                2016-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/川大重大联合赛/" itemprop="url" rel="index">
+                    <span itemprop="name">川大重大联合赛</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/川大重大联合赛/第一场联合赛/" itemprop="url" rel="index">
+                    <span itemprop="name">第一场联合赛</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2016/05/11/字符串和搜索解题报告/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2016/05/11/字符串和搜索解题报告/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2016/05/11/字符串和搜索解题报告/" class="leancloud_visitors" data-flag-title="联合第一场">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>n把A剑m把B剑，每一把剑都有一个值x，让A和B各自中的某一把剑的值异或，使得异或的值最大，输出此值。n和m不超过1e6,x不超过1e9<br><a id="more"></a></p>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><p>1.根据这题范围肯定需要O(n)级别算法，基本上就是固定A，然后B中的每一个值必须要在常数时间内找到最大对应的匹配的A的值。从这个限制描述，隐隐约约能够感觉到要用一个类似于字典树的东西。同时，基于一种贪心策略，尽可能的要让我合并后的值的最高位为1。所以，我们可以以最高位为根建一个深度为31的01二叉树，首先让A中的值一个一个插进去，并在相应节点标记为可走。那么B的某一个值只需要从根节点开始走，尽可能的走和自己不同的位的路(比如当前B的位是0,那么如果有1我就走1否则再走0)，这样能够保证走过的一定是最优的。</p>
+<p>2.这题没啥可错的，做这题之前读了一片论文，所以很有帮助：浅谈信息学竞赛中的0和1by武森</p>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><p>1.这题写的比较撮，每一个都特判了一下，后面看到汝佳的伸展树感觉写法挺好的。ch[2],0表示左儿子，1表示右儿子，值为-1表示不存在。这样的话就不用讨论当前是0还是1了，用一个变量o表示x当前的01位，ch[o]如果不存在就!o就好</p>
+<p>2.以后遇到两个数值变成最大，那么优先考虑高位。同时异或的性质比较好，可以预处理后很快求出i项和j项的异或和，同时还有一个特点sum[i]^sum[j]=0 的话表明他们两个相等同时还表明第i项到第j项异或和是0</p>
+<h3 id="B-单词替换"><a href="#B-单词替换" class="headerlink" title="B.单词替换"></a>B.单词替换</h3><h4 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h4><p>给出一个只包含小写字母的s字符串，和单词A,B。把s中的所有A替换成B，长度都小于5e6。PS:这题不需要考虑后效性</p>
+<h4 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h4><p>1.这题就是最裸的KMP，当s中匹配到A的时候把匹配到A的首位置标记一下，输出的时候直接跳过lenA的长度同时输出B就好</p>
+<h4 id="思考-1"><a href="#思考-1" class="headerlink" title="思考"></a>思考</h4><p>1.用KMP的时候一定要统一模板，以后就决定用f[0] = 0, f[1] = 0,这样的方式了，不需要纠结，也就不会有分歧</p>
+<h3 id="C-01的时间"><a href="#C-01的时间" class="headerlink" title="C 01的时间"></a>C 01的时间</h3><h4 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h4><p>给你一个数x，让你找到x的倍数，同时这个倍数只能包含01数字(十进制)，输出最小的符合条件的</p>
+<h4 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h4><p>1.这题本意是想让我们用搜索的，但写过数位dp后对这题第一反应就是可以dp啊。<br>dp[i][j][0]表示当前i长度余j并且第i位取0可不可达，同理dp[i][j][1]。</p>
+<p>首先预处理出当第i位是1时对x取模的余数状态转移的话<br>_dp[i][j][0] |= dp[i-1][j][0] || dp[i-1][j][1];<br>dp[i][j][1] |= dp[i-1][(j-base[j]+x)%x][0] || dp[i-1][(j-base[j]+x)%x][1]; _</p>
+<p>2.全部切记初始化0,dp[0][0][0] = 1;</p>
+<h4 id="思考-2"><a href="#思考-2" class="headerlink" title="思考"></a>思考</h4><p>1.这里刚开始我把dp所存的值弄混淆了，存了当前的最小值是多少，同时还开了一个辅助flag作为标记能不能可达。但是，后面想一想，完全没必要。因为当状态转移好之后，第一个首位是1并且取余是0的状态就是最小的(这个可以反向想一下)。找到最小的状态之后，剩下的就是往回找，看前一个是由谁转移来的。</p>
+<p>2.前面的转移式是最基本的转移，但实际转移中为了回溯更方便可以dp记录上一位的取值情况，不可到达初始为-1. 当有两种可选的状态的时候选较小的。</p>
+<p>3.我曾经错误以为：上述过程有一个性质就是，对于所找到的第一个符合条件首位是1的数字，他的之前所有状态都只有一个前述状态。为什么？假如他可以由两个状态转移y,z转移过来，那么(y-z)%x==0,那么就会出现一个比当前更小的符合条件的。但是后面想一想（y-z）可能不符合只含01这个条件。（但是如果没有这个限制的话，这就是一个可以利用的性质）</p>
+<h3 id="E-RunningPhoton’s-Nightmare"><a href="#E-RunningPhoton’s-Nightmare" class="headerlink" title="E.RunningPhoton’s Nightmare"></a>E.RunningPhoton’s Nightmare</h3><h4 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h4><p>一个人站在S这个起始位置，想要走到一个迷宫出口E，但是现在这个人身上有一个炸弹在k时间内就会爆炸，同时到达一些R位置能够让炸弹计时器清零，问能否出迷宫，能并输出最短时间,其中迷宫大小不超过600*600，1&lt;=k&lt;=600，最多有100个清零器</p>
+<h4 id="分析-3"><a href="#分析-3" class="headerlink" title="分析"></a>分析</h4><p>1.在S起点距离k的位置内的所有的都是可达并且最优时间等于最短距离。然后再由这些已经确定是最短的并且炸弹时间已被清零的点来更新周围距离k的点（如果炸弹时间不清零，那么这个点所能够到达的最远距离只能够在S的范围之内…）,然后这就好比是dijstra算法，只是多了一个限制（只能由R点更新周围点）。</p>
+<p>2.刚开始拿到这一题想的是从起点开始暴搜（受到华为那个寻路比赛影响），状态包含当前已经走过的时间和炸弹剩余的时间以及当前位置，但是这样的话什么样的状态才是最优的就不好确定了，如果k小的话倒是能够对每个位置的每一个炸弹时间k记录一个最优时间。但是k比较大…</p>
+<h4 id="思考-3"><a href="#思考-3" class="headerlink" title="思考"></a>思考</h4><p>1.上述算法最终只有S，E，R这三个点起作用了，那么现在就只看这三个点。如果这三类点距离小于k那么表示可以联通，也就是在原图的基础上面重新建了一个图。那就无脑跑100多次bfs求最短路，如果三类点距离d小于k则他们建一个d距离的边否则不能直接相连。</p>
+<p>2.为了代码美观好写，用bfs求最短路的时候传入距离数组指针。</p>
+<h3 id="F-表达式"><a href="#F-表达式" class="headerlink" title="F 表达式"></a>F 表达式</h3><h4 id="题意-4"><a href="#题意-4" class="headerlink" title="题意"></a>题意</h4><p>最快多少次才能够最快的得到$x^k$，可以从已经得到的数中乘除，最初只有x，比如 $x^31$,他最快可以通过通过6次操作</p>
+<h4 id="分析-4"><a href="#分析-4" class="headerlink" title="分析"></a>分析</h4><p>1.为了能够知道当前搜索的解x是最优解，那么我能够做的就只有把比x小的解全部枚举一遍。所以就用到迭代加深搜索。</p>
+<p>2.刚拿到这题，有很多种贪心策略，可惜后面发现都不对。然后试着用最短路的姿势来写，不过问题是你怎么才能确认这是最短路。这个搜索的空间无穷大，所以一直搜下去永远不能够确定。但这个就告诉我们不能把搜索空间弄的太深因为这样容易在某一个解空间里面无限搜下去，同时我们还要能确保当前搜到某一个解一定是最优解。由此，迭代加深搜索就凸现出来了</p>
+<h4 id="思考-4"><a href="#思考-4" class="headerlink" title="思考"></a>思考</h4><p>1.对这类搜索复杂度一直很迷。而且有一个细节问题一直不能理解，为什么搜的时候一定要从当前最新的值a和前面的值进行运算得到新的值，而不能是以前的值b和c得出d，然后d和a再得出我想要的值呢？</p>
+<p>2.搜的时候可以保留记录。以后对这类迷糊不确定上界的搜索首先就想到迭代加深吧！！！</p>
+<h3 id="G-神舟的宝藏"><a href="#G-神舟的宝藏" class="headerlink" title="G 神舟的宝藏"></a>G 神舟的宝藏</h3><h4 id="题意-5"><a href="#题意-5" class="headerlink" title="题意"></a>题意</h4><p>让你找这样一个密码：</p>
+<ul>
+<li>密码是一个C进制的数； </li>
+<li>密码由给定的M个数字构成；</li>
+<li>密码是一个给定N的十进制整数的正整数倍；</li>
+<li>如果存在多个满足上面所有条件的数字，值最小数字就是密码； </li>
+<li>系统输入上限为500位数字，如果求出的密码长度大于500位，则也不能打开房门。</li>
+</ul>
+<p>其中C，M不超过16，N不超过5000</p>
+<h4 id="分析-5"><a href="#分析-5" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这题相当于01的时间的<strong>进阶版</strong>。写起来就很简单了：我们预处理的时候要以C进制为基础预处理第i为是M个数字中的某一个是对N取模的余数是多少。dp[i][j]表示长度为i，对N余数是j这样状态第i位是哪一个数字</p>
+</li>
+<li><p>这题和之前的有两个不一样是</p>
+</li>
+</ol>
+<ul>
+<li>我不确定0有没有，如果有0的话我要特殊判断当前是0.状态转移的时候从最小数值开始转移<strong>(当余数j是0的时候不包含0，因为这个时候如果能用其他数值更新那么后面就不需要再添加数字了，如果用0更新的话就会出现前导0还需要继续添加位数这样就不是最小的)</strong>，就能够保证后面得到相同状态的时候值最小。</li>
+<li>状态使用dp[i][j]而不像C题那样使用dp[i][j][k]多出来的K表示当前位取第K个数字，这样的添加了状态数和转移数，使得转移复杂度变得高很多，内存也不划算</li>
+</ul>
+<h4 id="思考-5"><a href="#思考-5" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>像上面所说的那样从最小数字更新，这样一旦更新了，我就不准二次更新了，不需要比较值了，这样dp就可以“安心”记录上一个状态的值了</p>
+</li>
+<li><p>这题容易处理错0这个数字，如果更新的时候把0放在最先，那么dp[i][0]永远都只会被0更新，而这是非法的（就好比是00000000…）。如果不把0放到最前面，那么处理余数非0的状态时候明可以用0来更新，而被用非0数字更新这样会导致所求的不是最小的数值。</p>
+</li>
+</ol>
+<h3 id="H-DNA序列"><a href="#H-DNA序列" class="headerlink" title="H. DNA序列"></a>H. DNA序列</h3><h4 id="题意-6"><a href="#题意-6" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>就是让你找这样一个字符串，让所给的串是目标串的子串，那么目标串最短应该是多少 （最多8个串，每个串长度最大为5）</li>
+</ul>
+<h4 id="分析-6"><a href="#分析-6" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这个题我只用了迭代加深搜索，但是没剪枝过了，数据没卡我（AAAA GGGG CCCCC TTTTT就T了）。后面想了一下状态压缩记忆化搜索是可以在有限时间搜索出来的。用8个六进制的数字表示每一个串的当前位置。然后这个状态只有四种转移方向ATGC，然后从最终状态往前记忆化搜索就好了。</p>
+</li>
+<li><p>搜索一直没想出来怎么剪枝…,所以就使用迭代加深思想，然后暴力的枚举8个队列串首字符，比如枚举当前字符为A，那么谁队首是A的就POP出来，如果没有队首是A那就没必要搜索了。</p>
+</li>
+</ol>
+<h4 id="思考-6"><a href="#思考-6" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点，就是不好好剪枝你会T在上面那个样例</p>
+</li>
+<li><p>在用状态压缩转移的时候，要用记忆化从最后搜，因为最初状态往后转移的话，初状态不好枚举。</p>
+</li>
+</ol>
+<h3 id="I-小冰和小娜"><a href="#I-小冰和小娜" class="headerlink" title="I. 小冰和小娜"></a>I. 小冰和小娜</h3><h4 id="题意-7"><a href="#题意-7" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>这题就是一个车有方向的放在某一个位置，现在转向和前进都会消耗一点时间，问你从起点到达终点的最短时间</li>
+</ul>
+<h4 id="分析-7"><a href="#分析-7" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>这题就是我E题说到的，带附加属性的最短路，这个附加属性范围大小是4（4个方向）。那么直接在原先最短路的基础上面增加一维方向就好，然后就从初状态跑最短路就好。</p>
+</li>
+<li><p>当时写的太挫了，wa了几发，太粗心了</p>
+</li>
+</ol>
+<h4 id="思考-7"><a href="#思考-7" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点</p>
+</li>
+<li><p>在状态转移的时候使用dx[i],dy[i],dd[i].这样三种操作弄成一个循环了简洁不出错</p>
+</li>
+</ol>
+<h3 id="J-TooEasy-Or-TooDifficult"><a href="#J-TooEasy-Or-TooDifficult" class="headerlink" title="J. TooEasy Or TooDifficult"></a>J. TooEasy Or TooDifficult</h3><h4 id="题意-8"><a href="#题意-8" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>给你定义两类值，P[i]表示以第i个字符为中心的最长回文串长度，MZ和max{P[i]}有关，FJD为连续若干个P[i]异或和的最大值。问你MZ和FJD谁大</li>
+</ul>
+<h4 id="分析-8"><a href="#分析-8" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>解决MZ就是最裸的manacher算法，FJD则利用到一个性质sum[j]^sum[i] = p[i]^…P[j];这样转换之后就是求最大的sum[j]^sum[i],这个问题在问题A中谈论过了，就是建立01二叉树，然后把sum[i]全部插入，再全部走一遍</p>
+</li>
+<li><p>当时生成插入01树的时候写挫了，一直死循环，debug半天</p>
+</li>
+</ol>
+<h4 id="思考-8"><a href="#思考-8" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没啥坑点</p>
+</li>
+<li><p>常规题</p>
+</li>
+</ol>
+<h3 id="K-奶牛合影"><a href="#K-奶牛合影" class="headerlink" title="K. 奶牛合影"></a>K. 奶牛合影</h3><h4 id="题意-9"><a href="#题意-9" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>每个牛有一瑕疵值，我想再平移之后，得到一种排序他字典序最小，也就是最裸的最小表示法</li>
+</ul>
+<h4 id="分析-9"><a href="#分析-9" class="headerlink" title="分析"></a>分析</h4><ol>
+<li><p>直接用模板</p>
+</li>
+<li><p>只要模板没有写错，几乎不会错</p>
+</li>
+</ol>
+<h4 id="思考-9"><a href="#思考-9" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>没坑点</p>
+</li>
+<li><p>这题其实还可以用后缀数组写的，不过效率不划算</p>
+</li>
+</ol>
+<h3 id="L-奶牛序列"><a href="#L-奶牛序列" class="headerlink" title="L. 奶牛序列"></a>L. 奶牛序列</h3><h4 id="题意-10"><a href="#题意-10" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>约翰刚帮奶牛们拍完照，拿着合影的他，看着奶牛队列，又莫名想到了一个字符串问题：<br>我们将n头奶牛的队列看成一个长为n的字符串S，让Ti表示从第i的字符开始的后缀。求：    <img src="http://7xread.com1.z0.glb.clouddn.com/3fd06cf9-7253-40fd-ad13-f076195d35e7" alt="图片描述"></li>
+<li>其中，len(a)表示字符串a的长度，lcp(a,b)表示字符串a和字符串b的最长公共前缀，输入字符串长度不超过5e5</li>
+</ul>
+<h4 id="分析-10"><a href="#分析-10" class="headerlink" title="分析"></a>分析</h4><ol>
+<li></li>
+</ol>
+<ul>
+<li><p>首先前面的len(Ti)和len(Tj)可以提取出来一步算出来，剩下主要就是求<br>lcp(Ti,Tj)的和，在后缀数组中求两个后缀的最长前缀长度，就是求各自对应h[i]数组间的最小值。由于这里i和j把所有的一对Ti和Tj组合都取遍，所以这里可以转换成求所有h[i]和h[j]数组中间的最小值的和的两倍</p>
+</li>
+<li><p>那么问题转换成求所有h[i]和h[j]数组中间的最小值的和，，如何快速的求出所有和呢，因为枚举会T。这里用到nlogn求最长公共子序列的思想。每一次我只求所有h[j]和h[i]之间的最小值的和(其中j&lt;i).</p>
+</li>
+<li><p>然后不断的放入h[i],h[i]放入到第一个大于等于他的位置并把当前位置的值更新为 h[i]（因为所有大于h[i]的h[j]的值在和h[i]取最小之后多出来的那部分无效了，即使是在求i之后h[k]的所有lcp和也一样，由于存在h[i],那么h[j]在h[i]的左边并大于h[i]的部分无效，所以就直接用h[i]代替了h[j]）.同在在那个位置记录下最新的位置信息pos[k] = i。同时用一个数组sum[i]记录到位置i的lcp的和。</p>
+</li>
+<li><p>如何计算sum（lcp(Tj,Ti)） j&lt;i？，就拿h[i]插入后举例子，他的前一个h[i-1]一定小于h[i],那么那个位置的sum[i-1]就不需要更新了，直接拿来用。pos[i-1]和pos[i]之间的值就全部都是h[i]了，然后再更新sum[i].</p>
+</li>
+</ul>
+<ol>
+<li>好了经过上面很长的分析之后，我忘记sum(lcp)*2了</li>
+</ol>
+<h4 id="思考-10"><a href="#思考-10" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>这题想到就不难了，当然实现的时候还是要想半天的</p>
+</li>
+<li><p>求最长公共子序列这种nlogn的思想很实用。</p>
+</li>
+</ol>
+<h3 id="M-奶牛硬盘"><a href="#M-奶牛硬盘" class="headerlink" title="M. 奶牛硬盘"></a>M. 奶牛硬盘</h3><h4 id="题意-11"><a href="#题意-11" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>硬盘的制造商认为”一千” 是1000，但是操作系统认为”一千”是1024.单位分别有“B”, “KB”, “MB”, “GB”, “TB”, “PB”, “EB”, “ZB”, “YB” </li>
+</ul>
+<h4 id="分析-11"><a href="#分析-11" class="headerlink" title="分析"></a>分析</h4><ol>
+<li>很简单的一道题，只和单位有关系和前面数值没关系，先求出保存率，然后1-保存率，base[0]= 1, base[1] = （1000）/1024;…</li>
+</ol>
+<h4 id="思考-11"><a href="#思考-11" class="headerlink" title="思考"></a>思考</h4><ol>
+<li>我在想0MB的丢失百分比是多少？？？我反正没考虑直接过了</li>
+</ol>
+<h3 id="N-奶牛情书"><a href="#N-奶牛情书" class="headerlink" title="N. 奶牛情书"></a>N. 奶牛情书</h3><h4 id="题意-12"><a href="#题意-12" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>一个奶牛知道一些单词，现在有一个长度n的文本，问你这个文本至少包含一个奶牛会的单词的方案数。</li>
+</ul>
+<h4 id="分析-12"><a href="#分析-12" class="headerlink" title="分析"></a>分析</h4><p>1.</p>
+<ul>
+<li><p>正向算至少包含一个太麻烦了，所以就逆向算，算出总的(快速幂取模)，再算出一个都不包含的情况。而怎么才能算出一个都不包含的情况呢。这个就涉及了自动机套dp。</p>
+</li>
+<li><p>方案数用到dp这个都能够想到，可是字符串如何用状态表示呢。这个就要用到前缀了，把每一个前缀看做一个状态，那么添加一个字符之后所形成的前缀成为了另外一种状态（这里需要注意的是空串也是一种特殊的前缀）。</p>
+</li>
+<li>但是怎么很快得到所有的前缀并能得到他们的转移方向呢，很简单，那就是ac自动机。他把每一个字符串的前缀都体现出来了，ac自动机的节点数就是这里的状态数，ac自动机另外也可以叫做<strong>有限状态机</strong>，状态就这样来了</li>
+</ul>
+<ol>
+<li></li>
+</ol>
+<ul>
+<li>在禁止一些字符串时，少考虑了把包含这个字符串的其他前缀串都禁止了。比如aba和ccabac，我们现在要把这两个串禁止用，但是单禁止这两个串还不行，因为我们的一个前缀状态是ccaba,ccaba就包含了禁止串，所以我们要这样禁止一个串：如果他的失配后指向的串被禁止了那么当前的串也要禁止。    if(cnt[fail[u]]) cnt[u] = 1;</li>
+</ul>
+<h4 id="思考-12"><a href="#思考-12" class="headerlink" title="思考"></a>思考</h4><ol>
+<li><p>只要懂了原理就很简单了，没有坑点</p>
+</li>
+<li><p>这个类型的ac自动机加dp帮我更好理解自动机。之前对于ac自动机的根节点和fail数组并不是很理解，现在想就是root节点就是空节点。fail指针就相当于在这个节点添加一个字符匹配失配后我还能够匹配哪里。</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/总结/" rel="tag"># 总结</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/05/11/奶牛硬盘/" rel="next" title="奶牛硬盘">
+                <i class="fa fa-chevron-left"></i> 奶牛硬盘
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/11/奶牛情书/" rel="prev" title="奶牛情书 (ac自动机+dp)">
+                奶牛情书 (ac自动机+dp) <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        
+  <div class="bdsharebuttonbox">
+    <a href="#" class="bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+    <a href="#" class="bds_douban" data-cmd="douban" title="分享到豆瓣网"></a>
+    <a href="#" class="bds_sqq" data-cmd="sqq" title="分享到QQ好友"></a>
+    <a href="#" class="bds_qzone" data-cmd="qzone" title="分享到QQ空间"></a>
+    <a href="#" class="bds_weixin" data-cmd="weixin" title="分享到微信"></a>
+    <a href="#" class="bds_tieba" data-cmd="tieba" title="分享到百度贴吧"></a>
+    <a href="#" class="bds_twi" data-cmd="twi" title="分享到Twitter"></a>
+    <a href="#" class="bds_fbook" data-cmd="fbook" title="分享到Facebook"></a>
+    <a href="#" class="bds_more" data-cmd="more"></a>
+    <a class="bds_count" data-cmd="count"></a>
+  </div>
+  <script>
+    window._bd_share_config = {
+      "common": {
+        "bdText": "",
+        "bdMini": "2",
+        "bdMiniList": false,
+        "bdPic": ""
+      },
+      "share": {
+        "bdSize": "16",
+        "bdStyle": "0"
+      },
+      "image": {
+        "viewList": ["tsina", "douban", "sqq", "qzone", "weixin", "twi", "fbook"],
+        "viewText": "分享到：",
+        "viewSize": "16"
+      }
+    }
+  </script>
+
+<script>
+  with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='//bdimg.share.baidu.com/static/api/js/share.js?cdnversion='+~(-new Date()/36e5)];
+</script>
+
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+      <div id="hypercomments_widget"></div>
+    </div>
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">BigHead</p>
+              <p class="site-description motion-element" itemprop="description">咸鱼也有咸鱼的生活</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">分类</span>
+                
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+            <div class="feed-link motion-element">
+              <a href="/atom.xml" rel="alternate">
+                <i class="fa fa-rss"></i>
+                RSS
+              </a>
+            </div>
+          
+
+          
+            <div class="links-of-author motion-element">
+                
+                  <span class="links-of-author-item">
+                    <a href="https://github.com/zerolxf" target="_blank" title="GitHub">
+                      
+                        <i class="fa fa-fw fa-github"></i>GitHub</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="mailto:liangxianfeng96@gmail.com" target="_blank" title="E-Mail">
+                      
+                        <i class="fa fa-fw fa-envelope"></i>E-Mail</a>
+                  </span>
+                
+                  <span class="links-of-author-item">
+                    <a href="http://www.zhihu.com/people/liang-xian-feng-58 zhihu" target="_blank" title="知乎">
+                      
+                        <i class="fa fa-fw fa-globe"></i>知乎</a>
+                  </span>
+                
+            </div>
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-block">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                Links
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://goozy.github.io" title="Goozy" target="_blank">Goozy</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-单词替换"><span class="nav-number"></span> <span class="nav-text">B.单词替换</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-1"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-1"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-1"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-01的时间"><span class="nav-number"></span> <span class="nav-text">C 01的时间</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-2"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-2"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-2"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-RunningPhoton’s-Nightmare"><span class="nav-number"></span> <span class="nav-text">E.RunningPhoton’s Nightmare</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-3"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-3"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-3"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F-表达式"><span class="nav-number"></span> <span class="nav-text">F 表达式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-4"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-4"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-4"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#G-神舟的宝藏"><span class="nav-number"></span> <span class="nav-text">G 神舟的宝藏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-5"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-5"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-5"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#H-DNA序列"><span class="nav-number"></span> <span class="nav-text">H. DNA序列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-6"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-6"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-6"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-小冰和小娜"><span class="nav-number"></span> <span class="nav-text">I. 小冰和小娜</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-7"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-7"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-7"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#J-TooEasy-Or-TooDifficult"><span class="nav-number"></span> <span class="nav-text">J. TooEasy Or TooDifficult</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-8"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-8"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-8"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#K-奶牛合影"><span class="nav-number"></span> <span class="nav-text">K. 奶牛合影</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-9"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-9"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-9"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L-奶牛序列"><span class="nav-number"></span> <span class="nav-text">L. 奶牛序列</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-10"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-10"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-10"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#M-奶牛硬盘"><span class="nav-number"></span> <span class="nav-text">M. 奶牛硬盘</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-11"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-11"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-11"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#N-奶牛情书"><span class="nav-number"></span> <span class="nav-text">N. 奶牛情书</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#题意-12"><span class="nav-number">1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#分析-12"><span class="nav-number">2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#思考-12"><span class="nav-number">3.</span> <span class="nav-text">思考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BigHead</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/three.min.js"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/three/canvas_lines.min.js"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+		<script type="text/javascript">
+		_hcwp = window._hcwp || [];
+
+		_hcwp.push({widget:"Bloggerstream", widget_id: 99992, selector:".hc-comment-count", label: "{\%COUNT%\}" });
+
+		
+		_hcwp.push({widget:"Stream", widget_id: 99992, xid: "2016/05/11/字符串和搜索解题报告/"});
+		
+
+		(function() {
+		if("HC_LOAD_INIT" in window)return;
+		HC_LOAD_INIT = true;
+		var lang = (navigator.language || navigator.systemLanguage || navigator.userLanguage || "en").substr(0, 2).toLowerCase();
+		var hcc = document.createElement("script"); hcc.type = "text/javascript"; hcc.async = true;
+		hcc.src = ("https:" == document.location.protocol ? "https" : "http")+"://w.hypercomments.com/widget/hc/99992/"+lang+"/widget.js";
+		var s = document.getElementsByTagName("script")[0];
+		s.parentNode.insertBefore(hcc, s.nextSibling);
+		})();
+		</script>
+
+	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("KzCP2AvHbpUG0nR9UUixIEcE-gzGzoHsz", "AKEVMzcKEUXfjwLcn1Vr1SlU");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+</body>
+</html>
