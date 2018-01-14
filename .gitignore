@@ -1,6 +1,6 @@
-theme/hexo-theme-next
-theme/*
-theme/next
+themes/hexo-theme-next
+themes/*
+themes/next
 .DS_Store
 Thumbs.db
 db.json
