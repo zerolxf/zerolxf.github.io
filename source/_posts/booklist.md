@@ -4,9 +4,10 @@ title: c++书籍单
 date: 2016-11-09 23:26:49
 tags:
 ---
-### 想看书籍
+### 想看书籍c++系列
+
 转自[知乎](https://www.zhihu.com/question/20410487)
-#### c++系列
+
 
 ##### 阶段 1
 《Essential C++》

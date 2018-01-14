@@ -7,7 +7,7 @@ title: BigHead
 subtitle:
 description: 咸鱼也有咸鱼的生活
 author: BigHead
-language:
+language: zh-Hans
 timezone:
 
 # URL
@@ -64,7 +64,13 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 #theme: landscape-plus
-theme: landscape-plus
+#
+search:
+  path: search.xml
+  field: post
+  format: html
+  limit: 10000
+theme: hexo-theme-next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
