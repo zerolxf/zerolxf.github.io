@@ -70,7 +70,7 @@ search:
   field: post
   format: html
   limit: 10000
-theme: hexo-theme-next
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
