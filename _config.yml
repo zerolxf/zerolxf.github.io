@@ -129,7 +129,8 @@ scheme: Gemini
 social:
   GitHub: https://github.com/zerolxf || github
   E-Mail: mailto:liangxianfeng96@gmail.com || envelope
-  知乎: http://www.zhihu.com/people/liang-xian-feng-58 zhihu
+  知乎: http://www.zhihu.com/people/liang-xian-feng-58 || zhihu
+  CSDN: http://blog.csdn.net/xfzero || csdn
   #Google: https://plus.google.com/yourname || google
   #Twitter: https://twitter.com/yourname || twitter
   #FB Page: https://www.facebook.com/yourname || facebook
