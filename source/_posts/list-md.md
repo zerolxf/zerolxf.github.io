@@ -14,7 +14,7 @@ toc:
 #### 3.安装软件
 
 `sudo apt-get install git vim vim-gnome vim-gtk uget ariac`
->> 这里用synaptic安装特别方便还不容易出事故
+> 这里用synaptic安装特别方便还不容易出事故
 
 <!--more-->
 ### 初始化github
