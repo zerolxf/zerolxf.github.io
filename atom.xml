@@ -140,15 +140,13 @@
     <link href="http://zerolxf.github.io/2016/08/06/hdu5730/"/>
     <id>http://zerolxf.github.io/2016/08/06/hdu5730/</id>
     <published>2016-08-06T09:56:10.000Z</published>
-    <updated>2018-01-14T17:08:02.483Z</updated>
+    <updated>2018-01-16T15:52:48.613Z</updated>
     
     <content type="html">&lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;blockquote&gt;
-&lt;p&gt;$已知长度为n(1\leq n \leq 10^5)的序列\{a _i\}$&lt;br&gt;$给你n个贝壳,你可以把他分成m份,每份个数分别是b _1 ,b _2 , b _3 …b _m$&lt;br&gt;$那么你可以获得a _{b _1} * a _{b _2} * a _{b _3}_… _ a _{b _m} 的贡献值 ,现在问你所有不同分法的贡献值值和是多少 $&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;$已知长度为n(1\leq n \leq 10^5)的序列\{a _i\}$&lt;br&gt;$给你n个贝壳,你可以把他分成m份,每份个数分别是b _1 ,b _2 , b _3 …b _m $&lt;br&gt;$$ 那么你可以获得a_{b_1}  a _{b _2}  a _{b _3}…  a _{b _m} 的贡献值 ,现在问你所有不同分法的贡献值值和是多少 $$&lt;br&gt;&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h4 id=&quot;分析&quot;&gt;&lt;a href=&quot;#分析&quot; class=&quot;headerlink&quot; title=&quot;分析&quot;&gt;&lt;/a&gt;分析&lt;/h4&gt;&lt;blockquote&gt;
-&lt;ul&gt;
-&lt;li&gt;设dp[i]为数量总共为i的所有不同分法的总贡献值&lt;br&gt;$$ dp[i+1] = dp[i]_a_1+dp[i-1]_a_2 + dp[i-2]_a_3+…+dp[1]_a_i+a_{i+1} $$&lt;br&gt;$$dp[n] = \sum_{i=1} ^{n}dp[n-i]*a_i$$&lt;br&gt;具有多项式形式可以考虑fft，但是直接会T，考虑cdq分治，每次分治时跑fft即可&lt;/li&gt;
-&lt;/ul&gt;
+&lt;p&gt;   设dp[i]为数量总共为i的所有不同分法的总贡献值&lt;br&gt;   $ dp[i+1] = dp[i] /times a_1+dp[i-1] /times a_2 + dp[i-2] /times a_3+…+dp[1] /times a_i+a_{i+1} $&lt;br&gt;   $ dp[n] = \sum_{i=1} ^{n}dp[n-i]*a_i $&lt;br&gt;   具有多项式形式可以考虑fft，但是直接会T，考虑cdq分治，每次分治时跑fft即可&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;ul&gt;
 &lt;li&gt;其实具体为什么这样可以我都不是很清楚,附送两发fft学习链接&lt;a href=&quot;http://wenku.baidu.com/view/8bfb0bd476a20029bd642d85.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;fft流程图&lt;/a&gt;和&lt;a href=&quot;http://wlsyzx.yzu.edu.cn/kcwz/szxhcl/kechenneirong/jiaoan/jiaoan3.htm&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;DFT原理&lt;/a&gt;以及&lt;a href=&quot;http://www.cnblogs.com/kuangbin/p/3210565.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;kuangbin博客&lt;/a&gt;&lt;/li&gt;
@@ -159,7 +157,7 @@
     <summary type="html">
     
       &lt;h4 id=&quot;题意&quot;&gt;&lt;a href=&quot;#题意&quot; class=&quot;headerlink&quot; title=&quot;题意&quot;&gt;&lt;/a&gt;题意&lt;/h4&gt;&lt;blockquote&gt;
-&lt;p&gt;$已知长度为n(1\leq n \leq 10^5)的序列\{a _i\}$&lt;br&gt;$给你n个贝壳,你可以把他分成m份,每份个数分别是b _1 ,b _2 , b _3 …b _m$&lt;br&gt;$那么你可以获得a _{b _1} * a _{b _2} * a _{b _3}_… _ a _{b _m} 的贡献值 ,现在问你所有不同分法的贡献值值和是多少 $&lt;br&gt;
+&lt;p&gt;$已知长度为n(1\leq n \leq 10^5)的序列\{a _i\}$&lt;br&gt;$给你n个贝壳,你可以把他分成m份,每份个数分别是b _1 ,b _2 , b _3 …b _m $&lt;br&gt;$$ 那么你可以获得a_{b_1}  a _{b _2}  a _{b _3}…  a _{b _m} 的贡献值 ,现在问你所有不同分法的贡献值值和是多少 $$&lt;br&gt;
     
     </summary>
     
