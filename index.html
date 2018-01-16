@@ -317,6 +317,157 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2018/01/17/58login1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/17/58login1/" itemprop="url">Java 模拟 58登录 （一） 分析</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-17T00:23:36+08:00">
+                2018-01-17
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+            <!--noindex-->
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/01/17/58login1/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count hc-comment-count" data-xid="2018/01/17/58login1/" itemprop="commentsCount"></span>
+                </a>
+              </span>
+              <!--/noindex-->
+            
+          
+
+          
+          
+             <span id="/2018/01/17/58login1/" class="leancloud_visitors" data-flag-title="Java 模拟 58登录 （一） 分析">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数&#58;</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <blockquote>
+<p>实习期间需要做一个模拟58登录然后爬取简历，第一次做项目遇到很多坑<br>同时网上关于58登录的又没有很多资料，遇到了很多坑，这里记录一下，方便自己以及他人学习</p>
+</blockquote>
+<p>源代码放在<a href="https://github.com/zerolxf/Login58">Github</a></p>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>这里是通过手机动态码的方式来登录58, 而非帐号密码, 适用于第三方网站登录使用<br>原因是模拟密码登录的时候, 当我用其他人账号在我这里登录58的时候就会出现账号登录限制<br>需要手机动态码验证之后才可以登录，所以决定直接手机动态码的登录。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2018/01/17/58login1/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2016/11/09/list-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -413,9 +564,7 @@
           <h3 id="Ubuntu初始化"><a href="#Ubuntu初始化" class="headerlink" title="Ubuntu初始化"></a>Ubuntu初始化</h3><h4 id="1-安装无线驱动和更新系统以及语言"><a href="#1-安装无线驱动和更新系统以及语言" class="headerlink" title="1. 安装无线驱动和更新系统以及语言"></a>1. 安装无线驱动和更新系统以及语言</h4><h4 id="2-安装新立得和gdebi"><a href="#2-安装新立得和gdebi" class="headerlink" title="2. 安装新立得和gdebi"></a>2. 安装新立得和gdebi</h4><p><code>sudo apt-get install synaptic</code></p>
 <h4 id="3-安装软件"><a href="#3-安装软件" class="headerlink" title="3.安装软件"></a>3.安装软件</h4><p><code>sudo apt-get install git vim vim-gnome vim-gtk uget ariac</code></p>
 <blockquote>
-<blockquote>
 <p>这里用synaptic安装特别方便还不容易出事故</p>
-</blockquote>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
@@ -748,7 +897,7 @@
       
         
           <h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><blockquote>
-<p>$已知长度为n(1\leq n \leq 10^5)的序列\{a _i\}$<br>$给你n个贝壳,你可以把他分成m份,每份个数分别是b _1 ,b _2 , b _3 …b _m $<br>$$ 那么你可以获得a_{b_1}  a _{b _2}  a _{b _3}…  a _{b _m} 的贡献值 ,现在问你所有不同分法的贡献值值和是多少 $$<br>
+<p>$已知长度为n(1\leq n \leq 10^5)的序列\{a _i\}$<br>$给你n个贝壳,你可以把他分成m份,每份个数分别是b _1 ,b _2 , b _3 …b _m $<br>$ 那么你可以获得a_{b_1}  a _{b _2}  a _{b _3}…  a _{b _m} 的贡献值 ,现在问你所有不同分法的贡献值值和是多少 $<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/08/06/hdu5730/#more" rel="contents">
@@ -940,7 +1089,7 @@
       
         
           <h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><blockquote>
-<p>$给你一个n_m(1\leq n,m \leq 10)的矩形,他由n_m个单位矩阵组成$<br>$由于四边形具有不固定性,所以这个大矩形也是不固定的$<br>$现在让你加入一些斜着的边,问你多少种加的方案可以让他固定$<br>
+<p>$给你一个n \times m(1\leq n,m \leq 10)的矩形,他由n \times m个单位矩阵组成$<br>$由于四边形具有不固定性,所以这个大矩形也是不固定的$<br>$现在让你加入一些斜着的边,问你多少种加的方案可以让他固定$<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/08/06/HDU5729/#more" rel="contents">
@@ -1302,7 +1451,7 @@
       
         
           <h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><blockquote>
-<p>$<br>给你一个长度为n(1\leq n \leq 100000)序列:a _1,a _2, a_3…(1 \leq a _i \leq 10 ^9 )$<br>$现在给你q个查询,每个查询问你存在多少个区间gcd的值等于区间[l,r]区间的gcd值<br>$</p>
+<p>$给你一个长度为n(1\leq n \leq 100000)序列:a _1,a _2, a_3…(1 \leq a _i \leq 10 ^9 )$<br>$现在给你q个查询,每个查询问你存在多少个区间gcd的值等于区间[l,r]区间的gcd值$</p>
 </blockquote>
           <!--noindex-->
           <div class="post-button text-center">
@@ -1484,7 +1633,7 @@
       
         
           <h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><blockquote>
-<p>$给你一个图,让你求最小生成树,并且在最小生成树中求每条边被走的期望,n个点m条边( 1 \leq n \leq 10000, 1\leq m \leq 100000)$<br>
+<p>给你一个图,让你求最小生成树,并且在最小生成树中求每条边被走的期望,<br>n个点m条边$( 1 \leq n \leq 10000, 1\leq m \leq 100000)$<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/08/06/HDU5723/#more" rel="contents">
@@ -1848,185 +1997,10 @@
         
           <p>$Time Limit:1000MS~~Memory Limit:65536KB $</p>
 <h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><blockquote>
-<p>$一个n*m的棋盘上有若干个守卫,每行每列至多只有一个守卫,现在问你除了守卫点,其他任意两点最短距离的期望.(2\leq n,m\leq 1000)$<br>
+<p>一个 $n \times m $的棋盘上有若干个守卫,每行每列至多只有一个守卫,现在问你除了守卫点,其他任意两点最短距离的期望. $ (2\leq n,m\leq 1000)$<br>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2016/08/06/HDU5725/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2016/08/06/git使用小结/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="BigHead">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="BigHead">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2016/08/06/git使用小结/" itemprop="url">git使用小结</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-08-06T01:28:20+08:00">
-                2016-08-06
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/git使用小结/" itemprop="url" rel="index">
-                    <span itemprop="name">git使用小结</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-            <!--noindex-->
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2016/08/06/git使用小结/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count hc-comment-count" data-xid="2016/08/06/git使用小结/" itemprop="commentsCount"></span>
-                </a>
-              </span>
-              <!--/noindex-->
-            
-          
-
-          
-          
-             <span id="/2016/08/06/git使用小结/" class="leancloud_visitors" data-flag-title="git使用小结">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数&#58;</span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <hr>
-<h6 id="由于不经常使用git-经常忘记一些常用命令-而每次用的时候又是重新学习-这里记下一些常用方便以后使用"><a href="#由于不经常使用git-经常忘记一些常用命令-而每次用的时候又是重新学习-这里记下一些常用方便以后使用" class="headerlink" title="由于不经常使用git,经常忘记一些常用命令,而每次用的时候又是重新学习,这里记下一些常用方便以后使用"></a>由于不经常使用git,经常忘记一些常用命令,而每次用的时候又是重新学习,这里记下一些常用方便以后使用</h6><ul>
-<li>git 本地添加远程仓库<ul>
-<li>git remote add  origin git@github.com:zerolxf/zero.git</li>
-</ul>
-</li>
-</ul>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2016/08/06/git使用小结/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -2118,7 +2092,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">44</span>
+                  <span class="site-state-item-count">45</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -2140,7 +2114,7 @@
               
               <div class="site-state-item site-state-tags">
                 
-                  <span class="site-state-item-count">32</span>
+                  <span class="site-state-item-count">33</span>
                   <span class="site-state-item-name">标签</span>
                 
               </div>
