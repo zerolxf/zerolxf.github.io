@@ -12,7 +12,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: http://zerolxf.github.io
+url: http://zeroxf.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -78,3 +78,9 @@ deploy:
   type: git
   repo: git@github.com:zerolxf/zerolxf.github.io.git
   branch: master
+
+sitemap: 
+  path: sitemap.xml
+baidusitemap: 
+  path: baidusitemap.xml
+
