@@ -346,49 +346,6 @@
   </entry>
   
   <entry>
-    <title>Ubuntu 安装必备</title>
-    <link href="http://zeroxf.com/2016/11/09/list-md/"/>
-    <id>http://zeroxf.com/2016/11/09/list-md/</id>
-    <published>2016-11-09T15:26:49.000Z</published>
-    <updated>2018-01-16T16:08:37.993Z</updated>
-    
-    <content type="html">&lt;h3 id=&quot;Ubuntu初始化&quot;&gt;&lt;a href=&quot;#Ubuntu初始化&quot; class=&quot;headerlink&quot; title=&quot;Ubuntu初始化&quot;&gt;&lt;/a&gt;Ubuntu初始化&lt;/h3&gt;&lt;h4 id=&quot;1-安装无线驱动和更新系统以及语言&quot;&gt;&lt;a href=&quot;#1-安装无线驱动和更新系统以及语言&quot; class=&quot;headerlink&quot; title=&quot;1. 安装无线驱动和更新系统以及语言&quot;&gt;&lt;/a&gt;1. 安装无线驱动和更新系统以及语言&lt;/h4&gt;&lt;h4 id=&quot;2-安装新立得和gdebi&quot;&gt;&lt;a href=&quot;#2-安装新立得和gdebi&quot; class=&quot;headerlink&quot; title=&quot;2. 安装新立得和gdebi&quot;&gt;&lt;/a&gt;2. 安装新立得和gdebi&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install synaptic&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&quot;3-安装软件&quot;&gt;&lt;a href=&quot;#3-安装软件&quot; class=&quot;headerlink&quot; title=&quot;3.安装软件&quot;&gt;&lt;/a&gt;3.安装软件&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install git vim vim-gnome vim-gtk uget ariac&lt;/code&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;这里用synaptic安装特别方便还不容易出事故&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
-&lt;h3 id=&quot;初始化github&quot;&gt;&lt;a href=&quot;#初始化github&quot; class=&quot;headerlink&quot; title=&quot;初始化github&quot;&gt;&lt;/a&gt;初始化github&lt;/h3&gt;&lt;h4 id=&quot;1-安装ssh-key&quot;&gt;&lt;a href=&quot;#1-安装ssh-key&quot; class=&quot;headerlink&quot; title=&quot;1. 安装ssh key&quot;&gt;&lt;/a&gt;1. 安装ssh key&lt;/h4&gt;&lt;h5 id=&quot;1-生成ssh-key&quot;&gt;&lt;a href=&quot;#1-生成ssh-key&quot; class=&quot;headerlink&quot; title=&quot;(1) 生成ssh key&quot;&gt;&lt;/a&gt;(1) 生成ssh key&lt;/h5&gt;&lt;p&gt;&lt;code&gt;ssh-keygen -t rsa -C &amp;quot;your_email@youremail.com&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;h5 id=&quot;（2）添加新的Key到ssh-agent&quot;&gt;&lt;a href=&quot;#（2）添加新的Key到ssh-agent&quot; class=&quot;headerlink&quot; title=&quot;（2）添加新的Key到ssh-agent&quot;&gt;&lt;/a&gt;（2）添加新的Key到ssh-agent&lt;/h5&gt;&lt;p&gt;&lt;code&gt;eval &amp;quot;$(ssh-agent -s)&amp;quot;&lt;/code&gt;&lt;br&gt;&lt;code&gt;ssh-add ~/.ssh/id_rsa&lt;/code&gt;&lt;/p&gt;
-&lt;h5 id=&quot;3-添加到github&quot;&gt;&lt;a href=&quot;#3-添加到github&quot; class=&quot;headerlink&quot; title=&quot;(3) 添加到github&quot;&gt;&lt;/a&gt;(3) 添加到github&lt;/h5&gt;&lt;h4 id=&quot;2-配置github信息&quot;&gt;&lt;a href=&quot;#2-配置github信息&quot; class=&quot;headerlink&quot; title=&quot;2. 配置github信息&quot;&gt;&lt;/a&gt;2. 配置github信息&lt;/h4&gt;&lt;p&gt;&lt;code&gt;git config --global user.name &amp;quot;Your Name&amp;quot;&lt;/code&gt;&lt;br&gt;&lt;code&gt;git config --global user.email &amp;quot;your@email.com&amp;quot;&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&quot;3-同步远端代码&quot;&gt;&lt;a href=&quot;#3-同步远端代码&quot; class=&quot;headerlink&quot; title=&quot;3. 同步远端代码&quot;&gt;&lt;/a&gt;3. 同步远端代码&lt;/h4&gt;&lt;p&gt;&lt;code&gt;git remote add origin git@github.com:zerolxf/zero.git&lt;/code&gt;&lt;/p&gt;
-&lt;h3 id=&quot;翻墙&quot;&gt;&lt;a href=&quot;#翻墙&quot; class=&quot;headerlink&quot; title=&quot;翻墙&quot;&gt;&lt;/a&gt;翻墙&lt;/h3&gt;&lt;h4 id=&quot;1-shadowsocks安装&quot;&gt;&lt;a href=&quot;#1-shadowsocks安装&quot; class=&quot;headerlink&quot; title=&quot;1. shadowsocks安装&quot;&gt;&lt;/a&gt;1. shadowsocks安装&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo add-apt-repository ppa:hzwhuang/ss-qt5&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get update&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get install shadowsocks-qt5&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&quot;2-proxychains安装&quot;&gt;&lt;a href=&quot;#2-proxychains安装&quot; class=&quot;headerlink&quot; title=&quot;2. proxychains安装&quot;&gt;&lt;/a&gt;2. proxychains安装&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install proxychains&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;修改最后一行配置信息为socks5 127.0.0.1 1080&lt;br&gt;&lt;code&gt;sudo vim /etc/proxychains.conf&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&quot;3-uget的安装：&quot;&gt;&lt;a href=&quot;#3-uget的安装：&quot; class=&quot;headerlink&quot; title=&quot;3. uget的安装：&quot;&gt;&lt;/a&gt;3. uget的安装：&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo add-apt-repository ppa:plushuang-tw/uget-stable&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get update&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get install uget&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&quot;4-aria2的安装：&quot;&gt;&lt;a href=&quot;#4-aria2的安装：&quot; class=&quot;headerlink&quot; title=&quot;4. aria2的安装：&quot;&gt;&lt;/a&gt;4. aria2的安装：&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo add-apt-repository ppa:t-tujikawa/ppa&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get update&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get install aria2&lt;/code&gt;&lt;/p&gt;
-&lt;p&gt;=======&lt;br&gt;bcloud&lt;br&gt;chorme&lt;br&gt;shadowsock&lt;br&gt;星际翻译&lt;br&gt;git&lt;br&gt;nodejs &amp;amp; hexo&lt;br&gt;and so on&lt;br&gt;vim&lt;/p&gt;
-&lt;h3 id=&quot;参考链接&quot;&gt;&lt;a href=&quot;#参考链接&quot; class=&quot;headerlink&quot; title=&quot;参考链接&quot;&gt;&lt;/a&gt;参考链接&lt;/h3&gt;&lt;h4 id=&quot;socks5-强转http&quot;&gt;&lt;a href=&quot;#socks5-强转http&quot; class=&quot;headerlink&quot; title=&quot;socks5 强转http&quot;&gt;&lt;/a&gt;socks5 强转http&lt;/h4&gt;&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/liuxuzzz/p/5324749.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;privoxy&lt;/a&gt;&lt;/p&gt;
-&lt;h4 id=&quot;淘宝镜像安装hexo&quot;&gt;&lt;a href=&quot;#淘宝镜像安装hexo&quot; class=&quot;headerlink&quot; title=&quot;淘宝镜像安装hexo&quot;&gt;&lt;/a&gt;淘宝镜像安装hexo&lt;/h4&gt;&lt;p&gt;&lt;a href=&quot;https://npm.taobao.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;淘宝镜像&lt;/a&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;&lt;del&gt;nmp,nodejs直接用新立得安装&lt;/del&gt;&lt;br&gt;这里还是到&lt;a href=&quot;https://nodejs.org/en/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nodejs官网&lt;/a&gt;,直接下载压缩包,然后解压,把解压后的bin目录添加到PATH环境变量中去,记得PATH=$PATH:xxx/bin&lt;/p&gt;
-&lt;/blockquote&gt;
-</content>
-    
-    <summary type="html">
-    
-      &lt;h3 id=&quot;Ubuntu初始化&quot;&gt;&lt;a href=&quot;#Ubuntu初始化&quot; class=&quot;headerlink&quot; title=&quot;Ubuntu初始化&quot;&gt;&lt;/a&gt;Ubuntu初始化&lt;/h3&gt;&lt;h4 id=&quot;1-安装无线驱动和更新系统以及语言&quot;&gt;&lt;a href=&quot;#1-安装无线驱动和更新系统以及语言&quot; class=&quot;headerlink&quot; title=&quot;1. 安装无线驱动和更新系统以及语言&quot;&gt;&lt;/a&gt;1. 安装无线驱动和更新系统以及语言&lt;/h4&gt;&lt;h4 id=&quot;2-安装新立得和gdebi&quot;&gt;&lt;a href=&quot;#2-安装新立得和gdebi&quot; class=&quot;headerlink&quot; title=&quot;2. 安装新立得和gdebi&quot;&gt;&lt;/a&gt;2. 安装新立得和gdebi&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install synaptic&lt;/code&gt;&lt;/p&gt;
-&lt;h4 id=&quot;3-安装软件&quot;&gt;&lt;a href=&quot;#3-安装软件&quot; class=&quot;headerlink&quot; title=&quot;3.安装软件&quot;&gt;&lt;/a&gt;3.安装软件&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install git vim vim-gnome vim-gtk uget ariac&lt;/code&gt;&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;这里用synaptic安装特别方便还不容易出事故&lt;/p&gt;
-&lt;/blockquote&gt;
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
     <title>c++书籍单</title>
     <link href="http://zeroxf.com/2016/11/09/booklist/"/>
     <id>http://zeroxf.com/2016/11/09/booklist/</id>
@@ -454,6 +411,49 @@
 &lt;h5 id=&quot;阶段-1&quot;&gt;&lt;a href=&quot;#阶段-1&quot; class=&quot;headerlink&quot; title=&quot;阶段 1&quot;&gt;&lt;/a&gt;阶段 1&lt;/h5&gt;&lt;p&gt;《Essential C++》&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;这是一本内容不多但很实用的C++入门书籍，强调快速上手与理解C++编程。本书主要围绕一系列逐渐复杂的程序问题，以及用以解决这些问题的语言特性展开讲解。你不只学到C++的函数和结构，也会学习到它们的设计目的和基本原理。&lt;/p&gt;
+&lt;/blockquote&gt;
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title>Ubuntu 安装必备</title>
+    <link href="http://zeroxf.com/2016/11/09/list-md/"/>
+    <id>http://zeroxf.com/2016/11/09/list-md/</id>
+    <published>2016-11-09T15:26:49.000Z</published>
+    <updated>2018-01-16T16:08:37.993Z</updated>
+    
+    <content type="html">&lt;h3 id=&quot;Ubuntu初始化&quot;&gt;&lt;a href=&quot;#Ubuntu初始化&quot; class=&quot;headerlink&quot; title=&quot;Ubuntu初始化&quot;&gt;&lt;/a&gt;Ubuntu初始化&lt;/h3&gt;&lt;h4 id=&quot;1-安装无线驱动和更新系统以及语言&quot;&gt;&lt;a href=&quot;#1-安装无线驱动和更新系统以及语言&quot; class=&quot;headerlink&quot; title=&quot;1. 安装无线驱动和更新系统以及语言&quot;&gt;&lt;/a&gt;1. 安装无线驱动和更新系统以及语言&lt;/h4&gt;&lt;h4 id=&quot;2-安装新立得和gdebi&quot;&gt;&lt;a href=&quot;#2-安装新立得和gdebi&quot; class=&quot;headerlink&quot; title=&quot;2. 安装新立得和gdebi&quot;&gt;&lt;/a&gt;2. 安装新立得和gdebi&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install synaptic&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-安装软件&quot;&gt;&lt;a href=&quot;#3-安装软件&quot; class=&quot;headerlink&quot; title=&quot;3.安装软件&quot;&gt;&lt;/a&gt;3.安装软件&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install git vim vim-gnome vim-gtk uget ariac&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里用synaptic安装特别方便还不容易出事故&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;a id=&quot;more&quot;&gt;&lt;/a&gt;
+&lt;h3 id=&quot;初始化github&quot;&gt;&lt;a href=&quot;#初始化github&quot; class=&quot;headerlink&quot; title=&quot;初始化github&quot;&gt;&lt;/a&gt;初始化github&lt;/h3&gt;&lt;h4 id=&quot;1-安装ssh-key&quot;&gt;&lt;a href=&quot;#1-安装ssh-key&quot; class=&quot;headerlink&quot; title=&quot;1. 安装ssh key&quot;&gt;&lt;/a&gt;1. 安装ssh key&lt;/h4&gt;&lt;h5 id=&quot;1-生成ssh-key&quot;&gt;&lt;a href=&quot;#1-生成ssh-key&quot; class=&quot;headerlink&quot; title=&quot;(1) 生成ssh key&quot;&gt;&lt;/a&gt;(1) 生成ssh key&lt;/h5&gt;&lt;p&gt;&lt;code&gt;ssh-keygen -t rsa -C &amp;quot;your_email@youremail.com&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;h5 id=&quot;（2）添加新的Key到ssh-agent&quot;&gt;&lt;a href=&quot;#（2）添加新的Key到ssh-agent&quot; class=&quot;headerlink&quot; title=&quot;（2）添加新的Key到ssh-agent&quot;&gt;&lt;/a&gt;（2）添加新的Key到ssh-agent&lt;/h5&gt;&lt;p&gt;&lt;code&gt;eval &amp;quot;$(ssh-agent -s)&amp;quot;&lt;/code&gt;&lt;br&gt;&lt;code&gt;ssh-add ~/.ssh/id_rsa&lt;/code&gt;&lt;/p&gt;
+&lt;h5 id=&quot;3-添加到github&quot;&gt;&lt;a href=&quot;#3-添加到github&quot; class=&quot;headerlink&quot; title=&quot;(3) 添加到github&quot;&gt;&lt;/a&gt;(3) 添加到github&lt;/h5&gt;&lt;h4 id=&quot;2-配置github信息&quot;&gt;&lt;a href=&quot;#2-配置github信息&quot; class=&quot;headerlink&quot; title=&quot;2. 配置github信息&quot;&gt;&lt;/a&gt;2. 配置github信息&lt;/h4&gt;&lt;p&gt;&lt;code&gt;git config --global user.name &amp;quot;Your Name&amp;quot;&lt;/code&gt;&lt;br&gt;&lt;code&gt;git config --global user.email &amp;quot;your@email.com&amp;quot;&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-同步远端代码&quot;&gt;&lt;a href=&quot;#3-同步远端代码&quot; class=&quot;headerlink&quot; title=&quot;3. 同步远端代码&quot;&gt;&lt;/a&gt;3. 同步远端代码&lt;/h4&gt;&lt;p&gt;&lt;code&gt;git remote add origin git@github.com:zerolxf/zero.git&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;翻墙&quot;&gt;&lt;a href=&quot;#翻墙&quot; class=&quot;headerlink&quot; title=&quot;翻墙&quot;&gt;&lt;/a&gt;翻墙&lt;/h3&gt;&lt;h4 id=&quot;1-shadowsocks安装&quot;&gt;&lt;a href=&quot;#1-shadowsocks安装&quot; class=&quot;headerlink&quot; title=&quot;1. shadowsocks安装&quot;&gt;&lt;/a&gt;1. shadowsocks安装&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo add-apt-repository ppa:hzwhuang/ss-qt5&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get update&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get install shadowsocks-qt5&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;2-proxychains安装&quot;&gt;&lt;a href=&quot;#2-proxychains安装&quot; class=&quot;headerlink&quot; title=&quot;2. proxychains安装&quot;&gt;&lt;/a&gt;2. proxychains安装&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install proxychains&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;修改最后一行配置信息为socks5 127.0.0.1 1080&lt;br&gt;&lt;code&gt;sudo vim /etc/proxychains.conf&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-uget的安装：&quot;&gt;&lt;a href=&quot;#3-uget的安装：&quot; class=&quot;headerlink&quot; title=&quot;3. uget的安装：&quot;&gt;&lt;/a&gt;3. uget的安装：&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo add-apt-repository ppa:plushuang-tw/uget-stable&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get update&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get install uget&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;4-aria2的安装：&quot;&gt;&lt;a href=&quot;#4-aria2的安装：&quot; class=&quot;headerlink&quot; title=&quot;4. aria2的安装：&quot;&gt;&lt;/a&gt;4. aria2的安装：&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo add-apt-repository ppa:t-tujikawa/ppa&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get update&lt;/code&gt;&lt;br&gt;&lt;code&gt;sudo apt-get install aria2&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;=======&lt;br&gt;bcloud&lt;br&gt;chorme&lt;br&gt;shadowsock&lt;br&gt;星际翻译&lt;br&gt;git&lt;br&gt;nodejs &amp;amp; hexo&lt;br&gt;and so on&lt;br&gt;vim&lt;/p&gt;
+&lt;h3 id=&quot;参考链接&quot;&gt;&lt;a href=&quot;#参考链接&quot; class=&quot;headerlink&quot; title=&quot;参考链接&quot;&gt;&lt;/a&gt;参考链接&lt;/h3&gt;&lt;h4 id=&quot;socks5-强转http&quot;&gt;&lt;a href=&quot;#socks5-强转http&quot; class=&quot;headerlink&quot; title=&quot;socks5 强转http&quot;&gt;&lt;/a&gt;socks5 强转http&lt;/h4&gt;&lt;p&gt;&lt;a href=&quot;http://www.cnblogs.com/liuxuzzz/p/5324749.html&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;privoxy&lt;/a&gt;&lt;/p&gt;
+&lt;h4 id=&quot;淘宝镜像安装hexo&quot;&gt;&lt;a href=&quot;#淘宝镜像安装hexo&quot; class=&quot;headerlink&quot; title=&quot;淘宝镜像安装hexo&quot;&gt;&lt;/a&gt;淘宝镜像安装hexo&lt;/h4&gt;&lt;p&gt;&lt;a href=&quot;https://npm.taobao.org/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;淘宝镜像&lt;/a&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;del&gt;nmp,nodejs直接用新立得安装&lt;/del&gt;&lt;br&gt;这里还是到&lt;a href=&quot;https://nodejs.org/en/&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;nodejs官网&lt;/a&gt;,直接下载压缩包,然后解压,把解压后的bin目录添加到PATH环境变量中去,记得PATH=$PATH:xxx/bin&lt;/p&gt;
+&lt;/blockquote&gt;
+</content>
+    
+    <summary type="html">
+    
+      &lt;h3 id=&quot;Ubuntu初始化&quot;&gt;&lt;a href=&quot;#Ubuntu初始化&quot; class=&quot;headerlink&quot; title=&quot;Ubuntu初始化&quot;&gt;&lt;/a&gt;Ubuntu初始化&lt;/h3&gt;&lt;h4 id=&quot;1-安装无线驱动和更新系统以及语言&quot;&gt;&lt;a href=&quot;#1-安装无线驱动和更新系统以及语言&quot; class=&quot;headerlink&quot; title=&quot;1. 安装无线驱动和更新系统以及语言&quot;&gt;&lt;/a&gt;1. 安装无线驱动和更新系统以及语言&lt;/h4&gt;&lt;h4 id=&quot;2-安装新立得和gdebi&quot;&gt;&lt;a href=&quot;#2-安装新立得和gdebi&quot; class=&quot;headerlink&quot; title=&quot;2. 安装新立得和gdebi&quot;&gt;&lt;/a&gt;2. 安装新立得和gdebi&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install synaptic&lt;/code&gt;&lt;/p&gt;
+&lt;h4 id=&quot;3-安装软件&quot;&gt;&lt;a href=&quot;#3-安装软件&quot; class=&quot;headerlink&quot; title=&quot;3.安装软件&quot;&gt;&lt;/a&gt;3.安装软件&lt;/h4&gt;&lt;p&gt;&lt;code&gt;sudo apt-get install git vim vim-gnome vim-gtk uget ariac&lt;/code&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;这里用synaptic安装特别方便还不容易出事故&lt;/p&gt;
 &lt;/blockquote&gt;
     
     </summary>
