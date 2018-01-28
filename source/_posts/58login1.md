@@ -1,5 +1,7 @@
 ---
 title: Java 模拟 58登录 （一） 分析
+categories:
+    - Java
 date: 2018-01-17 00:23:36
 tags: Java
 ---
@@ -8,6 +10,7 @@ tags: Java
 > 实习期间需要做一个模拟58登录然后爬取简历，第一次做项目遇到很多坑
 同时网上关于58登录的又没有很多资料，遇到了很多坑，这里记录一下，方便自己以及他人学习
 
+<!-- more -->
 
 源代码放在[Github](https://github.com/zerolxf/Login58)
 
