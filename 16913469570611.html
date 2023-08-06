@@ -1,0 +1,744 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  Java 模拟58登录(二) 实现 - zeroxf
+  
+  </title>
+  
+  
+  <link href="atom.xml" rel="alternate" title="zeroxf" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+ 
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:zerolxf.github.io ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_blank" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_blank" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; zeroxf</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_blank" href="index.html">Home</a></li>
+        
+        <li><a target="_blank" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html">GPT 读论文</a></li>
+        
+            <li><a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html">配置使用</a></li>
+        
+            <li><a href="java.html">java</a></li>
+        
+            <li><a href="c++.html">c++</a></li>
+        
+            <li><a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html">数学&优化&算法</a></li>
+        
+            <li><a href="python.html">python</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>Java 模拟58登录(二) 实现</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2023/08/07</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='java.html'>java</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <blockquote>
+<p>实习期间需要做一个模拟58登录然后爬取简历，之前已经写了一篇分析，现在具体实现过程</p>
+</blockquote>
+<span id="more"></span><!-- more -->
+<h2><a id="%E5%AE%9E%E7%8E%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>实现</h2>
+<h3><a id="%E6%B5%81%E7%A8%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>流程</h3>
+<p>根据之前的分析可以得出58登录的大致流程如下</p>
+<blockquote>
+<ul>
+<li>发送Get请求（data？）， 获取 token</li>
+</ul>
+</blockquote>
+<ul>
+<li>发送Get请求（getcode？）， 请求发送手机验证码， 同时获得一个tokencode</li>
+<li>发送Get请求（login？）， 输入手机号，动态码以及其他相关参数来发送登录请求</li>
+<li>登录成功</li>
+</ul>
+<h3><a id="%E9%A2%84%E5%A4%84%E7%90%86" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>预处理</h3>
+<p>除了上述所说的步骤外，还有很多需要处理的底层实现细节，比如解析Cookie， 构造必须的参数</p>
+<h4><a id="%E8%AE%BE%E7%BD%AE%E5%BF%85%E9%A1%BB%E5%8F%82%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>设置必须参数</h4>
+<ul>
+<li>FINGERPRINT 和FINGERPRINT2是网页登录的时候直接抓取的，我试过随机修改后面几个数字依旧可以登录</li>
+<li>JQUERYSTR 只是jquery调用时候自动生成的参数，为了不出现什么问题我也加上了</li>
+<li>initTime initTime表示页面加载时间，后面加密时候需要用到的时间戳这个参数，这里所有需要的时间戳都是(需要的时间戳时刻b-initTime+ const time 1411093327735L)</li>
+<li>TOKENCODE 和 TOKEN 是调用的时候获取的参数</li>
+</ul>
+<pre class="line-numbers"><code class="language-Java">	private String FRONTEND_URL = &quot;http://passport.58.com/frontend/data?&quot;;
+	private String TOKENCODE_URL = &quot;http://passport.58.com/mobile/getcode?&quot;;
+	private String LOGIN_URL = &quot;https://passport.58.com/mobile/pc/login?&quot;;
+	private String FINGERPRINT = &quot;421A592E9D98DC7C0711A36033A582E84360ED23C621CCE3_011&quot;;
+	private String FIGNERPRINT2 = &quot;zh-CN|24|1|4|1600_900|1600_860|-480|1|1|1|undefined|undefined|&quot;
+			+ &quot;unknown|Win64|unspecified|1|false|false|false|true|false|&quot;
+			+ &quot;0_true_true|d41d8cd98f00b204e9800998ecf8427F|b01de87fcefd32c68d348cd9d18b62d9&quot;;
+	private String JQUERYSTR = &quot;jQuery183025066063002634587_&quot; + getNow();
+	private long initTime = (new Date()).getTime();
+	private String TOKENCODE = &quot;&quot;;
+	private String TOKEN = &quot;&quot;;
+</code></pre>
+<h4><a id="%E8%A7%A3%E6%9E%90cookie" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解析Cookie</h4>
+<p>这里实际写的时候遇到了坑点, 最初底层实现Cookie是参考<a href="https://stackoverflow.com/questions/5574530/how-to-parse-a-cookie-string">stackoverflow</a>中的那种实现<br />
+但是如果Cookie value中含有&quot;=&quot;,解析就是失败，刚好58的session Cookie 中含有这个！！！我也是失败很多次才知道</p>
+<pre class="line-numbers"><code class="language-plain_text">	protected CookieStore cookieStore = new BasicCookieStore();
+
+	public void setCookieStore(HttpResponse httpResponse) {
+
+		Header[] headers = httpResponse.getHeaders(&quot;Set-Cookie&quot;);
+		if (headers != null &amp;&amp; headers.length &gt; 0) {
+			for (int i = 0; i &lt; headers.length; i++) {
+				String setCookie = headers[i].getValue();
+				try {
+					BasicClientCookie cookie = this.parseRawCookie(setCookie);
+					if (!cookie.isExpired(new Date())) {
+						this.cookieStore.addCookie(cookie);
+					}
+				} catch (Exception e) {
+					// do nothing
+				}
+			}
+		}
+		this.cookieStore.clearExpired(new Date());
+	}
+
+//使用java.net.HttpCookie自带的解析，然后手动转换成BasicClientCookie
+//这里java.net.HttpCookie会有些默认行为需要注意
+	protected BasicClientCookie parseRawCookie(String rawCookie) throws Exception {
+		List&lt;HttpCookie&gt; cookies = HttpCookie.parse(rawCookie);
+		if (cookies.size() &lt; 1)
+			return null;
+		HttpCookie httpCookie = cookies.get(0);
+		BasicClientCookie cookie = new BasicClientCookie(httpCookie.getName(), httpCookie.getValue());
+		if (httpCookie.getMaxAge() &gt;= 0) {
+			Date expiryDate = new Date(System.currentTimeMillis() + httpCookie.getMaxAge() * 1000);
+			cookie.setExpiryDate(expiryDate);
+		}
+		if (httpCookie.getDomain() != null)
+			cookie.setDomain(httpCookie.getDomain());
+		if (httpCookie.getPath() != null)
+			cookie.setPath(httpCookie.getPath());
+		if (httpCookie.getComment() != null)
+			cookie.setComment(httpCookie.getComment());
+		cookie.setSecure(httpCookie.getSecure());
+		return cookie;
+	}
+</code></pre>
+<h4><a id="%E8%A7%A3%E6%9E%90response-string" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解析Response String</h4>
+<p>返回的Response类似于下面，需要提取其中的键值对</p>
+<blockquote>
+<p>jQuery18305434571389149673_1515995590691({&quot;code&quot;:0,&quot;data&quot;:{&quot;remainTime&quot;:0,&quot;token&quot;:&quot;7pjUnv6fhBONHh7A_4HrN_2rH4is-gC8&quot;,&quot;rsaModulus&quot;:&quot;xxx固定值xxx&quot;,<br />
+&quot;rsaExponent&quot;:&quot;010001&quot;,&quot;totalTime&quot;:60,&quot;mobile&quot;:&quot;手机号&quot;},&quot;msg&quot;:&quot;&quot;})</p>
+</blockquote>
+<pre class="line-numbers"><code class="language-plain_text">	protected String getResponseParameter(String response, String parameterName) {
+		String result = response.replaceAll(&quot;,|\&quot;|:&quot;, &quot; &quot;);
+		StringTokenizer tokenizer = new StringTokenizer(result, &quot; &quot;);
+		while (tokenizer.hasMoreTokens() &amp;&amp; !tokenizer.nextToken().equals(parameterName)) {
+		}
+		String token = tokenizer.nextToken();
+		return token;
+	}
+</code></pre>
+<h4><a id="%E5%8F%91%E9%80%81get%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发送Get请求模块</h4>
+<p>因为后面很多都用到get 请求，所以这里封装一下</p>
+<pre class="line-numbers"><code class="language-Java">	public String doGet(String url, String host) throws Exception {
+		CloseableHttpClient client = this.createHttpClient();
+		HttpGet get = new HttpGet(url);
+		get.addHeader(&quot;Connection&quot;, &quot;keep-alive&quot;);
+		get.addHeader(&quot;accept&quot;,
+				&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&quot;);
+		get.addHeader(&quot;accept-encoding&quot;, &quot;gzip, deflate, br&quot;);
+		get.addHeader(&quot;accept-language&quot;, &quot;en-US,en;q=0.9&quot;);
+		get.addHeader(&quot;upgrade-insecure-requests&quot;, &quot;1&quot;);
+		get.addHeader(&quot;user-agent&quot;,
+				&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36&quot;);
+		get.addHeader(&quot;Host&quot;, host);
+		CloseableHttpResponse response = client.execute(get);
+		if (response == null) {
+			throw new Exception(&quot;network error, unable to connect to 51job&quot;);
+		}
+		setCookieStore(response);
+		HttpEntity entity = response.getEntity();
+		InputStream stream = entity.getContent();
+		String result = IOUtils.toString(stream, &quot;utf-8&quot;);
+
+		IOUtils.closeQuietly(stream);
+		EntityUtils.consumeQuietly(entity);
+		HttpClientUtils.closeQuietly(client);
+		return result;
+	}
+</code></pre>
+<h4><a id="%E5%8A%A0%E5%AF%86%E5%AD%97%E7%AC%A6%E4%B8%B2" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加密字符串</h4>
+<p>QuanzhouJSUtil是一个调用js的类</p>
+<pre class="line-numbers"><code class="language-Java">	protected String encryptStr(String str) {
+		Long timeSpan = 1411093327735L;
+		Long randomLong = timeSpan + (new Date()).getTime() - initTime;
+		String timeSign = String.valueOf(randomLong);
+		String passwd = timeSign + str;
+		String encryptPwd = QuanzhouJSUtil.getEncryptString(passwd);
+		return encryptPwd;
+	}
+</code></pre>
+<h3><a id="%E5%8F%91%E9%80%81%E5%8A%A8%E6%80%81%E7%A0%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发送动态码</h3>
+<pre class="line-numbers"><code class="language-plain_text">	public void getPhoneCode(String phoneNumber) throws Exception {
+
+		// 获得token,然后用token作为参数获取tokenCode, 然后发送验证码登录时候需要用到tokenCode和token
+		String result = doGet(FRONTEND_URL + getJQueryCallBackStr(), &quot;passport.58.com&quot;);
+		TOKEN = getResponseParameter(result, &quot;token&quot;);
+
+		// 获取token code
+		String enPhone = encryptStr(phoneNumber);
+		String tokenCodeURL = TOKENCODE_URL + &quot;mobile=&quot; + enPhone + &quot;&amp;validcode=&amp;source=pc-login&amp;vcodekey=&amp;token=&quot;
+				+ TOKEN + &quot;&amp;voicetype=0&amp;codetype=0&amp;fingerprint=&quot; + FINGERPRINT + &quot;&amp;&quot; + getJQueryCallBackStr() + &quot;&amp;path=&quot;
+				+ &quot;http://my.58.com&quot;;
+		result = doGet(tokenCodeURL, &quot;passport.58.com&quot;);
+		TOKENCODE = getResponseParameter(result, &quot;tokencode&quot;);
+
+	}
+</code></pre>
+<h3><a id="%E5%8F%91%E9%80%81%E5%8A%A8%E6%80%81%E7%A0%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发送动态码</h3>
+<pre class="line-numbers"><code class="language-plain_text">	public void getPhoneCode(String phoneNumber) throws Exception {
+
+		// 获得token,然后用token作为参数获取tokenCode, 然后发送验证码登录时候需要用到tokenCode和token
+		String result = doGet(FRONTEND_URL + getJQueryCallBackStr(), &quot;passport.58.com&quot;);
+		TOKEN = getResponseParameter(result, &quot;token&quot;);
+
+		// 获取token code
+		String enPhone = encryptStr(phoneNumber);
+		String tokenCodeURL = TOKENCODE_URL + &quot;mobile=&quot; + enPhone + &quot;&amp;validcode=&amp;source=pc-login&amp;vcodekey=&amp;token=&quot;
+				+ TOKEN + &quot;&amp;voicetype=0&amp;codetype=0&amp;fingerprint=&quot; + FINGERPRINT + &quot;&amp;&quot; + getJQueryCallBackStr() + &quot;&amp;path=&quot;
+				+ &quot;http://my.58.com&quot;;
+		result = doGet(tokenCodeURL, &quot;passport.58.com&quot;);
+		TOKENCODE = getResponseParameter(result, &quot;tokencode&quot;);
+
+	}
+	
+</code></pre>
+<h3><a id="%E6%B5%8B%E8%AF%95%E7%99%BB%E5%BD%95" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>测试登录</h3>
+<pre class="line-numbers"><code class="language-plain_text">	@Test
+	public void testLogin58(){
+		preLogin();
+		String phoneNum = &quot;&quot;;
+		String mobileCode = &quot;&quot;;
+		System.out.println(&quot;请输入你的手机号码:&quot;);
+		Scanner scanner = new Scanner(System.in);
+		phoneNum = scanner.nextLine();
+		try {
+			getPhoneCode(phoneNum);
+			System.out.println(&quot;请输入你的手机验证码:&quot;);
+			mobileCode = scanner.nextLine();
+			loginJob58(phoneNum, mobileCode);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add some code to do
+		
+		
+		scanner.close();
+		
+	}
+</code></pre>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="16913469570649.html" 
+          title="Previous Post: Java 模拟 58登录 （一） 分析">&laquo; Java 模拟 58登录 （一） 分析</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="16913469570040.html" 
+          title="Next Post: JSON 格式转换成Java对象">JSON 格式转换成Java对象 &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="https://avatars.githubusercontent.com/u/12774971?v=4" /></div>
+            
+                <h1>zeroxf</h1>
+                <div class="site-des"></div>
+                <div class="social">
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/zerolxf" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:liangxianfeng96@qq.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html"><strong>GPT 读论文</strong></a>
+        
+            <a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html"><strong>配置使用</strong></a>
+        
+            <a href="java.html"><strong>java</strong></a>
+        
+            <a href="c++.html"><strong>c++</strong></a>
+        
+            <a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html"><strong>数学&优化&算法</strong></a>
+        
+            <a href="python.html"><strong>python</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="16913487231002.html">搭建正向反向代理</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913486248203.html">二阶随机优化算法</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485508310.html">Pandas 读取文本数据</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485233251.html">Pandas 数据整合</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485004157.html">Python 数据分析画图&one-hot编码</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="asset/prism.js"></script>
+
+
+<style type="text/css">
+figure{margin: 0;padding: 0;}
+figcaption{text-align:center;}
+
+/* PrismJS 1.14.0
+ http://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript */
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: black;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    text-shadow: none;
+    background:#b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    text-shadow: none;
+    background: #b3d4fc;
+}
+
+@media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+        text-shadow: none;
+    }
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #F7F7F7;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: slategray;
+}
+
+.token.punctuation {
+    color: #999;
+}
+
+.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+    background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #07a;
+}
+
+.token.function,
+.token.class-name {
+    color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #e90;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+
+pre[class*="language-"].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+    .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+    }
+
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            color: #999;
+            display: block;
+            padding-right: 0.8em;
+            text-align: right;
+        }
+
+</style>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+
+
+  </body>
+</html>

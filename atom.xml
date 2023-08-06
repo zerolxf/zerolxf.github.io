@@ -1,0 +1,2107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[zeroxf]]></title>
+  <link href="https://zerolxf.github.io/atom.xml" rel="self"/>
+  <link href="https://zerolxf.github.io/"/>
+  <updated>2023-08-07T03:28:17+08:00</updated>
+  <id>https://zerolxf.github.io/</id>
+  <author>
+    <name><![CDATA[]]></name>
+    
+  </author>
+  <generator uri="http://www.mweb.im/">MWeb</generator>
+  
+  <entry>
+    <title type="html"><![CDATA[搭建正向反向代理]]></title>
+    <link href="https://zerolxf.github.io/16913487231002.html"/>
+    <updated>2023-08-07T03:05:23+08:00</updated>
+    <id>https://zerolxf.github.io/16913487231002.html</id>
+    <content type="html"><![CDATA[
+<p>现在有两台机器A，B<br />
+A位于内网中，一般机器无法访问，但是A可以访问B，B可以是公网机器也可以是内网中可以外网访问的机器</p>
+<span id="more"></span><!-- more -->
+<p>那么这个时候，就可以在机器A上搭建一个反向代理，让A登陆到B并且把A的某个端口portA映射到机器B的portB上</p>
+<p>具体如下需使用的ssh参数</p>
+<blockquote>
+<p>反向代理 <code>ssh -fCNR</code><br />
+正向代理 <code>ssh -fCNL</code></p>
+</blockquote>
+<ul>
+<li>f 后台执行ssh指令</li>
+<li>C 允许压缩数据</li>
+<li>N 不执行远程指令</li>
+<li>R 将远程主机(服务器)的某个端口转发到本地主机指定的端口</li>
+<li>L 将本地机(客户机)的某个端口转发到远端指定机器的指定端口</li>
+<li>p 指定远程主机的端口</li>
+</ul>
+<h2><a id="%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>反向代理</h2>
+<p>ssh -fCNR [B机器IP或省略]:[B机器端口]:[A机器的IP]:[A机器的sshd端口] [登录B机器的用户名@B机器的IP] -p [B机器的sshd端口]<br />
+具体例子，在机器A上执行<br />
+<code>ssh -fCNR 6320:localhost:3303 -o ServerAliveInterval=60 liangxianfeng@172.18.255.70 -p 22</code></p>
+<h4><a id="%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E5%BB%BA%E7%AB%8B%E6%88%90%E5%8A%9F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>检查是否建立成功</h4>
+<p>在机器A上执行<code>ps aux | grep ssh</code><br />
+或者机器B上执行<code>netstat -antpul | grep '127.0.0.1:6320'</code></p>
+<p>ssh -fCNR 6320:localhost:3763 -o ServerAliveInterval=60 nameB@ipB -p 22<br />
+<a href="https://www.cnblogs.com/kwongtai/p/6903420.html">参考链接</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[二阶随机优化算法]]></title>
+    <link href="https://zerolxf.github.io/16913486248203.html"/>
+    <updated>2023-08-07T03:03:44+08:00</updated>
+    <id>https://zerolxf.github.io/16913486248203.html</id>
+    <content type="html"><![CDATA[
+<p>最近看了几篇二阶优化算法，现在总结一下，以便日后查阅</p>
+<h2><a id="%E4%BA%8C%E9%98%B6%E7%AE%97%E6%B3%95" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>二阶算法</h2>
+<blockquote>
+<p>二阶优化算法又称为牛顿法，牛顿法是微积分学中， 通过迭代以求解可微函数f的零点的一种算法，而在最优化中，牛顿法通常被运用于求解一个二次可微函数f的一阶导数f’的零点x， 同时也是f的驻点。 因此从另一个角度而言，应用于最优化中的牛顿法是求解函数 f(x)的最小值或最大值的一种算法。</p>
+</blockquote>
+<p>二阶算法都是从牛顿法演变而来，关于牛顿法详情可以参考我另外一篇博客</p>
+<span id="more"></span><!-- more -->
+<h3><a id="%E4%BC%A0%E7%BB%9F%E4%BA%8C%E9%98%B6%E7%AE%97%E6%B3%95%E7%BC%BA%E9%99%B7" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>传统二阶算法缺陷</h3>
+<p>传统的二阶优化方法如牛顿法，主要有两个缺陷，一个是需要计算Hessian矩阵，需要O(np^2) 的复杂度，另外一个便是计算Hessian的逆矩阵需要O(p^3 )的复杂度。而在p维度很高的时候，传统二阶优化法显然不能够适用。</p>
+<h2><a id="%E9%9A%8F%E6%9C%BA%E7%AE%97%E6%B3%95" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>随机算法</h2>
+<p>随机梯度下降类算法以及其改进SVRG、SAGA等算法的提出，大大降低了算法迭代一次所需要的时间。在最近的相关研究中，随机一阶优化算法已经在机器学习优化模型中占据主导支配地位，这很大是由于它能够在大规模的模型训练中提供可负担的线性计算成本。对一阶优化算法提升起到主要贡献的研究工作，其中包括adaptive regularization， variance reduction，dual coordinate ascent。与之对比，二阶优化算法由于每次迭代需要计算一次Hessian矩阵以及Hessian的逆，其一次迭代过高的计算复杂性和消耗大量内存导致不能够适用于大规模的机器学习应用之中。</p>
+<p>近期，让二阶算法适用于大规模机器学习中，有了相关进展工作。其中主要典型的研究工作有（包括但不局限于以下）：1.Stochastic L-BFGS 2. NewSamp 3.LiSSA。他们都是从不同角度解决二阶方法的局限性，下面将分别介绍这三种方法。</p>
+<h2><a id="newsamp" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>NewSamp</h2>
+<blockquote>
+<p>A Newton method via sub-sampling and eigenvalue thresholding</p>
+</blockquote>
+<p>这里的NewSamp核心想法就是对Hessain子采样(sub-sampling)以及低秩矩阵近似(low-rank approximation),这里为什么可以低秩近似?需要先对奇异值含义有所理解,可以参考知乎问题<br />
+<a href="https://www.zhihu.com/question/22237507">奇异值的物理意义是什么？</a></p>
+<h3><a id="newsamp%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>NewSamp算法分析</h3>
+<p>NewSamp他实质是基于子采样的牛顿法，是一个很简洁的算法。</p>
+<ol>
+<li>首先，NewSamp通过子采样避免对所有样本求Hessian。</li>
+<li>对于Hessian求逆. 牛顿法主要通过发掘Hessian的中所包含的曲率信息达到加速效果，由于重要的二阶曲率信息一般包含在最大的若干个特征值以及其对应的特征向量中。因而对于Hessian求逆的问题，NewSamp采用低秩矩阵近似技术来得到Hessian矩阵逆的近似。假如目标函数是凸函数，那么对应的Hessian矩阵特征值便是非负，对称的Hessian矩阵的奇异值和特征值相同，因而算法NewSamp采用截断SVD分解获得前k大的特征值以及对应特征向量, 然后快速得到Hessian的逆。</li>
+</ol>
+<h3><a id="%E8%B4%A1%E7%8C%AE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>贡献</h3>
+<p>NewSamp的最主要贡献，是在提供良好收敛效果的同时提供了理论保证。</p>
+<h3><a id="%E7%AE%97%E6%B3%95%E8%BF%87%E7%A8%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>算法过程</h3>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/31.png" alt="NewSamp" /></p>
+<p>这里作者并没有直接套用最基本的rank-r approximation</p>
+<blockquote>
+<p>To construct the curvature matrix [Qt]−1, instead of using the basic rank-r approximation, we fill its 0 eigenvalues with the (r+1)-th eigenvalue of the sub-sampled Hessian which is the largest eigenvalue below the threshold.</p>
+</blockquote>
+<p>这里如果我没有理解错的话,应该是让奇异值小于(r+1)以后的奇异值都变为第(r+1)个奇异值,黄色高亮部分就是这句话优雅的数学表达形式</p>
+<p>这里的投影操作实际可以不用,用了只会效果更好,作者在后面的理论证明中直接跳过了投影这个操作</p>
+<h3><a id="%E5%AE%9E%E9%AA%8C%E7%BB%93%E6%9E%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>实验结果</h3>
+<p>表现最好的那个就是NewSamp<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/32.png" alt="NewSamp2" /></p>
+<h2><a id="stochastic-l-bfgs%E7%AE%97%E6%B3%95" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Stochastic L-BFGS算法</h2>
+<blockquote>
+<p><em>the limited-memory version of the classic BFGS algorithm</em></p>
+</blockquote>
+<p>在牛顿法的迭代中， 需要计算Hessian矩阵的逆矩阵这一计算比较复杂，考虑用一个n阶矩阵\(G_k\)近似代替\(H_k^{-1}\)。这就是拟牛顿法中基本想法，BFGS算法是最流行的拟牛顿算法。但是BFGS算法需要存储上一次迭代中的Hessian，这消耗大量内存，因而改良版的基于Hessian-vector的Limited BFGS算法提出。.最新的论文<em>A Linearly-Convergent Stochastic L-BFGS Algorithm</em>中加入了<strong>variance reduction</strong>和<strong>随机优化</strong>, 让它能够处理一些稍大规模的优化问题,并且以较好的线性收敛</p>
+<h3><a id="%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>算法分析</h3>
+<p>在SVRG和SAGA算法提出后，随机算法各方面性能有了显著提升，基于L-BFGS的随机优化算法也相应提出，其在部分数据上的实验效果不亚于SVRG等主流算法。</p>
+<p>个人感觉Stochastic L-BFGS主要由以下三点保证了他的优势：</p>
+<ul>
+<li>基于BFGS的拟牛顿法的良好算法性能</li>
+<li>基于Hessian-vector思想而不必存储Hessian矩阵以及减少计算复杂度.</li>
+<li>基于Variance Reduce的随机梯度估计矫正。</li>
+</ul>
+<p>但是他有明显的劣势，有很多参数需要设置。这里有一个值得关注的地方, SLBFGS算法他的Hessian是一个类似于增量不断更新的, 并且和方差约减后的梯度相乘</p>
+<h3><a id="%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>算法流程</h3>
+<p>每m次计算一次全梯度,来减少variance<br />
+每L次算法更新一次Hessian矩阵，这里的更新利用了过去M次（Sj, Yj）的曲率信息<br />
+Sr记录过去2L次的平均方向<br />
+Yr是Sr和Hessian矩阵相乘得出的<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/21.png" alt="L-BFGS" /></p>
+<p>这里黄色高亮的部分就是variance reduction,这里可以说是L-BFGS加入了<strong>variance reduction</strong>,也反过来说是<strong>variance reduction</strong>加入了二阶信息,而这里采用了随机优化后的L-BFGS</p>
+<h2><a id="lissa" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lissa</h2>
+<blockquote>
+<p>LiSSA: Algorithm 1 is a practical stochastic second-order algorithm based on a novel estimator of the Hessian inverse, leading to an efficient approximate Newton step (Equation 1). The estimator is based on the well known Taylor approximation of the inverse</p>
+</blockquote>
+<p>Lissa 核心想法是通过Taylor来近似逆从而对Hessain逆进行采样<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/42.png" alt="Taylor approximation" /></p>
+<h3><a id="%E7%AE%97%E6%B3%95%E5%88%86%E6%9E%90" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>算法分析</h3>
+<p>LiSSA是一个具有实际应用价值的二阶随机算法，他为二阶优化算法提出一种新颖的思路。NewSamp是对通过子采样估计出一个较为精确的Hessian，然后通过矩阵分解得出Hessian的逆的近似。随机版本的L-BFGS则是基于拟牛顿思路，通过构造得出满足拟牛顿条件并和原Hessian的逆尽可能接近的矩阵。但是LiSSA则是通过对Hessian的逆的泰勒展开式，得出Hessian逆与Hessian的等式，再通过对Hessian的进行采样估计，来直接估计出Hessian的逆。LiSSA的思路完全不同于上述两种算法，同时LiSSA算法采用Hessian-vector product对形式因而对广义线性模型具有更加明显的优势。</p>
+<h3><a id="%E7%AE%97%E6%B3%95%E6%B5%81%E7%A8%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>算法流程</h3>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/41.png" alt="算法" /></p>
+<p>这里S1表示采样数量的多少<br />
+S2表示一个采样中Taylor近似的深度<br />
+这里的X[i,j]表示的是梯度和 Hessain逆估计的乘积,是一个向量</p>
+<p>高亮的部分其实就是之前Hessain逆的Taylor近似的递推形式,原理如下<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/43.png" alt="递推" /></p>
+<p>这里递推初始化是梯度, 相当于在原来的递推式子上面都乘以了梯度, 最后得出的就是迭代量,拟牛顿法中的p</p>
+<p>这里用X向量可以简化运算</p>
+<h3><a id="lissa%E7%9A%84%E5%8F%A6%E5%A4%96%E4%B8%80%E7%A7%8D%E7%90%86%E8%A7%A3" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Lissa的另外一种理解</h3>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/45.png" alt="理解" /></p>
+<p>这里通过\(y=x- x_{t-1}\) 以及替换f(x)中的x,  并在点\(x_{t-1}\)泰勒展开得到上式中的Q(y)表达式, 那么原本的求f(x)最小值等价于Q(y)最小值<br />
+Q(y)相当于是对f(x)的二阶近似, 此处转化为对Q(y)的求最值, 然后这是一个二次函数, 我们可以用一般梯度下降算法对此处求最值, 也就是\(y_t^{i+1}\)的迭代式,这里他的形式和Lissa的迭代形式很像, 所以可以看做是Lissa的一种理解, 也可以理解Lissa能够获得线性收敛率的原因</p>
+<h2><a id="%E4%BA%8C%E9%98%B6%E4%BC%98%E5%8C%96%E7%9A%84%E9%97%AE%E9%A2%98" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>二阶优化的问题</h2>
+<p>这里是师兄对我提的问题,我觉得很有意思,需要理解才行</p>
+<h3><a id="%E4%B8%BA%E4%BB%80%E4%B9%88%E4%BA%8C%E9%98%B6%E6%96%B9%E6%B3%95%E5%BF%AB" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>为什么二阶方法快</h3>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/46.png" alt="图解" /><br />
+在<em>Deep learning via Hessian-free optimization</em>中有简单提到, 当解处于一个类似于平原的时候, 普通梯度下降如果仍旧以原来的步伐走, 那么需要很久才能走出来, 如果此时乘以一个Hessain的逆, 那么可以想象这里的Hessain表示曲率. Hessain曲率偏小, 他的必然就会放大步伐</p>
+<p>相反,如果梯度变化太快,如果仍旧原步伐, 很可能就来到一个很差的点, 乘以Hessain的逆,可以放慢步伐</p>
+<h3><a id="%E6%96%87%E7%AB%A0%E4%B8%AD%E9%83%BD%E8%AF%B4%E6%98%AF%E8%80%83%E8%99%91%E8%BF%9B%E6%9D%A5%E4%BA%86%E6%9B%B2%E7%8E%87%E4%BF%A1%E6%81%AF%E6%98%AF%E6%80%8E%E4%B9%88%E8%80%83%E8%99%91%E7%9A%84%EF%BC%9F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>文章中都说是考虑进来了曲率信息    是怎么考虑的？</h3>
+<h3><a id="hessian%E7%9F%A9%E9%98%B5%E6%98%AF%E5%A6%82%E4%BD%95%E6%90%BA%E5%B8%A6%E6%9B%B2%E7%8E%87%E4%BF%A1%E6%81%AF%E7%9A%84%E9%A2%9D%EF%BC%9F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Hessian矩阵是如何携带曲率信息的额？</h3>
+<p>参考文献</p>
+<ol>
+<li>《统计学习方法》 -李航</li>
+<li>Second-Order Stochastic Optimization for Machine Learning in<br />
+Linear Time</li>
+<li>Second-Order Stochastic Optimization for Machine Learning in<br />
+Linear Time</li>
+<li>A Linearly-Convergent Stochastic L-BFGS Algorithm</li>
+<li>Deep learning via Hessian-free optimization</li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pandas 读取文本数据]]></title>
+    <link href="https://zerolxf.github.io/16913485508310.html"/>
+    <updated>2023-08-07T03:02:30+08:00</updated>
+    <id>https://zerolxf.github.io/16913485508310.html</id>
+    <content type="html"><![CDATA[
+<span id="more"></span><!-- more -->
+<h2><a id="pandas%E8%AF%BB%E5%8F%96%E6%96%87%E6%9C%AC%E6%95%B0%E6%8D%AE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pandas 读取文本数据</h2>
+<p><strong>pandas解析函数</strong><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.1.png" alt="解析函数" /></p>
+<p>如果原始数据是有标题的<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.2.png" alt="原始数据" /><br />
+<strong>read_csv调用</strong><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.3.png" alt="read_csv示例" /><br />
+<strong>read_table</strong><br />
+这里可以指定seq='\s+'等<strong>正则表达式</strong>来当分割符<br />
+如果列名比数据行数量少1,read_table会推断第一列是DataFrame的索引<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.4.png" alt="read_table示例" /></p>
+<p><strong>指定列名</strong><br />
+如果没有标题,那么可以自定义列名(names=[])或者分配默认列名(header=None)</p>
+<pre class="line-numbers"><code class="language-python"> pd.read_csv(path, header=Node)
+ pd.read_table(path, names=['a','b'])
+
+</code></pre>
+<p><strong>指定索引</strong><br />
+如果想要将指定列设置为DataFrame索引可以明确指定message该列放到索引位置或者通过index_col来指定&quot;message&quot;,想要指定多列依次传入由列编号或者列名组成的列表</p>
+<p><code>pd.read_csv(path, names=[], index_col=['key1', 'key2'])</code></p>
+<p><strong>跳过指定行</strong><br />
+使用skiprows参数<br />
+<code>pd.read_csv(path, skip_rows=[0, 2, 3])</code></p>
+<p><strong>缺失值处理</strong><br />
+默认情况下Pandas会用一组经常出现标记值进行识别,如NA -1.#IND 以及NULL等,也就说把数据中出现这些数据的当初NaN缺失</p>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.5.png" alt="读取缺失值" /></p>
+<p>也可以使用na_values指定的表示缺失值的字符串<br />
+<code>pd.read_csv(path, na_values=['NULL'])</code></p>
+<p>还可以使用一个字典sentinels为不同列指定不同的表示缺失值的字符串<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.6.jpg" alt="指定缺失值" /></p>
+<p><strong>read_csv/read_table 参数解释</strong></p>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.7.jpg" alt="参数解释1" /><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.8.jpg" alt="参数解释2" /><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.9.jpg" alt="参数解释3" /></p>
+<p><strong>逐块读取文件</strong><br />
+只想读取几行,使用nrows进行指定<br />
+<code>pd.read_table(path, nrows=5)</code></p>
+<p>要逐块读取文件,需要设置chunksize(行数).<br />
+read_csv返回TextParser对象让你可以根据chunksize对文件逐块迭代<br />
+如下图所示,可能这样能够提高效率?<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.10.jpg" alt="" /></p>
+<p><strong>将数据写到文本格式</strong><br />
+如下图所示<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.11.jpg" alt="" /></p>
+<ul>
+<li>用seq指定分隔符eg, seq='|'</li>
+<li>缺失值在输出会为空字符串,用na_seq='NULL'指定特定字符串</li>
+<li>path参数使用sys.stdout表示只输出</li>
+<li>默认会输出行列标签,可以用index=False,header=False禁用</li>
+<li>只输出部分列以及指定顺序,可以用cols=['a', 'b']</li>
+</ul>
+<h3><a id="%E6%89%8B%E5%B7%A5%E5%A4%84%E7%90%86%E5%88%86%E9%9A%94%E7%AC%A6%E6%A0%BC%E5%BC%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>手工处理分隔符格式</h3>
+<p>一个简单的处理例子如下<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.12.jpg" alt="" /></p>
+<p><strong>定义一个新读取写格式</strong><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.13.jpg" alt="" /></p>
+<p><em><strong>JSON数据</strong></em><br />
+可以通过json.loads即可将JSON字符串Python形式,json.dump将Python转为JSON格式</p>
+<pre class="line-numbers"><code class="language-python"> import json
+ result = jsons.loads(obj)
+ boj2 = jsons.dump(result)
+</code></pre>
+<p><strong>XML和HTML:WEB收集信息</strong><br />
+一个简单的读取HTML demo<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas6.14.jpg" alt="" /></p>
+<p>links是上面获取的结果,这里links存的是对象的集合,要想获取URL等信息需要使用对象的的get方法</p>
+<pre class="line-numbers"><code class="language-python"> lnk = links[28]
+ lnk.get('herf')
+ lnk.text_content()
+</code></pre>
+<p>具体关于XML的后面自己看书吧</p>
+<p><strong>读取Execl</strong><br />
+ExeclFile需要用到xlrd和openpyxl两个包,所以需要先安装,以下是创建一个ExeclFile实例以及使用parse读取到DataFrame</p>
+<pre class="line-numbers"><code class="language-python"> xls_file = pd.ExeclFile(path)
+ table = xls_file.parse('Sheet1')
+ 
+</code></pre>
+<p><strong>使用HTML和API</strong><br />
+许多网站可以通过JSON或其他格式提供公共的API,可以通过python访问这些api,其中比较简单的是request</p>
+<p>比如在Twitter搜索&quot;pyhton panda&quot;,可以发送一个gets请求</p>
+<pre class="line-numbers"><code class="language-python">import requests
+url = '...'
+resp = requests.get(url)
+# response对象text属性含有GET请求
+# 许多返回的都是JSON字符串,我们需要加载到  pyhton 对象
+import json
+data = json.loads(resp.txt)
+
+</code></pre>
+<h2><a id="%E4%BB%8E%E6%95%B0%E6%8D%AE%E4%B8%AD%E5%8F%96%E6%A0%B7" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>从数据中取样</h2>
+<p>利用Pandas库中的sample。</p>
+<pre class="line-numbers"><code class="language-plain_text">DataFrame.sample(n=None, frac=None, replace=False,weights=None, random_state=None, axis=None)
+</code></pre>
+<p>n是要抽取的行数。（例如n=20000时，抽取其中的2W行）</p>
+<p>frac是抽取的比列。（有一些时候，我们并对具体抽取的行数不关系，我们想抽取其中的百分比，这个时候就可以选择使用frac，例如frac=0.8，就是抽取其中80%）</p>
+<p>replace抽样后的数据是否代替原DataFrame()</p>
+<p>weights这个是每个样本的权重，具体可以看官方文档说明。</p>
+<p>random_state这个在之前的文章已经介绍过了。</p>
+<p>axis是选择抽取数据的行还是列。axis=0的时是抽取行，axis=1时是抽取列（也就是说axis=1时，在列中随机抽取n列，在axis=0时，在行中随机抽取n行）</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Pandas 数据整合]]></title>
+    <link href="https://zerolxf.github.io/16913485233251.html"/>
+    <updated>2023-08-07T03:02:03+08:00</updated>
+    <id>https://zerolxf.github.io/16913485233251.html</id>
+    <content type="html"><![CDATA[
+<span id="more"></span><!-- more -->
+<h2><a id="%E5%90%88%E5%B9%B6%E6%95%B0%E6%95%B0%E6%8D%AE%E9%9B%86" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>合并数数据集</h2>
+<blockquote>
+<p><strong>pandas.merge</strong>可以根据一个或者多个键将不同DataFrame合并起来<br />
+<strong>pandas.contact</strong> 可以沿着一个轴将多个对象叠到一起<br />
+<strong>combine_first</strong>可以将数据编接到一起,用一个对象中的值填充另一个值</p>
+</blockquote>
+<h3><a id="%E6%95%B0%E6%8D%AE%E5%BA%93%E9%A3%8E%E6%A0%BCdataframe%E5%90%88%E5%B9%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>数据库风格DataFrame合并</h3>
+<pre class="line-numbers"><code class="language-plain_text">pd.merge(f1, f2)            #默认将重叠列名当做键
+pd.merge(f1, f2, on='key')  #显示指定对'key'键进行连接
+pd.merge(f1, f2, left_on='lkey', right_on='rkey') #对不同列名连接
+pd.merge(f1, f2, how='outer')   #默认情况下merge做inner,也就是交集
+                                #其他方式还可以是left,right,outer
+pd.merge(f1, f2, on='key', how='left') #多对多行产生笛卡尔积
+                                #连接方式只影响出现在结果中的键
+                                
+#注意,在进行列列连接的时候,DataFrame的索引会丢弃 on可以是多个键
+</code></pre>
+<p><strong>合并运算重复列名</strong><br />
+如f1和f2都有键key1,key2,现在想要进行key1进行合并,那么key2列名重复怎么办???<br />
+可以指定附加到左右两个DataFrame重复列名上面</p>
+<pre class="line-numbers"><code class="language-plain_text">pd.merge(f1, f2, on='key1', suffixes=('_left', '_right'))
+#合并后的列名有:key1,key2_left,key2_right
+</code></pre>
+<p><strong>详细的合并参数</strong><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.1.jpg" alt="合并参数" /></p>
+<h3><a id="%E7%B4%A2%E5%BC%95%E4%B8%8A%E7%9A%84%E5%90%88%E5%B9%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>索引上的合并</h3>
+<p>有时候DataFrame的连接键位于索引中,可以传入left_index=True或者right_index=True以说明索引应该被用作连接键</p>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.2.jpg" alt="索引合并" /></p>
+<p><strong>join实例方法</strong><br />
+join可以更为方便的实现按索引合并,还可以合并多个带有相同或者相似索引的DataFrame对象,而不管他们之间有没有重叠的列</p>
+<pre class="line-numbers"><code class="language-plain_text">pd.merge(f1, f2, how='outer', left_index=True, right_index=True) #合并两个索引
+f1.join(f2, how='outer')    #和上面等价
+</code></pre>
+<p>DataFrame的join是在连接键上做左连接,他还支持参数f2的索引和调用者某个列之间连接<br />
+<code>f1.join(f2, on='key')</code></p>
+<p>对于简单的索引合并,可以用join传递多个DataFrame</p>
+<pre class="line-numbers"><code class="language-plain_text">f1.join([f2, f3]) #把他们按照f1索引左连接
+f1.join([f2, f3], how='outer') #把他们按照f索引全连接
+</code></pre>
+<h3><a id="%E8%BD%B4%E5%90%91%E8%BF%9E%E6%8E%A5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>轴向连接</h3>
+<p><strong>concatenation函数</strong><br />
+NumPy有一个用于合并原始NumPy数组的concatenation函数<br />
+具体使用方法以及作业如下<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.3.jpg" alt="concatenation函数" /></p>
+<p><strong>contact函数</strong><br />
+下面假设没有重叠索引<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.4.jpg" alt="contact函数" /><br />
+默认情况下面contact是在axis=0上工作的,最终产生一个新的Series,如果传入axis=1那么就会产生一个新的DataFrame</p>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.5.jpg" alt="" /></p>
+<ul>
+<li>可以通过设置join='inner'来得到他们的交集</li>
+<li>可以通过join_axes=[['a', 'b', 'c']]来指定要在其他周使用的索引<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.6.jpg" alt="" /></li>
+</ul>
+<p>如果参与连接的片段在结果中区分不开,可以创建一个层次化索引,通过keys参数达到这个目的,下面还可以调用result.unstack()来去层次化<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.7.jpg" alt="" /></p>
+<p>如果沿着axis=1对Series进行合并,那么keys就会变成DataFrame的列头.对DataFrame合并同理<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.8.jpg" alt="" /></p>
+<p>不保留连接轴上的索引,产生新的索引ignore_index=True<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.9.jpg" alt="" /></p>
+<p><strong>contact函数的参数</strong><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.10.jpg" alt="" /></p>
+<h3><a id="%E5%90%88%E5%B9%B6%E9%87%8D%E5%8F%A0%E6%95%B0%E6%8D%AE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>合并重叠数据</h3>
+<p><strong>combine_first</strong><br />
+这里用np.where来解释combine_first</p>
+<pre class="line-numbers"><code class="language-plain_text">np.where(a.isnull(), b, a)
+a.combine_first(b)  #这里和上面一定程度是等价的
+</code></pre>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.11.jpg" alt="combine_first解释" /><br />
+上面合并时候b相对a的'b'和'a'索引缺失所以用a来填充</p>
+<h3><a id="%E9%87%8D%E5%A1%91%E5%92%8C%E8%BD%B4%E5%90%91%E6%97%8B%E8%BD%AC" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>重塑和轴向旋转</h3>
+<p><strong>重塑层次化索引</strong></p>
+<ul>
+<li>stack将数据的列&quot;旋转&quot;为行</li>
+<li>unstack将数据的行&quot;旋转&quot;为列</li>
+</ul>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas7.12.jpg" alt="" /></p>
+<blockquote>
+<p><em>对于一个层次化索引的Series可以用unstack(可能引入缺失数据)重排为DataFrame</em></p>
+</blockquote>
+<ul>
+<li>stack默认会滤除缺失数据,所以这两个是可逆的</li>
+<li>unstack旋转的时候旋转轴等级最低</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Python 数据分析画图&one-hot编码]]></title>
+    <link href="https://zerolxf.github.io/16913485004157.html"/>
+    <updated>2023-08-07T03:01:40+08:00</updated>
+    <id>https://zerolxf.github.io/16913485004157.html</id>
+    <content type="html"><![CDATA[
+<span id="more"></span><!-- more -->
+<h3><a id="matplotlib%E7%94%BB%E5%9B%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Matplotlib画图</h3>
+<pre class="line-numbers"><code class="language-plain_text">fig, axes = plt.subplots(2, 2) #axes是一个数组
+</code></pre>
+<pre class="line-numbers"><code class="language-plain_text">fig = plt.figure()
+fig.set(alpha=0.2) 
+
+#把图分为2行3列，当前在(0,0)位置画图
+plt.subplot2grid((2, 3), (0, 0))
+
+#data_train是DataFrame数据类型 bar表示柱形图
+data_train.Survived.value_counts().plot(kind='bar')
+
+plt.plot(randn(30).cumsum(), 'ko--') #k表示颜色,o表示标记强调数据点,--表示线条类型
+plt.plot(randn(30).cumsum(), color='k', linestyle='dashed', marker='o') #和上面等价
+</code></pre>
+<p><strong>设置轴标签 刻度</strong></p>
+<ul>
+<li>xlim控制图标的范围,plt.xlim()返回当前X轴范围,plt.xlim([0, 10]).我们也可以用过subplot的实例ax,如ax.get_xlim和ax.set_xlim来获取设置</li>
+<li>set_xticks控制刻度位置</li>
+<li>set_xticklabels控制刻度上面的标签<br />
+实例</li>
+</ul>
+<pre class="line-numbers"><code class="language-plain_text">fig = plt.figure()
+ax = fig.add_subplot(2, 2, 1)
+ax.plot(np.random.randn(1000).cumsum(), 'ko--')
+ticks = ax.set_xticks([0, 250, 500, 750, 1000])
+labels = ax.set_xticklabels(['one', 'two', 'three', 'four', 'five'], rotation=3, fontsize='small')
+ax.set_title('My Title')
+ax.set_xlabel('xlabel')
+
+</code></pre>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas0.3.jpg" alt="" /></p>
+<p><strong>添加图例(legend)</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">fig = plt.figure()
+ax = fig.add_subplot(1,1, 1)
+ax.plot(np.random.randn(1000).cumsum(), 'k', label='one') #这里不写label的话,后面图例就不会显示
+ax.plot(np.random.randn(1000).cumsum(), 'g--', label='two')
+ax.plot(np.random.randn(1000).cumsum(), 'b.', label='three')
+ax.legend(loc='best') #这里是将每条线段对应哪个label显示出来,删除这句也不影响上面三条线段的显示,loc告诉将图例放在哪个位置,还有其他center,right等选项
+</code></pre>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/ml0.4.jpg" alt="" /></p>
+<p><strong>添加基本几何图形</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">fig = plt.figure()
+ax = fig.add_subplot(1, 1, 1)
+ax.set_xlim([0, 10])
+ax.set_ylim([0, 10])
+#以下函数第一个参数都是点坐标
+rect = plt.Rectangle((0, 0), 2, 1, color='k', alpha=0.3)
+circ = plt.Circle((5, 5), 2, color='r', alpha=0.3)
+pgon = plt.Polygon([[0, 0], [1, 1], [1, 0]], color='g', alpha=0.3)
+ax.add_patch(rect)
+ax.add_patch(circ)
+ax.add_patch(pgon)
+</code></pre>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/ml0.5.jpg" alt="" /></p>
+<p><strong>保存图片</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">plt.savefig('figpath.png', dpi=400, bbox_inches='tight')
+#函数会根据输入的文件名后缀自动判断保存类型, dpi设置分辨率, bbox_inches表示要保存的部分tight是土建处图像周围白边
+#还有参数edgecolor,facecolor可以设置背景色,format显示设置文件格式
+</code></pre>
+<p><strong>关于matlibplot全局配置</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">plt.rc('figure', figsize=(10,10))
+#第一个参数是想要设置的对象,第二个是参数配置
+</code></pre>
+<h3><a id="pandas%E7%94%BB%E5%9B%BE%E5%87%BD%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Pandas画图函数</h3>
+<p>Series和DataFrame都有用于生成各类图表的plot方法<br />
+Series</p>
+<pre class="line-numbers"><code class="language-plain_text">s = Series(np.random.rand(1000).cumsum(), index=np.arange(0, 1000, 1))
+s.plot()
+</code></pre>
+<p>DataFrame</p>
+<pre class="line-numbers"><code class="language-plain_text">df = DataFrame(np.random.randn(10, 4).cumsum(0), columns=['A', 'B', 'C', 'D'],
+              index=np.arange(0,100,10))
+fig, axes = plt.subplots(2, 2)
+df.plot(kind='bar', ax=axes[0,0]) #ax参数是表明要在其上进行绘制
+df.plot(kind='line', ax=axes[0,1])
+df.plot(kind='bar', ax=axes[1,0])
+df.plot(kind='barh', ax=axes[1,1])
+#plot还可以设置style('ko--'等), alpha, logy(在Y轴上对数标尺), rot(旋转刻度标签) xticks xlim等
+</code></pre>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/ml0.7.jpg" alt="" /></p>
+<p><em>这里有一个问题,就是这里书上没有一个明确的对于Series或者DataFrame plot方法的解释,因为不会所以对我不可控</em></p>
+<h3><a id="one-hot%E7%BC%96%E7%A0%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>one-hot编码</h3>
+<ul>
+<li>对于离散属性并且之间的取值没有大小意义，一般采取one-hot编码也就是对每一个取值都用一个0，1表示</li>
+<li>对于离散属性取值有大小意义的,直接映射成1~n</li>
+</ul>
+<p><strong>pd.get_dummies</strong>可以很方便的将离散数据转换成one-hot编码</p>
+<pre class="line-numbers"><code class="language-plain_text">pd.get_dummies(data_train.Sex[:8])
+</code></pre>
+<p><strong>这里需要注意</strong>的是可能测试数据集和训练数据集不一致<br />
+比如训练数据集A属性有3个取值,测试数据集中只有2个取值,这样使用one-hot的话,测试数据集就会缺少一个属性列.<em>(这里我在Titanic遇到了,其中我把训练数据集中缺失当做一个属性,而测试数据集中并没有缺失,导致debug半天.这里还是需要预先对数据集仔细分析)</em></p>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/pandas0.1.jpg" alt="" /><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/pandas0.2.jpg" alt="" /></p>
+<p><strong>axis=1</strong> 表示函数对列上进行作用<br />
+<strong>axis=0</strong> 表示函数对行上进行作用</p>
+<h3><a id="%E5%85%B3%E4%BA%8Eseaborn%E7%94%BB%E5%9B%BE%E4%BB%8B%E7%BB%8D-20" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>关于seaborn<a href="https://zhuanlan.zhihu.com/p/27683042">画图介绍</a></h3>
+<p><code> sns.barplot(cnt_srs.index, cnt_srs.values, alpha=0.8, color=color[0])</code><br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/sns-plot.png" alt="" /></p>
+<pre class="line-numbers"><code class="language-plain_text">train_df['bathrooms'].ix[train_df['bathrooms']&gt;3] = 3
+plt.figure(figsize=(8,4))
+sns.violinplot(x='interest_level', y='bathrooms', data=train_df)
+plt.xlabel('Interest level', fontsize=12)
+plt.ylabel('bathrooms', fontsize=12)
+plt.show()
+</code></pre>
+<p><img src="http://oh9ex6wd2.bkt.clouddn.com/sns-violinplot.png" alt="" /></p>
+<p>sns.violinplot(x=&quot;TARGET&quot;, y=&quot;ZCZB&quot;, data=test2[test2[&quot;ZCZB&quot;].notnull()])<br />
+sns.swarmplot(x=&quot;TARGET&quot;, y=&quot;ZCZB&quot;, data=test2[test2[&quot;ZCZB&quot;].notnull()])</p>
+<p>画出各个变量和目标值的协方差</p>
+<pre class="line-numbers"><code class="language-plain_text"># Let us just impute the missing values with mean values to compute correlation coefficients #
+mean_values = train_df.mean(axis=0)
+train_df_new = train_df.fillna(mean_values, inplace=True)
+
+# Now let us look at the correlation coefficient of each of these variables #
+x_cols = [col for col in train_df_new.columns if col not in ['logerror'] if train_df_new[col].dtype=='float64']
+
+labels = []
+values = []
+for col in x_cols:
+    labels.append(col)
+    values.append(np.corrcoef(train_df_new[col].values, train_df_new.logerror.values)[0,1])
+corr_df = pd.DataFrame({'col_labels':labels, 'corr_values':values})
+corr_df = corr_df.sort_values(by='corr_values')
+    
+ind = np.arange(len(labels))
+width = 0.9
+fig, ax = plt.subplots(figsize=(12,40))
+rects = ax.barh(ind, np.array(corr_df.corr_values.values), color='y')
+ax.set_yticks(ind)
+ax.set_yticklabels(corr_df.col_labels.values, rotation='horizontal')
+ax.set_xlabel(&quot;Correlation coefficient&quot;)
+ax.set_title(&quot;Correlation coefficient of the variables&quot;)
+#autolabel(rects)
+
+#设置label的字体大小
+ax.tick_params(axis='both', which='major', labelsize=30)
+ax.tick_params(axis='both', which='minor', labelsize=24)
+plt.show()
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[限制numpy多线程]]></title>
+    <link href="https://zerolxf.github.io/16913484779083.html"/>
+    <updated>2023-08-07T03:01:17+08:00</updated>
+    <id>https://zerolxf.github.io/16913484779083.html</id>
+    <content type="html"><![CDATA[
+<h2><a id="%E9%99%90%E5%88%B6numpy%E7%BA%BF%E7%A8%8B%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>限制numpy线程数</h2>
+<p>由于numpy可能会自动多线程计算, 在对比算法的时候不公平<br />
+以及多进程的跑多个任务有时候反而会慢<br />
+对其他用户不友好</p>
+<p>下面代码一定要在numpy导入之前</p>
+<pre class="line-numbers"><code class="language-plain_text">
+import os
+os.environ[&quot;MKL_NUM_THREADS&quot;] = &quot;4&quot; 
+os.environ[&quot;NUMEXPR_NUM_THREADS&quot;] = &quot;4&quot; 
+os.environ[&quot;OMP_NUM_THREADS&quot;] = &quot;4&quot; 
+
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Python 时间的处理]]></title>
+    <link href="https://zerolxf.github.io/16913484491820.html"/>
+    <updated>2023-08-07T03:00:49+08:00</updated>
+    <id>https://zerolxf.github.io/16913484491820.html</id>
+    <content type="html"><![CDATA[
+<span id="more"></span><!-- more -->
+<h2><a id="%E6%97%A5%E6%9C%9F%E4%BB%A5%E5%8F%8A%E6%97%B6%E9%97%B4%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>日期以及时间数据类型</h2>
+<p><strong>日期</strong> data, <strong>时间</strong> time<br />
+datatime是包含data以及time 的数据类型<br />
+timedelta两个datatime之间的差值</p>
+<h2><a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%92%8Cdatatime%E7%9A%84%E8%BD%AC%E5%8C%96" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>字符串和datatime的转化</strong></h2>
+<h3><a id="datetime%E8%BD%AC%E6%8D%A2%E6%88%90%E5%AD%97%E7%AC%A6%E4%B8%B2" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>datetime转换成字符串</strong></h3>
+<pre class="line-numbers"><code class="language-plain_text">stamp = datetime(2011, 1, 3)
+str(stamp)
+stamp.strftime('%Y-%m-%d') #可以自己定义格式
+</code></pre>
+<h3><a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E8%BD%ACdatetime" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a><strong>字符串转datetime</strong></h3>
+<pre class="line-numbers"><code class="language-plain_text">value = '2011-01-03'
+stamp = datetime.strptime(value, '%Y-%m-%d')
+</code></pre>
+<p>还有一种很方便的就是通过第三方包dateutil</p>
+<pre class="line-numbers"><code class="language-plain_text">from dateutil.parser import parser
+stamp = parser('2011-03-11') #parser几乎对所有格式时间都可以转化,但是对有歧义的需要小心,最后自己手动指明参数datefirst=true
+</code></pre>
+<p><strong>pandas处理成组日期</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">datestrs = ['7/6/2011', '8/6/2011']
+pd.to_datetime(datestrs+['None']) #pandas会将缺失值处理成NaT(Not a Time)
+</code></pre>
+<ul>
+<li>%Y 4位数的年</li>
+<li>%y 2位数的年</li>
+<li>%m 2位数的月</li>
+<li>%d 2位数的日</li>
+<li>%H 24小时 %I12小时</li>
+<li>%M 2位数的分</li>
+<li>%S 秒<a href="%E9%97%B0%E7%A7%92">0, 61</a></li>
+<li>%w 一周星期几</li>
+<li>%U [00, 53]每年的第多少周,第一个星期天前被认为是第0周</li>
+<li>%W [00, 53]每年的第多少周,第一个星期一前被认为是第0周</li>
+<li>%F %Y-%m-%d的缩写</li>
+<li>%D %m/%d/%y的缩写</li>
+<li>%a 星期几简写 %A星期几全写</li>
+<li>%b 月份简写 %B月份全写</li>
+</ul>
+<p><strong>Pandas时间片段</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">tmp = pd.date_range('1/1/2000', periods=1000)
+longer_ts = Series(np.random.randn(1000), index=tmp)
+longer_ts['2001'] #就可以把2001年的都取出来
+#通过日期进行切片的方式只对规则Series有效???
+longer_ts['1/6/2001':'1/11/2011'] #这里时间戳的日期可以不存在
+</code></pre>
+<p><em>带重复索引的时间序列</em>,然后可以聚合<br />
+<code>pd.date_range('1/1/2000', '10/1/2000',   freq='BM)</code>BM表示每月的最后一个工作日</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[矩阵微分]]></title>
+    <link href="https://zerolxf.github.io/16913483371232.html"/>
+    <updated>2023-08-07T02:58:57+08:00</updated>
+    <id>https://zerolxf.github.io/16913483371232.html</id>
+    <content type="html"><![CDATA[
+<p>在学习机器学习算法时,发现对矩阵求导很不熟悉,去看了张贤达的矩阵分析,发现标量对矩阵求导的问题说的很清楚.关于如何求解 hessian矩阵,日后再来补上.<br />
+重要的事情说三遍<br />
+<strong>损失函数是标量函数!!!</strong><br />
+<strong>损失函数是标量函数!!!</strong><br />
+<strong>损失函数是标量函数!!!</strong></p>
+<span id="more"></span><!-- more -->
+<p>主要介绍实值函数相对于实向量变量或者矩阵变量的偏导.这里首先对变元和函数符号做统一的规定以便后面介绍.<br />
+\(\pmb x = [x_1, ..., x_m]^T \in R^m \)为实向量变元<br />
+\(\pmb X = [\pmb x_1, ..., \pmb x_m]^T \in R^{m \times n} \)为矩阵变元<br />
+\(f(\pmb x) \in R 为实值标量函数,其变元\pmb x \in R^m,记做f:R^{m} \to R\)<br />
+\(f(\pmb X) \in R 为实值标量函数,其变元\pmb X \in R^{m \times n},记做f:R^{m \times n} \to R\)<br />
+\(\pmb f(\pmb x) \in R^p 为p维实列向量函数,其变元\pmb x \in R^m,记做f:R^{m} \to R^p\)<br />
+\(\pmb f(\pmb X) \in R^p 为p维实列向量函数,其变元\pmb X \in R^{m \times n},记做f:R^{m \times n} \to R^p\)<br />
+\(\pmb F(\pmb x) \in R^{p \times q} 为p \times q 实矩阵函数,其变元\pmb x \in R^m,记做f:R^{m} \to R^{p \times q}\)<br />
+\(\pmb F(\pmb X) \in R^{p \times q} 为p \times q 实矩阵函数,其变元\pmb X \in R^{m \times n},记做f:R^{m \times n} \to R^{p \times q}\)</p>
+<h3><a id="jacobian%E7%9F%A9%E9%98%B5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Jacobian 矩阵</h3>
+<p>采用\(1 \times m\)行向量作为偏导算子,记为</p>
+\[ D_{\pmb x} \overset{def}{=}  [ \cfrac {\partial}{\partial x_1}, ..., \cfrac {\partial }{\partial x_m}]
+\]
+<p>实值标量函数\(f(\pmb x) 在 \pmb x 的偏导向量为 1\times m 行向量,定义如下\)</p>
+\[ D_{\pmb x} f(\pmb x ) = \cfrac {\partial f(\pmb x)}{\partial \pmb x ^T} = [ \cfrac {\partial f(\pmb x)}{\partial x_1}, ..., \cfrac {\partial f(\pmb x)}{\partial x_m}]
+\]
+<p>当实值标量函数\(f(\pmb X)的变元是p \times q\)维矩阵的时候,他有两种定义:Jacobian矩阵和行向量偏导.他的Jacobian矩阵定义为如下</p>
+\[ D_{\pmb X} f(\pmb X) = \cfrac {\partial f(\pmb X)}{\partial \pmb X^T} 
+\]
+<p>而他的行向量偏导定义为</p>
+\[ D_{vec \pmb X } f(\pmb X) = \cfrac {\partial f(\pmb X)}{\partial vec(\pmb X)^T}= [ \cfrac {\partial f(\pmb x)}{\partial x_1}, ...\cfrac {\partial f(\pmb x)}{\partial x_{m1}},..., \cfrac {\partial f(\pmb x)}{\partial x_{1n}},...,\cfrac {\partial f(\pmb x)}{\partial x_{mn}}]
+\]
+<p>这里需要注意的是,实值标量函数\(f(\pmb X)\)的Jacobian矩阵的转置\(D_{\pmb X}^Tf(\pmb X)\)的列向量化后即为他的行向量偏导\(D_{vec \pmb X}f(\pmb X)\),这是后面介绍Jacobian矩阵相关知识的基础<br />
+\(当\pmb F(\pmb X)为p \times q 实矩阵函数时,定义他的Jacobian矩阵如下\)</p>
+\[D_{\pmb X} \pmb F(\pmb X)\overset{def}{=} \cfrac {\partial vec(\pmb F(\pmb X))}{\partial (vec \pmb X)^T}
+\]
+<h3><a id="%E6%A2%AF%E5%BA%A6%E7%9F%A9%E9%98%B5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>梯度矩阵</h3>
+<p>采用列向量形式的偏导算子称为列向量偏导算子,也称为梯度算子<br />
+采用\(1 \times m\)向量作为偏导算子,记为</p>
+\[ \nabla _{\pmb x} \overset{def}{=}  [ \cfrac {\partial}{\partial x_1}, ..., \cfrac {\partial }{\partial x_m}]^T
+\]
+<p>实值标量函数\(f(\pmb x) 在 \pmb x 的梯度向量为 m\times 1 列向量,定义如下\)</p>
+\[ \nabla _{\pmb x} f(\pmb x) = [ \cfrac {\partial f(\pmb x)}{\partial x_1}, ..., \cfrac {\partial f(\pmb x)}{\partial x_m}]^T
+\]
+<p>实值标量函数\(f(\pmb X) 的变元 \pmb X 列向量化后,可以定义其矩阵变元\pmb X 的梯度向量为\)</p>
+\[ \nabla _{vec \pmb X} f(\pmb X) = \cfrac {\partial f(\pmb X)}{\partial vec(\pmb X)}= [ \cfrac {\partial f(\pmb x)}{\partial x_1}, ...\cfrac {\partial f(\pmb x)}{\partial x_{m1}},..., \cfrac {\partial f(\pmb x)}{\partial x_{1n}},...,\cfrac {\partial f(\pmb x)}{\partial x_{mn}}]^T
+\]
+<p>定义\(f(\pmb X) 的其关于矩阵变元\pmb X 的梯度矩阵为\)</p>
+\[ \nabla _{\pmb X} f(\pmb X) = \cfrac {\partial f(\pmb X)}{\partial \pmb X} 
+\]
+<p>比较\(f(\pmb X)\)的梯度矩阵和Jacobian矩阵,可以发现梯度矩阵即为Jacobian矩阵的转置<br />
+当实值标量函数数\(f(\pmb X)的变元是p \times q维矩阵的时候,他的梯度向量定义为如下\)</p>
+\[\nabla_{\pmb X} \pmb F(\pmb X)\overset{def}{=} \cfrac {\partial vec(\pmb F(\pmb X))}{\partial (vec \pmb X)^T}
+\]
+<h3><a id="%E6%A0%87%E9%87%8F%E5%87%BD%E6%95%B0f-pmb-x%E4%B8%8E-jacobian%E7%9F%A9%E9%98%B5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>标量函数\(f(\pmb x)\)与Jacobian矩阵</h3>
+<p>以向量为变元的标量函数\(f(\pmb x)\)的全微分形式可以写为</p>
+\[df(\pmb x) = \cfrac {\partial f(\pmb x)}{\partial x_1} dx_1 + ... + \cfrac {\partial f(\pmb x)}{\partial x_m} dx_m = \cfrac {\partial f(\pmb x)}{\partial \pmb x ^T} d \pmb x
+\]
+<p>\(记\pmb A = \cfrac {\partial f(\pmb x)}{\partial \pmb x ^T} \),则有如下等价关系</p>
+\[df(\pmb x) = tr(Ad \pmb x) \iff D_{\pmb x} f(\pmb x ) = \cfrac {\partial f(\pmb x)}{\partial \pmb x ^T} = A
+\]
+<p>也就是标量函数\(f(\pmb x)\)的Jacobian矩阵和微分矩阵存在着等价关系</p>
+<h3><a id="%E6%A0%87%E9%87%8F%E5%87%BD%E6%95%B0f-pmb-x%E4%B8%8E-jacobian%E7%9F%A9%E9%98%B5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>标量函数\(f(\pmb X)\)与Jacobian矩阵</h3>
+<p>标量函数\(f(\pmb X)\)和上面类似,其全微分可以写成如下形式<br />
+\begin{align*}<br />
+df(\pmb X) &amp; = \cfrac {\partial f(\pmb X)}{\partial \pmb x_1^T} d \pmb x_1 + ... +  \cfrac {\partial f(\pmb X)}{\partial \pmb x_n^T} d \pmb x_n \ &amp;= \cfrac {\partial f(\pmb X)}{\partial vec^T \pmb (X)} d (vec \pmb X) \<br />
+&amp;= D_{vec \pmb X} f(\pmb X) d(vec \pmb X)<br />
+\end{align*}<br />
+这里再利用行向量偏导和Jacobian矩阵的关系\(D_{vec \pmb X} f(\pmb X) = (vec (D_{\pmb X}^T f(\pmb X)))^T，并令A=D_{\pmb X}^T f(\pmb X)\)可以得到<br />
+\begin{align*}<br />
+df(\pmb X) &amp; = (vec(A^T))^T d(vec \pmb X)<br />
+\end{align*}<br />
+由向量化算子vec与迹函数的关系式\(tr(B^TC) = (vec(B))^Tvec(C),令B = A^T, C = d \pmb X\),则上式可以重写为</p>
+\[df(\pmb X) = tr(\pmb A d \pmb X)
+\]
+<p>综合以上,可以得到如下结论:<br />
+Jacobian矩阵可以通过以下式子等价确定</p>
+\[ df(\pmb x) = tr(A d \pmb x) \iff D_{\pmb x} f(\pmb x) = A \\ df(\pmb X) = tr(A d \pmb X) \iff D_{\pmb X} f(\pmb X) = A
+\]
+<p>矩阵微分\(df(\pmb X)\)可以通过简单的变化转化为矩阵微分的标准形式\(df(\pmb X) = tr(A d \pmb X)\).再由Jacobian和梯度矩阵的关系,进一步可以得到梯度矩阵.因而对求解梯度矩阵可以由矩阵微分的标准形式\(df(\pmb X) = tr(A d \pmb X)\)得到.<br />
+如下:<br />
+对于\(tr(\pmb X^T \pmb X)\)我们可以得到<br />
+\begin{align*}<br />
+d tr(\pmb X^T \pmb X) &amp; = tr(d(\pmb X^T \pmb X)) \<br />
+&amp;= tr(d(\pmb X )^T \pmb X + \pmb X^T d \pmb X)\<br />
+&amp;= tr(d(\pmb X )^T \pmb X) +tr( \pmb X^T d \pmb X) \<br />
+&amp;= tr(\pmb X ^ T d(\pmb X )) +tr( \pmb X^T d \pmb X) \<br />
+&amp;= tr(2 \pmb X ^ T d(\pmb X ))<br />
+\end{align*}<br />
+由以上结论,可以得到\(\pmb X^T \pmb X \)关于\(\pmb X \)的梯度矩阵为</p>
+\[ \cfrac{\partial tr(\pmb X^T \pmb X)}{\partial \pmb X} = (2 \pmb X ^T)^T = 2 \pmb X
+\]
+<p>求解梯度矩阵是进行一阶优化算法的基础部分.</p>
+<p>参考文献&amp;学习资料<br />
+矩阵分析与应用 -张贤达<br />
+<a href="https://zhuanlan.zhihu.com/p/24709748">矩阵求导术-知乎</a><br />
+<a href="https://www.math.uwaterloo.ca/~hwolkowi/matrixcookbook.pdf">The Matrix Cookbook.</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[递推关系与生成函数]]></title>
+    <link href="https://zerolxf.github.io/16913483067290.html"/>
+    <updated>2023-08-07T02:58:26+08:00</updated>
+    <id>https://zerolxf.github.io/16913483067290.html</id>
+    <content type="html"><![CDATA[
+<span id="more"></span><!-- more -->
+<h3><a id="%E6%96%90%E6%B3%A2%E9%82%A3%E5%A5%91%E6%95%B0%E5%88%97" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>斐波那契数列</h3>
+<blockquote>
+<ul>
+<li>\(S_n = f_0 + f_1 + ... + f_n = f_{n+2}-1\)</li>
+<li>\(斐波那契数列f_n是偶数,当且仅当n是3的倍数\)</li>
+<li>任意斐波那契数列通项是 \(f_n = c_1\times(\frac {1+\sqrt5}  2)^n + c_2\times(\frac {1-\sqrt 5} 2)^n\)</li>
+</ul>
+</blockquote>
+<p>帕斯卡三角形形从左下到右上对角线上二项式系数和是斐波那契数列(\(t=\frac{n+1} 2 \))</p>
+<blockquote>
+<ul>
+<li>$F_n=\left(\begin{matrix}n-1 \0 \end{matrix} \right)+\left(\begin{matrix}n-2 \1 \end{matrix} \right) +<br />
+\left(\begin{matrix}n-3 \2 \end{matrix} \right)+\cdots<br />
+\left(\begin{matrix}n-t \t-1 \end{matrix} \right) $</li>
+</ul>
+</blockquote>
+<h3><a id="%E7%94%9F%E6%88%90%E5%87%BD%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>生成函数</h3>
+<p>生成函数是无限可微函数的<strong>泰勒级数</strong></p>
+<blockquote>
+<p>设\(h_0,h_1,h_2,\cdots,h_n\cdots\) 是无穷级数,他的生成函数定义为无穷级数</p>
+</blockquote>
+\[g(x)=h_0+h_1x+h_2x^2+\cdots + h_mx^m
+\]
+<h3><a id="%E7%89%9B%E9%A1%BF%E4%BA%8C%E9%A1%B9%E5%BC%8F%E5%AE%9A%E7%90%86" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>牛顿二项式定理</h3>
+<blockquote>
+<p>$设\alpha 是实数,对所有满足0 \leq  |x| &lt; |y|的x和y有$</p>
+</blockquote>
+\[(x+y)^\alpha = \sum _{k=0}^\infty \left(\begin{matrix}\alpha \\k \end{matrix} \right)x^ky^{\alpha -k} 
+\]
+<p>其中\(\left(\begin{matrix}\alpha \\k \end{matrix} \right)= \frac {\alpha (\alpha - 1)\cdots (\alpha -k +1)} {k!}\)<br />
+设z=x/y,则\((x+y)^\alpha = y^\alpha(1+z)^\alpha\)上述定理等价于</p>
+<blockquote>
+</blockquote>
+\[(1+z)^\alpha = \sum _{k=0}^\infty \left(\begin{matrix}\alpha \\k \end{matrix} \right)z^k
+\]
+<p>令\(\alpha =-n\)负整数则有</p>
+\[\left(\begin{matrix}\alpha \\k \end{matrix} \right)
+  =\left(\begin{matrix}{-n} \\k \end{matrix} \right)
+  =\frac {-n(-n-1) \cdots (-n-k+1)} {k!}   
+\]
+\[=\frac {(-1)^kn(n+1) \cdots (n+k-1)} {k!}=(-1)^k\left(\begin{matrix}{n+k-1} \\k \end{matrix} \right)
+\]
+<p>因此对于|z|&lt;1,有</p>
+\[(1+z)^{-n}= \frac 1 {(1+z)^n} = \sum _{k=0} ^\infty \left(\begin{matrix}{n+k-1} \\k \end{matrix} \right)z^k
+\]
+<p>\(当n=1,有\frac 1 {(1-z)} = 1+z+z^2+\cdots + z^m+\cdots\)<br />
+\(  得\frac 1 {(1-z)^k} = (1+z+\cdots + z^m+\cdots) \cdots(1+z+\cdots + z^m+\cdots)\)<br />
+\(令h_n是e_1+e_2+\cdots +e_k=n的非负整数解的个数,e_i表示上面第i个取z^i\)<br />
+\(根据实际含义可以知道h_n = C_{n+k-1} ^{k-1}\)</p>
+<p><strong>例子</strong><br />
+\((1+x+x^2+x^3+x^4+x^5)(1+x+x^2+x^3)(1+x+x^2+x^3+x^4)\)<br />
+$设x^{e_1}, x^{e_2}, x^{e_3}是三项的代表项</p>
+\[那么e_1+e_2+e_3=n解的个数就是最终展开合并x^n的系数 $
+**同理其他的限制条件都可以写成这种形式**
+
+***逆序数与排列***
+&gt;    $设b_1,b_2,\cdots,b_n满足下列整数数列$
+    $0 \le b_1 \le n-1, 0\le b_2\le n-2,\cdots,0\le b_{n-1} \le 1, b_n=0 $
+    $一定存在一个唯一对于的排列\{1,2,\cdots,n\}使得逆序列是\{b_i\}$
+
+构造算法(倒着根据$b_i$放):
+$n:写出n$
+$\cdots : \cdots$
+$i:考虑b_i,b_i是0,所有比他大的都在右边$
+$\cdots : \cdots$
+$1:考虑b_1,\cdots$
+
+### 指数生成函数
+
+&gt;$ g^{(e)}(x) = \sum _{n=0} ^\infty h_n \frac {x^ \alpha }{n!}
+=h_0+h_1x+h_2 \frac {x^2} {2!}+\cdots +h_n \frac {x^n} {n!}+\cdots$
+
+**例子**  
+$取P(n,k)是n元素集合的k排列,数目为\frac {n!} {(n-k)!}$
+
+\]
+<p>g^{(e)}(x) = \sum _{k=0} ^\infty \frac {n!}{(n-k)!n!} x^k=(1+x)^n```math<br />
+$因此(1+x)^n是数列P的指数生成函数$</p>
+<h3><a id="catalan%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Catalan数</h3>
+<blockquote>
+<p>$设h_n表示凸(n+1)边形通过插入不相交对角线分成三角形区域的方法数$<br />
+<code>h_n = h_1h_{n-1} +\cdots + h_{n-1}h_1=\sum _{k=1}^{n-1} h_kh_{n-k}(n\ge 2,h_1=1)</code>math</p>
+</blockquote>
+<p>则有</p>
+<pre class="line-numbers"><code class="language-h_n" data-meta="= \frac 1 n C _{2n-2} ^{n-1}$$">
+**简明证明**
+``g(x)是h_n的生成函数,则有g(x)^2-g(x)+x=0``
+``g(x)=g_2(x) =\frac {1- \sqrt {1-4x}} 2 = \frac 1 2 - \frac 1 2(1-4x)^{\frac 1 2}``
+``其中再用牛顿二项式定理,可得g(x)=\sum _{n=1}^ \infty \frac 1 n C_{2n-2} ^{n-1} x^n``
+
+
+
+
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[C 语言学习 小记]]></title>
+    <link href="https://zerolxf.github.io/16913482390348.html"/>
+    <updated>2023-08-07T02:57:19+08:00</updated>
+    <id>https://zerolxf.github.io/16913482390348.html</id>
+    <content type="html"><![CDATA[
+<p>在github上面看到别人一个很不错的学习笔记，记录一下其中的知识点<br />
+<a href="https://github.com/qyuhen/bookPDF">笔记</a>by qyuhen</p>
+<blockquote>
+<p>记录一下学习c语言遇到的一些知识点</p>
+</blockquote>
+<span id="more"></span><!-- more -->
+<h2><a id="%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>数据类型</h2>
+<h3><a id="%E5%AD%97%E7%AC%A6%E4%B8%B2" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>字符串</h3>
+<p>字符常量默认是⼀个 int 整数，但编译器可以⾃⾏决定将其解释为 char 或 int。<br />
+<code> size('a') = 4</code></p>
+<h3><a id="%E6%B5%AE%E7%82%B9%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>浮点数</h3>
+<ul>
+<li>float: 32 位 4 字节浮点数，精确度 6。</li>
+<li>double: 64 位 8 字节浮点数，精确度 15。</li>
+<li>long double: 80 位 10 字节浮点数，精确度 19 位。</li>
+</ul>
+<p>C99 提供了复数⽀持，⽤两个相同类型的浮点数分别表⽰复数的实部和虚部。<br />
+直接在 float、 double、 long double 后添加 _Complex 即可表⽰复数，在 complex.h 中定义了<br />
+complex 宏使得显⽰更统⼀美观</p>
+<pre class="line-numbers"><code class="language-plain_text">float complex size=8
+double complex size=16
+long double complex size=24
+</code></pre>
+<h3><a id="%E6%9E%9A%E4%B8%BE" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>枚举</h3>
+<p>enum中的值可以自定义，之后的会依次递增，值可以相同</p>
+<pre class="line-numbers"><code class="language-plain_text">enum color { black, red = 5, green, yellow };
+enum color b = black;
+printf(&quot;black = %d\n&quot;, b);
+...
+black = 0
+red = 5
+green = 6
+yellow = 7
+----------------------------------------
+enum color { black = 1, red, green = 1, yellow };
+black = 1
+red = 2
+green = 1
+yellow = 2
+</code></pre>
+<p>通常省略枚举⼩标签⽤来代替宏定义常量</p>
+<pre class="line-numbers"><code class="language-plain_text">
+
+----------------------------------------
+enum { BLACK = 1, RED, GREEN = 1, YELLOW };
+printf(&quot;black = %d\n&quot;, BLACK);
+printf(&quot;red = %d\n&quot;, RED);
+printf(&quot;green = %d\n&quot;, GREEN);
+printf(&quot;yellow = %d\n&quot;, YELLOW);
+</code></pre>
+<h2><a id="%E5%AD%97%E9%9D%A2%E5%80%BC" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>字面值</h2>
+<h3><a id="%E6%95%B4%E6%95%B0%E5%B8%B8%E9%87%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>整数常量</h3>
+<p>常量类型很重要，可以通过后缀来区分类型。</p>
+<pre class="line-numbers"><code class="language-plain_text">0x200 -&gt; int
+200U -&gt; unsigned int
+0L -&gt; long
+0xf0f0UL -&gt; unsigned long
+0777LL -&gt; long long
+0xFFULL -&gt; unsigned long long
+</code></pre>
+<h3><a id="%E6%B5%AE%E7%82%B9%E5%B8%B8%E9%87%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>浮点常量</h3>
+<p>默认浮点常量是 double，可以⽤ F 后缀表⽰ float，⽤ L 后缀表⽰ long double 类型。</p>
+<h3><a id="%E5%AD%97%E7%AC%A6%E5%B8%B8%E9%87%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>字符常量</h3>
+<p>字符常量默认是 int 类型，除⾮⽤前置 L 表⽰ wchar_t 宽字符类型。</p>
+<h3><a id="%E5%AD%97%E7%AC%A6%E4%B8%B2%E5%B8%B8%E9%87%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>字符串常量</h3>
+<p>C 语⾔中的字符串是⼀个以 NULL (也就是 \0) 结尾的 char 数组。<br />
+空字符串在内存中占⽤⼀个字节，包含⼀个 NULL 字符，也就是说要表⽰⼀个⻓度为 1 的字符串最少需要 2 个字节 (strlen 和 sizeof 表⽰的含义不同)。</p>
+<pre class="line-numbers"><code class="language-plain_text">wchar_t ws[] = L&quot;中国⼈&quot;;
+printf(&quot;len %d, size %d\n&quot;, wcslen(ws), sizeof(ws));
+unsigned char* b = (unsigned char*)ws;
+int len = sizeof(ws);
+for (int i = 0; i &lt; len; i++)
+{
+    printf(&quot;%02X &quot;, b[i]);
+}
+</code></pre>
+<p>wchar_t 字符串以⼀个 4 字节的 NULL 结束<br />
+输出:</p>
+<pre class="line-numbers"><code class="language-plain_text">len 3, size 16
+2D 4E 00 00 FD 56 00 00 BA 4E 00 00 00 00 00 00
+</code></pre>
+<p>编译器会⾃动连接相邻的字符串，这也便于我们在宏或者代码中更好地处理字符串。</p>
+<pre class="line-numbers"><code class="language-plain_text">#define WORLD &quot;world!&quot;
+char* s = &quot;Hello&quot; &quot; &quot; WORLD &quot;\n&quot;;
+</code></pre>
+<p>对于源代码中超⻓的字符串，除了使⽤相邻字符串外，还可以⽤ &quot;&quot; 在⾏尾换⾏。</p>
+<pre class="line-numbers"><code class="language-plain_text">char* s1 = &quot;Hello&quot;
+&quot; World!&quot;;
+char* s2 = &quot;Hello \
+World!&quot;;
+</code></pre>
+<h2><a id="%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>类型转换</h2>
+<h3><a id="%E7%AE%97%E6%9C%AF%E7%B1%BB%E5%9E%8B%E8%BD%AC%E6%8D%A2" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>算术类型转换</h3>
+<p>在表达式中，可能会将 char、 short 当做默认 int (unsigned int) 类型操作数，但 float 并不会⾃动转换为默认的 double 类型。</p>
+<p>当包含⽆符号操作数时，需要注意提升后类型是否能容纳⽆符号类型的所有值。</p>
+<pre class="line-numbers"><code class="language-plain_text">long a = -1L;
+unsigned int b = 100;
+printf(&quot;%ld\n&quot;, a &gt; b ? a : b);
+</code></pre>
+<p>输出:</p>
+<pre class="line-numbers"><code class="language-plain_text">-1
+</code></pre>
+<p>输出结果让⼈费解。尽管 long 等级⽐ unsigned int ⾼，但在 32 位系统中，它们都是 32 位整数，<br />
+且 long 并不⾜以容纳 unsigned int 的所有值，因此编译器会将这两个操作数都转换为 unsigned<br />
+long，也就是⾼等级的⽆符号版本，如此 (unsigned long)a 的结果就变成了⼀个很⼤的整数。</p>
+<p><em>可以显式将指针转换为整数，反向转换亦可</em></p>
+<h2><a id="%E8%BF%90%E7%AE%97%E7%AC%A6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>运算符</h2>
+<p>C99 新增的内容，我们可以直接⽤该语法声明⼀个结构或数组指针。<br />
+(类型名称){ 初始化列表 }</p>
+<pre class="line-numbers"><code class="language-plain_text">int* i = &amp;(int){ 123 }; ! // 整型变量, 指针
+int* x = (int[]){ 1, 2, 3, 4 }; ! // 数组, 指针
+struct data_t* data = &amp;(struct data_t){ .x = 123 }; ! // 结构, 指针
+</code></pre>
+<p>int* i = &amp;(int){ 123 }; ! // 整型变量, 指针<br />
+int* x = (int[]){ 1, 2, 3, 4 }; ! // 数组, 指针<br />
+struct data_t* data = &amp;(struct data_t){ .x = 123 }; ! // 结构, 指针</p>
+<p><strong>不要⽤ int 代替 size_t，因为在 32 位和 64 位平台 size_t ⻓度不同</strong></p>
+<h3><a id="%E9%80%97%E5%8F%B7%E8%BF%90%E7%AE%97%E7%AC%A6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>逗号运算符</h3>
+<p>逗号是⼀个⼆元运算符，确保操作数从左到右被顺序处理，并返回右操作数的值和类型</p>
+<pre class="line-numbers"><code class="language-plain_text">int i = 1;
+long long x = (i++, (long long)i);
+printf(&quot;%lld\n&quot;, x);
+
+</code></pre>
+<h2><a id="%E8%AF%AD%E5%8F%A5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>语句</h2>
+<h3><a id="%E8%AF%AD%E5%8F%A5%E5%9D%97" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>语句块</h3>
+<p>语句块代表了⼀个作⽤域，在语句块内声明的⾃动变量超出范围后⽴即被释放。除了⽤ &quot;{...}&quot; 表⽰⼀<br />
+个常规语句块外，还可以直接⽤于复杂的赋值操作，这在宏中经常使⽤。</p>
+<pre class="line-numbers"><code class="language-plain_text">int i = ({ char a = 'a'; a++; a; });
+printf(&quot;%d\n&quot;, i);
+</code></pre>
+<h3><a id="%E9%80%89%E6%8B%A9%E8%AF%AD%E5%8F%A5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>选择语句</h3>
+<p>除了<code> if...else if...else...</code> 和 <code>switch { case ... } </code>还有谁呢。<br />
+GCC ⽀持 switch 范围扩展。神奇！</p>
+<pre class="line-numbers"><code class="language-plain_text">int x = 1;
+switch (x)
+{
+    case 0 ... 9: printf(&quot;0..9\n&quot;); break;
+    case 10 ... 99: printf(&quot;10..99\n&quot;); break;
+    default: printf(&quot;default\n&quot;); break;
+}
+char c = 'C';
+switch (c)
+{
+    case 'a' ... 'z': printf(&quot;a..z\n&quot;); break;
+    case 'A' ... 'Z': printf(&quot;A..Z\n&quot;); break;
+    case '0' ... '9': printf(&quot;0..9\n&quot;); break;
+    default: printf(&quot;default\n&quot;); break;
+}
+</code></pre>
+<p>最后⼀个表达式被当做语句块的返回值</p>
+<h3><a id="%E2%BD%86%E6%9D%A1%E4%BB%B6%E8%B7%B3%E8%BD%AC" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>⽆条件跳转</h3>
+<p>⽆条件跳转: break, continue, goto, return。<br />
+goto 仅在函数内跳转，常⽤于跳出嵌套循环。如果在函数外跳转，可使⽤ longjmp。<br />
+5.4.1 longjmp<br />
+setjmp 将当前位置的相关信息 (堆栈帧、寄存器等) 保存到 jmp_buf 结构中，并返回 0。当后续代码执⾏ longjmp 跳转时，需要提供⼀个状态码。代码执⾏绪将返回 setjmp 处，并返回 longjmp所提供的状态码。</p>
+<pre class="line-numbers"><code class="language-plain_text">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;stdbool.h&gt;
+#include &lt;setjmp.h&gt;
+void test(jmp_buf *env)
+{
+    printf(&quot;1....\n&quot;);
+    longjmp(*env, 10);
+}
+int main(int argc, char* argv[])
+{
+    jmp_buf env;
+    int ret = setjmp(env); ! // 执⾏ longjmp 将返回该位置， ret 等于 longjmp 所提供的状态码。
+    if (ret == 0)
+    {
+        test(&amp;env);
+    }
+    else
+    {
+        printf(&quot;2....(%d)\n&quot;, ret);
+    }
+    return EXIT_SUCCESS;
+}
+</code></pre>
+<p>输出:</p>
+<pre class="line-numbers"><code class="language-plain_text">1....
+2....(10)
+</code></pre>
+<h2><a id="%E5%87%BD%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>函数</h2>
+<h3><a id="%E8%B0%83%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>调用</h3>
+<p>C 函数默认采⽤ cdecl 调⽤约定，参数从右往左⼊栈，且由调⽤者负责参数⼊栈和清理.</p>
+<pre class="line-numbers"><code class="language-plain_text">int main(int argc, char* argv[])
+{
+    int a()
+    {
+        printf(&quot;a\n&quot;);
+        return 1;
+    }
+    char* s()
+    {
+    printf(&quot;s\n&quot;);
+    return &quot;abc&quot;;
+    }
+    printf(&quot;call: %d, %s\n&quot;, a(), s());
+    return EXIT_SUCCESS;
+}
+</code></pre>
+<p>输出:</p>
+<pre class="line-numbers"><code class="language-plain_text">s a
+call: 1, abc
+</code></pre>
+<h3><a id="%E5%8F%AF%E9%80%89%E6%80%A7%E2%BE%83%E5%8F%98%E9%87%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>可选性⾃变量</h3>
+<p>具体参考<a href="https://github.com/qyuhen/bookPDF">PDF</a></p>
+<h2><a id="%E6%95%B0%E7%BB%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>数组</h2>
+<h3><a id="%E5%8F%AF%E5%8F%98%E9%95%BF%E5%BA%A6%E6%95%B0%E7%BB%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>可变长度数组</h3>
+<p>如果数组具有⾃动⽣存周期，且没有 static 修饰符，那么可以⽤⾮常量表达式来定义数组</p>
+<pre class="line-numbers"><code class="language-plain_text">void test(int n)
+{
+    int x[n];
+    for (int i = 0; i &lt; n; i++)
+    {
+        x[i] = i;
+    }
+    struct data { int x[n]; } d;
+    printf(&quot;%d\n&quot;, sizeof(d));
+}
+int main(int argc, char* argv[])
+{
+    int x[] = { 1, 2, 3, 4 };
+    printf(&quot;%d\n&quot;, sizeof(x));
+    test(2);
+    return EXIT_SUCCESS;
+}
+</code></pre>
+<p>初始化规则:</p>
+<ul>
+<li>如果数组为静态⽣存周期，那么初始化器必须是常量表达式。</li>
+<li>如果提供初始化器，那么可以不提供数组⻓度，由初始化器的最后⼀个元素决定。</li>
+<li>如果同时提供⻓度和初始化器，那么没有提供初始值的元素都被初始化为 0 或 NULL。</li>
+</ul>
+<p><strong>初始化特定元素</strong></p>
+<pre class="line-numbers"><code class="language-plain_text">int x[] = { 1, 2, [6] = 10, 11 };
+int len = sizeof(x) / sizeof(int);
+for (int i = 0; i &lt; len; i++)
+{
+    printf(&quot;x[%d] = %d\n&quot;, i, x[i]);
+}
+---------------------------------------
+输出:
+x[0] = 1
+x[1] = 2
+x[2] = 0
+x[3] = 0
+x[4] = 0
+x[5] = 0
+x[6] = 10
+x[7] = 11
+</code></pre>
+<h3><a id="%E5%AD%97%E7%AC%A6%E4%B8%B2" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>字符串</h3>
+<p>字符串是以 '\0' 结尾的 char 数组, 这里体现在<code>sizeof</code></p>
+<pre class="line-numbers"><code class="language-plain_text">char s[10] = &quot;abc&quot;;
+char x[] = &quot;abc&quot;;
+printf(&quot;s, size=%d, len=%d\n&quot;, sizeof(s), strlen(s));
+printf(&quot;x, size=%d, len=%d\n&quot;, sizeof(x), strlen(x));
+</code></pre>
+<p>输出:</p>
+<pre class="line-numbers"><code class="language-plain_text">s, size=10, len=3
+x, size=4, len=3
+</code></pre>
+<p>同样,我们可以初始化特定的元素.</p>
+<pre class="line-numbers"><code class="language-plain_text">int x[][2] =
+{
+    { 1, 11 },
+    { 2, 22 },
+    { 3, 33 },
+    [4][1] = 100,
+    { 6, 66 },
+    [7] = { 9, 99 }
+};
+</code></pre>
+<h3><a id="%E6%95%B0%E7%BB%84%E5%8F%82%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>数组参数</h3>
+<p>参见<a href="https://github.com/zerolxf/ShareFolder">PDF</a></p>
+<h2><a id="%E6%8C%87%E9%92%88" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>指针</h2>
+<p>⾮⾃动周期指针变量或静态⽣存期指针变量必须⽤编译期常量表达式初始化，⽐如函数名称等</p>
+<h3><a id="%E9%99%90%E5%AE%9A%E7%AC%A6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>限定符</h3>
+<p>限定符 const 可以声明 &quot;类型为指针的常量&quot; 和 &quot;指向常量的指针&quot;<br />
+区别在于 const 是修饰 p 还是 *p</p>
+<h2><a id="%E7%BB%93%E6%9E%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>结构</h2>
+<p>结构类型⽆法把⾃⼰作为成员类型，但可以包含 &quot;指向⾃⼰类型&quot; 的指针成员</p>
+<pre class="line-numbers"><code class="language-plain_text">struct list_node
+{
+struct list_node* prev;
+struct list_node* next;
+void* value;
+};
+</code></pre>
+<p>定义不完整结构类型，只能使⽤⼩标签，像下⾯这样的 typedef 类型名称是不⾏的。</p>
+<pre class="line-numbers"><code class="language-plain_text">typedef struct
+{
+list_node* prev;
+list_node* next;
+void* value;
+} list_node;
+----------------------------
+//结合起来用
+typedef struct node_t
+{
+    struct node_t* prev;
+    struct node_t* next;
+    void* value;
+} list_node;
+----------------------------
+//⼩标签可以和 typedef 定义的类型名相同。
+typedef struct node_t
+{
+    struct node_t* prev;
+    struct node_t* next;
+    void* value;
+} node_t;
+</code></pre>
+<h3><a id="%E5%8C%BF%E5%90%8D%E7%BB%93%E6%9E%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>匿名结构</h3>
+<p>在结构体内部使⽤匿名结构体成员，也是⼀种很常⻅的做法</p>
+<pre class="line-numbers"><code class="language-plain_text">typedef struct
+{
+    struct
+    {
+        int length;
+        char chars[100];
+    } s;
+    int x;
+} data_t;
+int main(int argc, char * argv[])
+{
+    data_t d = { .s.length = 100, .s.chars = &quot;abcd&quot;, .x = 1234 };
+    printf(&quot;%d\n%s\n%d\n&quot;, d.s.length, d.s.chars, d.x);
+    return EXIT_SUCCESS;
+}
+</code></pre>
+<h3><a id="%E6%88%90%E5%91%98%E5%81%8F%E7%A7%BB%E9%87%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>成员偏移量</h3>
+<p>利⽤ stddef.h 中的 ofsetof 宏可以获取结构成员的偏移量</p>
+<pre class="line-numbers"><code class="language-plain_text">typedef struct
+{
+    struct
+    {
+        int length;
+        char chars[100];
+    } s;
+    int x;
+} data_t;
+int main(int argc, char * argv[])
+{
+    data_t d = { .s.length = 100, .s.chars = &quot;abcd&quot;, .x = 1234 };
+    printf(&quot;%d\n%s\n%d\n&quot;, d.s.length, d.s.chars, d.x);
+    return EXIT_SUCCESS;
+}
+
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Java 模拟 58登录 （一） 分析]]></title>
+    <link href="https://zerolxf.github.io/16913469570649.html"/>
+    <updated>2023-08-07T02:35:57+08:00</updated>
+    <id>https://zerolxf.github.io/16913469570649.html</id>
+    <content type="html"><![CDATA[
+<blockquote>
+<p>实习期间需要做一个模拟58登录然后爬取简历，第一次做项目遇到很多坑<br />
+同时网上关于58登录的又没有很多资料，遇到了很多坑，这里记录一下，方便自己以及他人学习</p>
+</blockquote>
+<span id="more"></span><!-- more -->
+<p>源代码放在<a href="https://github.com/zerolxf/Login58">Github</a></p>
+<h2><a id="%E5%89%8D%E8%A8%80" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>前言</h2>
+<p>这里是通过手机动态码的方式来登录58, 而非帐号密码, 适用于第三方网站登录使用<br />
+原因是模拟密码登录的时候, 当我用其他人账号在我这里登录58的时候就会出现账号登录限制<br />
+需要手机动态码验证之后才可以登录，所以决定直接手机动态码的登录。</p>
+<!-- more -->
+<p><strong>如果你知道这里的机制或者知道如何避免，请告知我<a href="mailto:liangxianfeng96@qq.com">liangxianfeng96@qq.com</a></strong></p>
+<h2><a id="%E5%88%86%E6%9E%90" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>分析</h2>
+<h3><a id="%E8%AE%B0%E5%BD%95http-request%E8%AF%B7%E6%B1%82" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>记录Http Request请求</h3>
+<p>首先是登录58， 查看登录期间的Http Request请求<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/58_1.JPG" alt="request 请求" /></p>
+<p>其中，connect和clientid对我们模拟登录没有影响<br />
+可以发现大致的流程如下</p>
+<blockquote>
+<ul>
+<li>发送Get请求（data？）， 获取 token</li>
+</ul>
+</blockquote>
+<ul>
+<li>发送Get请求（getcode？）， 请求发送手机验证码， 同时获得一个tokencode</li>
+<li>发送Get请求（login？）， 输入手机号，动态码以及其他相关参数来发送登录请求</li>
+<li>登录成功</li>
+</ul>
+<h3><a id="%E6%9F%A5%E7%9C%8B%E7%99%BB%E5%BD%95js%E4%BB%A3%E7%A0%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>查看登录Js代码</h3>
+<p>我们先看下登录的关键js代码，看都需要哪些参数</p>
+<pre class="line-numbers"><code class="language-JavaScript">            function codeCommitLogin() {
+                loginClickLog(&quot;from=PC_login_sj_dlqq&quot;);
+                $(&quot;#loginMobileButton&quot;).attr(&quot;disabled&quot;, &quot;disabled&quot;);
+                var source = $(&quot;#source&quot;).val();
+                var mobile = $(&quot;#loginMobile&quot;).val();
+                var mobilecode = $(&quot;#loginMobilecode&quot;).val();
+                var validatecode = $(&quot;#validatecodeMobile&quot;).val();
+                var token = $(&quot;#tokenMobile&quot;).val();
+                var tokencode = $(&quot;#tokencodeMobile&quot;).val();
+                var path = $(&quot;#path&quot;).val();
+                var rsaModulus = $(&quot;#rsaModulusMobile&quot;).val();
+                var rsaExponent = $(&quot;#rsaExponentMobile&quot;).val();
+                var timesign = (new Date).getTime() + timespan;
+                var isremember = $(&quot;#isremember_id_new_mobile&quot;).prop(&quot;checked&quot;);
+                var fingerprint = &quot;&quot;;
+                if (typeof fingerPrint != &quot;undefined&quot;) {
+                    fingerprint = fingerPrint.get()
+                }
+                if (typeof Fingerprint2 != &quot;undefined&quot;) {
+                    var fp = new Fingerprint2;
+                    var finger2 = fp.get()
+                } else {
+                    var finger2 = &quot;&quot;
+                }
+                var p = encryptString(timesign + encodeURIComponent(mobile), rsaExponent, rsaModulus);
+                var url = &quot;//passport.58.com/mobile/pc/login?callback=?&amp;mobile=&quot; + p + &quot;&amp;mobilecode=&quot; + mobilecode + &quot;&amp;source=&quot; + source + &quot;&amp;token=&quot; + token + &quot;&amp;tokencode=&quot; + tokencode + &quot;&amp;fingerprint=&quot; + fingerprint + &quot;&amp;isremember=&quot; + isremember + &quot;&amp;finger2=&quot; + finger2 + &quot;&amp;path=&quot; + path;
+                $.getJSON(url, function(result) {
+                    codeSuccessCommitLoginFunction(result)
+                })
+            }
+</code></pre>
+<h3><a id="%E5%8F%82%E6%95%B0%E5%88%86%E6%9E%90" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>参数分析</h3>
+<blockquote>
+<ul>
+<li>这里的话，finger2和fingerprint是唯一确定浏览器的参数，每个浏览器都有不同的值<br />
+这里直接从浏览器拷贝，没有影响</li>
+</ul>
+</blockquote>
+<ul>
+<li>timeSpan时间戳， 表示的是整个登录的时间+常数1411093327735</li>
+<li>密文p， 是timesign + encodeURIComponent(mobile)的密文，rsaModulus 和 rsaExponent ，加密参数，58一直不变</li>
+<li>其他参数直接和request请求一致，或者酌情设置</li>
+</ul>
+<h3><a id="%E8%8E%B7%E5%8F%96token" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>获取token</h3>
+<p>请求的URL Request</p>
+<blockquote>
+<p>URL:<a href="https://passport.58.com/frontend/data?callback=jQuery18308426383909637498_1515994624659&amp;_=1515994624692">https://passport.58.com/frontend/data?callback=jQuery18308426383909637498_1515994624659&amp;_=1515994624692</a></p>
+</blockquote>
+<p>Response</p>
+<blockquote>
+<p>jQuery18305434571389149673_1515995590691({&quot;code&quot;:0,&quot;data&quot;:{&quot;remainTime&quot;:0,&quot;token&quot;:&quot;7pjUnv6fhBONHh7A_4HrN_2rH4is-gC8&quot;,&quot;rsaModulus&quot;:&quot;xxx固定值xxx&quot;,<br />
+&quot;rsaExponent&quot;:&quot;010001&quot;,&quot;totalTime&quot;:60,&quot;mobile&quot;:&quot;手机号&quot;},&quot;msg&quot;:&quot;&quot;})</p>
+</blockquote>
+<p>如上，其中callback参数中jQuery18308426383909637498_1515994624659和_=1515994624692，一个表示回调的函数+时间戳，一个应该是发送请求时候的时间戳，这里可以参考jquery资料</p>
+<p>那么这个请求是页面刚加载就发送的请求，从response可以看出主要是获取token参数</p>
+<h3><a id="%E8%8E%B7%E5%8F%96tokencode" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>获取tokencode</h3>
+<p>Request URL</p>
+<blockquote>
+<p><a href="https://passport.58.com/mobile/getcode">https://passport.58.com/mobile/getcode</a>?</p>
+</blockquote>
+<p>参数<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/58_2.JPG" alt="参数" /><br />
+Response</p>
+<blockquote>
+<p>jQuery18305434571389149673_1515995590693({&quot;code&quot;:0,&quot;data&quot;:{&quot;exist&quot;:0,&quot;tokencode&quot;:&quot;GhxN2kozUcU8wsbkzGXbMmst8G4_0sSg&quot;},&quot;msg&quot;:&quot;动态码已发送&quot;})</p>
+</blockquote>
+<h3><a id="%E5%8F%91%E9%80%81login%E8%AF%B7%E6%B1%82" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发送login请求</h3>
+<p>Request URL</p>
+<blockquote>
+<p><a href="https://passport.58.com/mobile/pc/login">https://passport.58.com/mobile/pc/login</a>?</p>
+</blockquote>
+<p>参数<br />
+<img src="http://oh9ex6wd2.bkt.clouddn.com/58_3.JPG" alt="login参数" /></p>
+<p>Response</p>
+<blockquote>
+<p>jQuery18305434571389149673_1515995590693({&quot;code&quot;:0,&quot;data&quot;:{&quot;fingerprint&quot;:&quot;84E63543A0E4DF048727E0037314879E66AE767A7311EA8C&quot;},&quot;msg&quot;:&quot;成功&quot;})</p>
+</blockquote>
+<p>以上便是整个登录的流程</p>
+<h2><a id="%E6%80%BB%E7%BB%93" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>总结</h2>
+<p>由于是第一次做Java项目，很多都不懂而且前期公司网不好半天才能刷出个界面，然后导致这个功能做了很久.<br />
+最初我试着用selenium框架去模拟登录，但是！！！公司网络不行并且我觉得这样效率太慢了就没有进行下去，后面转入Java模拟登录<br />
+前期很多时间都放在了去读Js代码，手动模拟添加部分cookie，以及模拟java加密过程，其实这三个后面发现都是在做无用功<br />
+然后自己登录成功后发现其他人账号不能登录，又转到手机动态码登录。。。</p>
+<p>做这个功能最大的体会就是，做项目先不要深入的去了解某一个环节(这里我花了几天都在读js代码，Java模拟js加密)，应该显示着做出一个最简单的demo，遇到问题再去学习解决</p>
+<p>最后这个模拟登录还是很在很多问题，希望有了解的人可以告诉应该怎么做才最好</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Java 模拟58登录(二) 实现]]></title>
+    <link href="https://zerolxf.github.io/16913469570611.html"/>
+    <updated>2023-08-07T02:35:57+08:00</updated>
+    <id>https://zerolxf.github.io/16913469570611.html</id>
+    <content type="html"><![CDATA[
+<blockquote>
+<p>实习期间需要做一个模拟58登录然后爬取简历，之前已经写了一篇分析，现在具体实现过程</p>
+</blockquote>
+<span id="more"></span><!-- more -->
+<h2><a id="%E5%AE%9E%E7%8E%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>实现</h2>
+<h3><a id="%E6%B5%81%E7%A8%8B" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>流程</h3>
+<p>根据之前的分析可以得出58登录的大致流程如下</p>
+<blockquote>
+<ul>
+<li>发送Get请求（data？）， 获取 token</li>
+</ul>
+</blockquote>
+<ul>
+<li>发送Get请求（getcode？）， 请求发送手机验证码， 同时获得一个tokencode</li>
+<li>发送Get请求（login？）， 输入手机号，动态码以及其他相关参数来发送登录请求</li>
+<li>登录成功</li>
+</ul>
+<h3><a id="%E9%A2%84%E5%A4%84%E7%90%86" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>预处理</h3>
+<p>除了上述所说的步骤外，还有很多需要处理的底层实现细节，比如解析Cookie， 构造必须的参数</p>
+<h4><a id="%E8%AE%BE%E7%BD%AE%E5%BF%85%E9%A1%BB%E5%8F%82%E6%95%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>设置必须参数</h4>
+<ul>
+<li>FINGERPRINT 和FINGERPRINT2是网页登录的时候直接抓取的，我试过随机修改后面几个数字依旧可以登录</li>
+<li>JQUERYSTR 只是jquery调用时候自动生成的参数，为了不出现什么问题我也加上了</li>
+<li>initTime initTime表示页面加载时间，后面加密时候需要用到的时间戳这个参数，这里所有需要的时间戳都是(需要的时间戳时刻b-initTime+ const time 1411093327735L)</li>
+<li>TOKENCODE 和 TOKEN 是调用的时候获取的参数</li>
+</ul>
+<pre class="line-numbers"><code class="language-Java">	private String FRONTEND_URL = &quot;http://passport.58.com/frontend/data?&quot;;
+	private String TOKENCODE_URL = &quot;http://passport.58.com/mobile/getcode?&quot;;
+	private String LOGIN_URL = &quot;https://passport.58.com/mobile/pc/login?&quot;;
+	private String FINGERPRINT = &quot;421A592E9D98DC7C0711A36033A582E84360ED23C621CCE3_011&quot;;
+	private String FIGNERPRINT2 = &quot;zh-CN|24|1|4|1600_900|1600_860|-480|1|1|1|undefined|undefined|&quot;
+			+ &quot;unknown|Win64|unspecified|1|false|false|false|true|false|&quot;
+			+ &quot;0_true_true|d41d8cd98f00b204e9800998ecf8427F|b01de87fcefd32c68d348cd9d18b62d9&quot;;
+	private String JQUERYSTR = &quot;jQuery183025066063002634587_&quot; + getNow();
+	private long initTime = (new Date()).getTime();
+	private String TOKENCODE = &quot;&quot;;
+	private String TOKEN = &quot;&quot;;
+</code></pre>
+<h4><a id="%E8%A7%A3%E6%9E%90cookie" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解析Cookie</h4>
+<p>这里实际写的时候遇到了坑点, 最初底层实现Cookie是参考<a href="https://stackoverflow.com/questions/5574530/how-to-parse-a-cookie-string">stackoverflow</a>中的那种实现<br />
+但是如果Cookie value中含有&quot;=&quot;,解析就是失败，刚好58的session Cookie 中含有这个！！！我也是失败很多次才知道</p>
+<pre class="line-numbers"><code class="language-plain_text">	protected CookieStore cookieStore = new BasicCookieStore();
+
+	public void setCookieStore(HttpResponse httpResponse) {
+
+		Header[] headers = httpResponse.getHeaders(&quot;Set-Cookie&quot;);
+		if (headers != null &amp;&amp; headers.length &gt; 0) {
+			for (int i = 0; i &lt; headers.length; i++) {
+				String setCookie = headers[i].getValue();
+				try {
+					BasicClientCookie cookie = this.parseRawCookie(setCookie);
+					if (!cookie.isExpired(new Date())) {
+						this.cookieStore.addCookie(cookie);
+					}
+				} catch (Exception e) {
+					// do nothing
+				}
+			}
+		}
+		this.cookieStore.clearExpired(new Date());
+	}
+
+//使用java.net.HttpCookie自带的解析，然后手动转换成BasicClientCookie
+//这里java.net.HttpCookie会有些默认行为需要注意
+	protected BasicClientCookie parseRawCookie(String rawCookie) throws Exception {
+		List&lt;HttpCookie&gt; cookies = HttpCookie.parse(rawCookie);
+		if (cookies.size() &lt; 1)
+			return null;
+		HttpCookie httpCookie = cookies.get(0);
+		BasicClientCookie cookie = new BasicClientCookie(httpCookie.getName(), httpCookie.getValue());
+		if (httpCookie.getMaxAge() &gt;= 0) {
+			Date expiryDate = new Date(System.currentTimeMillis() + httpCookie.getMaxAge() * 1000);
+			cookie.setExpiryDate(expiryDate);
+		}
+		if (httpCookie.getDomain() != null)
+			cookie.setDomain(httpCookie.getDomain());
+		if (httpCookie.getPath() != null)
+			cookie.setPath(httpCookie.getPath());
+		if (httpCookie.getComment() != null)
+			cookie.setComment(httpCookie.getComment());
+		cookie.setSecure(httpCookie.getSecure());
+		return cookie;
+	}
+</code></pre>
+<h4><a id="%E8%A7%A3%E6%9E%90response-string" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解析Response String</h4>
+<p>返回的Response类似于下面，需要提取其中的键值对</p>
+<blockquote>
+<p>jQuery18305434571389149673_1515995590691({&quot;code&quot;:0,&quot;data&quot;:{&quot;remainTime&quot;:0,&quot;token&quot;:&quot;7pjUnv6fhBONHh7A_4HrN_2rH4is-gC8&quot;,&quot;rsaModulus&quot;:&quot;xxx固定值xxx&quot;,<br />
+&quot;rsaExponent&quot;:&quot;010001&quot;,&quot;totalTime&quot;:60,&quot;mobile&quot;:&quot;手机号&quot;},&quot;msg&quot;:&quot;&quot;})</p>
+</blockquote>
+<pre class="line-numbers"><code class="language-plain_text">	protected String getResponseParameter(String response, String parameterName) {
+		String result = response.replaceAll(&quot;,|\&quot;|:&quot;, &quot; &quot;);
+		StringTokenizer tokenizer = new StringTokenizer(result, &quot; &quot;);
+		while (tokenizer.hasMoreTokens() &amp;&amp; !tokenizer.nextToken().equals(parameterName)) {
+		}
+		String token = tokenizer.nextToken();
+		return token;
+	}
+</code></pre>
+<h4><a id="%E5%8F%91%E9%80%81get%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发送Get请求模块</h4>
+<p>因为后面很多都用到get 请求，所以这里封装一下</p>
+<pre class="line-numbers"><code class="language-Java">	public String doGet(String url, String host) throws Exception {
+		CloseableHttpClient client = this.createHttpClient();
+		HttpGet get = new HttpGet(url);
+		get.addHeader(&quot;Connection&quot;, &quot;keep-alive&quot;);
+		get.addHeader(&quot;accept&quot;,
+				&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&quot;);
+		get.addHeader(&quot;accept-encoding&quot;, &quot;gzip, deflate, br&quot;);
+		get.addHeader(&quot;accept-language&quot;, &quot;en-US,en;q=0.9&quot;);
+		get.addHeader(&quot;upgrade-insecure-requests&quot;, &quot;1&quot;);
+		get.addHeader(&quot;user-agent&quot;,
+				&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36&quot;);
+		get.addHeader(&quot;Host&quot;, host);
+		CloseableHttpResponse response = client.execute(get);
+		if (response == null) {
+			throw new Exception(&quot;network error, unable to connect to 51job&quot;);
+		}
+		setCookieStore(response);
+		HttpEntity entity = response.getEntity();
+		InputStream stream = entity.getContent();
+		String result = IOUtils.toString(stream, &quot;utf-8&quot;);
+
+		IOUtils.closeQuietly(stream);
+		EntityUtils.consumeQuietly(entity);
+		HttpClientUtils.closeQuietly(client);
+		return result;
+	}
+</code></pre>
+<h4><a id="%E5%8A%A0%E5%AF%86%E5%AD%97%E7%AC%A6%E4%B8%B2" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>加密字符串</h4>
+<p>QuanzhouJSUtil是一个调用js的类</p>
+<pre class="line-numbers"><code class="language-Java">	protected String encryptStr(String str) {
+		Long timeSpan = 1411093327735L;
+		Long randomLong = timeSpan + (new Date()).getTime() - initTime;
+		String timeSign = String.valueOf(randomLong);
+		String passwd = timeSign + str;
+		String encryptPwd = QuanzhouJSUtil.getEncryptString(passwd);
+		return encryptPwd;
+	}
+</code></pre>
+<h3><a id="%E5%8F%91%E9%80%81%E5%8A%A8%E6%80%81%E7%A0%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发送动态码</h3>
+<pre class="line-numbers"><code class="language-plain_text">	public void getPhoneCode(String phoneNumber) throws Exception {
+
+		// 获得token,然后用token作为参数获取tokenCode, 然后发送验证码登录时候需要用到tokenCode和token
+		String result = doGet(FRONTEND_URL + getJQueryCallBackStr(), &quot;passport.58.com&quot;);
+		TOKEN = getResponseParameter(result, &quot;token&quot;);
+
+		// 获取token code
+		String enPhone = encryptStr(phoneNumber);
+		String tokenCodeURL = TOKENCODE_URL + &quot;mobile=&quot; + enPhone + &quot;&amp;validcode=&amp;source=pc-login&amp;vcodekey=&amp;token=&quot;
+				+ TOKEN + &quot;&amp;voicetype=0&amp;codetype=0&amp;fingerprint=&quot; + FINGERPRINT + &quot;&amp;&quot; + getJQueryCallBackStr() + &quot;&amp;path=&quot;
+				+ &quot;http://my.58.com&quot;;
+		result = doGet(tokenCodeURL, &quot;passport.58.com&quot;);
+		TOKENCODE = getResponseParameter(result, &quot;tokencode&quot;);
+
+	}
+</code></pre>
+<h3><a id="%E5%8F%91%E9%80%81%E5%8A%A8%E6%80%81%E7%A0%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>发送动态码</h3>
+<pre class="line-numbers"><code class="language-plain_text">	public void getPhoneCode(String phoneNumber) throws Exception {
+
+		// 获得token,然后用token作为参数获取tokenCode, 然后发送验证码登录时候需要用到tokenCode和token
+		String result = doGet(FRONTEND_URL + getJQueryCallBackStr(), &quot;passport.58.com&quot;);
+		TOKEN = getResponseParameter(result, &quot;token&quot;);
+
+		// 获取token code
+		String enPhone = encryptStr(phoneNumber);
+		String tokenCodeURL = TOKENCODE_URL + &quot;mobile=&quot; + enPhone + &quot;&amp;validcode=&amp;source=pc-login&amp;vcodekey=&amp;token=&quot;
+				+ TOKEN + &quot;&amp;voicetype=0&amp;codetype=0&amp;fingerprint=&quot; + FINGERPRINT + &quot;&amp;&quot; + getJQueryCallBackStr() + &quot;&amp;path=&quot;
+				+ &quot;http://my.58.com&quot;;
+		result = doGet(tokenCodeURL, &quot;passport.58.com&quot;);
+		TOKENCODE = getResponseParameter(result, &quot;tokencode&quot;);
+
+	}
+	
+</code></pre>
+<h3><a id="%E6%B5%8B%E8%AF%95%E7%99%BB%E5%BD%95" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>测试登录</h3>
+<pre class="line-numbers"><code class="language-plain_text">	@Test
+	public void testLogin58(){
+		preLogin();
+		String phoneNum = &quot;&quot;;
+		String mobileCode = &quot;&quot;;
+		System.out.println(&quot;请输入你的手机号码:&quot;);
+		Scanner scanner = new Scanner(System.in);
+		phoneNum = scanner.nextLine();
+		try {
+			getPhoneCode(phoneNum);
+			System.out.println(&quot;请输入你的手机验证码:&quot;);
+			mobileCode = scanner.nextLine();
+			loginJob58(phoneNum, mobileCode);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		//add some code to do
+		
+		
+		scanner.close();
+		
+	}
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[JSON 格式转换成Java对象]]></title>
+    <link href="https://zerolxf.github.io/16913469570040.html"/>
+    <updated>2023-08-07T02:35:57+08:00</updated>
+    <id>https://zerolxf.github.io/16913469570040.html</id>
+    <content type="html"><![CDATA[
+<span id="more"></span><!-- more -->
+<p><a href="https://github.com/zerolxf/MyDemo">源代码</a><br />
+添加依赖到pom.xml</p>
+<pre class="line-numbers"><code class="language-plain_text">&lt;!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core --&gt;
+&lt;dependency&gt;
+	&lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+	&lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+	&lt;version&gt;2.6.3&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<p>需要转换的对象是<code>ObjectC</code>和<code>ObjectD</code>,其中<code>ObjectD</code>的一个成员变量是<code>List&lt;ObjectC&gt;</code>.<br />
+jackson能够递归转换,让json中包含json的这种也能够转为相应的Java对象</p>
+<pre class="line-numbers"><code class="language-Java">//ObjectC.java
+package com.workstation;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ObjectC {
+
+	@JsonProperty (&quot;Message&quot;)
+	String message;
+
+	public String getMessage() {
+		return message;
+	}
+
+	public void setMessage(String message) {
+		this.message = message;
+	}
+	
+	//JSON 中message也会绑定到message成员变量
+	@JsonProperty (&quot;message&quot;)
+	public String _getMessage() {
+		return message;
+	}
+
+	@JsonProperty (&quot;message&quot;)
+	public void _setMessage(String message) {
+		this.message = message;
+	}
+	
+}
+</code></pre>
+<p>如上所写，ObjectC对象和Json中的&quot;Message&quot;和&quot;message&quot;都绑定到了message成员变量</p>
+<pre class="line-numbers"><code class="language-plain_text">//ObjectD.java
+package com.workstation;
+
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+public class ObjectD {
+
+	List&lt;ObjectC&gt; list;
+
+	@JsonProperty (&quot;List&quot;)
+	public List&lt;ObjectC&gt; getList() {
+		return list;
+	}
+
+    //能够像spring一样,自动完成ObjectC的转换
+	@JsonProperty (&quot;List&quot;)
+	public void setList(List&lt;ObjectC&gt; list) {
+		this.list = list;
+	}
+	
+}
+
+</code></pre>
+<p>测试代码</p>
+<pre class="line-numbers"><code class="language-plain_text">package com.workstation;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.junit.Test;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class testJsonToObject {
+
+	@Test
+	public void test() throws JsonParseException, JsonMappingException, IOException {
+		String jsonString = &quot;{    \&quot;message\&quot;:\&quot;Hello World\&quot;}&quot;;
+		ObjectC objectC = (new ObjectMapper()).readValue(jsonString, ObjectC.class);
+		System.out.println(objectC.getMessage());
+		
+		
+//		{
+//			&quot;List&quot;: [
+//			{&quot;message&quot;:&quot;hello A&quot;},
+//			{&quot;Message&quot;:&quot;hello B&quot;}
+//			]
+//			}
+		String jsonListString = &quot;{\r\n&quot; + 
+				&quot;\&quot;List\&quot;: [\r\n&quot; + 
+				&quot;{\&quot;message\&quot;:\&quot;hello A\&quot;},\r\n&quot; + 
+				&quot;{\&quot;Message\&quot;:\&quot;hello B\&quot;}\r\n&quot; + 
+				&quot;]\r\n&quot; + 
+				&quot;}&quot;;
+		ObjectD objectD = (new ObjectMapper()).readValue(jsonListString, ObjectD.class);
+		List&lt;ObjectC&gt; list = objectD.getList();
+		for(int i = 0; i &lt; list.size(); ++i) {
+			System.out.println(list.get(i).getMessage());
+		}
+		
+		
+		//jackson结合TypeReference
+		Map&lt;String, String&gt; map = new HashMap&lt;String, String&gt;();
+		map = (new ObjectMapper()).readValue(jsonString, new TypeReference&lt;Map&lt;String, String&gt;&gt;(){});
+		for(Entry&lt;String, String&gt; entry : map.entrySet()) {
+			System.out.println(entry.getKey()+&quot;:&quot;+entry.getValue());
+		}
+		
+	}
+	
+}
+
+
+}
+
+</code></pre>
+<p>输出</p>
+<pre class="line-numbers"><code class="language-plain_text">Hello World
+hello A
+hello B
+message:Hello World
+</code></pre>
+<p>如上所示,jackson成功读取了含有list的json对象<br />
+jsackson还可以和TypeReference一起使用,这样对某些特定情况下就不用专门新建一个类来读取相关东西了</p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[常见配置]]></title>
+    <link href="https://zerolxf.github.io/16913469570018.html"/>
+    <updated>2023-08-07T02:35:56+08:00</updated>
+    <id>https://zerolxf.github.io/16913469570018.html</id>
+    <content type="html"><![CDATA[
+<h3><a id="ubuntu%E5%88%9D%E5%A7%8B%E5%8C%96" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Ubuntu初始化</h3>
+<h4><a id="1%E5%AE%89%E8%A3%85%E6%97%A0%E7%BA%BF%E9%A9%B1%E5%8A%A8%E5%92%8C%E6%9B%B4%E6%96%B0%E7%B3%BB%E7%BB%9F%E4%BB%A5%E5%8F%8A%E8%AF%AD%E8%A8%80" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. 安装无线驱动和更新系统以及语言</h4>
+<h4><a id="2%E5%AE%89%E8%A3%85%E6%96%B0%E7%AB%8B%E5%BE%97%E5%92%8C-gdebi" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. 安装新立得和gdebi</h4>
+<p><code>sudo apt-get install synaptic</code></p>
+<h4><a id="3%E5%AE%89%E8%A3%85%E8%BD%AF%E4%BB%B6" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>3.安装软件</h4>
+<p><code>sudo apt-get install git vim vim-gnome vim-gtk uget ariac</code></p>
+<blockquote>
+<p>这里用synaptic安装特别方便还不容易出事故</p>
+</blockquote>
+<!--more-->
+<h3><a id="%E5%88%9D%E5%A7%8B%E5%8C%96github" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>初始化github</h3>
+<h4><a id="1%E5%AE%89%E8%A3%85-ssh-key" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. 安装ssh key</h4>
+<h5><a id="1%E7%94%9F%E6%88%90-ssh-key" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>(1) 生成ssh key</h5>
+<p><code>ssh-keygen -t rsa -C &quot;your_email@youremail.com&quot;</code></p>
+<h5><a id="%EF%BC%882%EF%BC%89%E6%B7%BB%E5%8A%A0%E6%96%B0%E7%9A%84key%E5%88%B0ssh-agent" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>（2）添加新的Key到ssh-agent</h5>
+<p><code>eval &quot;$(ssh-agent -s)&quot;</code><br />
+<code>ssh-add ~/.ssh/id_rsa</code></p>
+<h5><a id="3%E6%B7%BB%E5%8A%A0%E5%88%B0-github" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>(3) 添加到github</h5>
+<h4><a id="2%E9%85%8D%E7%BD%AE-github%E4%BF%A1%E6%81%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. 配置github信息</h4>
+<p><code>git config --global user.name &quot;Your Name&quot;</code><br />
+<code>git config --global user.email &quot;your@email.com&quot;</code></p>
+<h4><a id="3%E5%90%8C%E6%AD%A5%E8%BF%9C%E7%AB%AF%E4%BB%A3%E7%A0%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. 同步远端代码</h4>
+<p><code>git remote add origin git@github.com:zerolxf/zero.git</code></p>
+<h3><a id="%E7%BF%BB%E5%A2%99" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>翻墙</h3>
+<h4><a id="1-shadowsocks%E5%AE%89%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>1. shadowsocks安装</h4>
+<p><code>sudo add-apt-repository ppa:hzwhuang/ss-qt5</code><br />
+<code>sudo apt-get update</code><br />
+<code>sudo apt-get install shadowsocks-qt5 </code></p>
+<h4><a id="2-proxychains%E5%AE%89%E8%A3%85" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>2. proxychains安装</h4>
+<p><code>sudo apt-get install proxychains</code></p>
+<p>修改最后一行配置信息为socks5 127.0.0.1 1080<br />
+<code>sudo vim /etc/proxychains.conf</code></p>
+<h4><a id="3-uget%E7%9A%84%E5%AE%89%E8%A3%85%EF%BC%9A" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>3. uget的安装：</h4>
+<p><code>sudo add-apt-repository ppa:plushuang-tw/uget-stable</code><br />
+<code>sudo apt-get update </code><br />
+<code>sudo apt-get install uget</code></p>
+<h4><a id="4-aria2%E7%9A%84%E5%AE%89%E8%A3%85%EF%BC%9A" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>4. aria2的安装：</h4>
+<p><code>sudo add-apt-repository ppa:t-tujikawa/ppa </code><br />
+<code>sudo apt-get update </code><br />
+<code>sudo apt-get install aria2</code></p>
+<h4><a id="5-git%E5%B0%8F%E8%AE%B0" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>5. git小记</h4>
+<h6><a id="%E7%94%B1%E4%BA%8E%E4%B8%8D%E7%BB%8F%E5%B8%B8%E4%BD%BF%E7%94%A8git%E7%BB%8F%E5%B8%B8%E5%BF%98%E8%AE%B0%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E8%80%8C%E6%AF%8F%E6%AC%A1%E7%94%A8%E7%9A%84%E6%97%B6%E5%80%99%E5%8F%88%E6%98%AF%E9%87%8D%E6%96%B0%E5%AD%A6%E4%B9%A0%E8%BF%99%E9%87%8C%E8%AE%B0%E4%B8%8B%E4%B8%80%E4%BA%9B%E5%B8%B8%E7%94%A8%E6%96%B9%E4%BE%BF%E4%BB%A5%E5%90%8E%E4%BD%BF%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>由于不经常使用git,经常忘记一些常用命令,而每次用的时候又是重新学习,这里记下一些常用方便以后使用</h6>
+<ul>
+<li>git 本地添加远程仓库
+<ul>
+<li>git remote add  origin <a href="mailto:git@github.com">git@github.com</a>:zerolxf/zero.git</li>
+</ul>
+</li>
+</ul>
+<span id="more"></span><!-- more -->
+<ul>
+<li>
+<p>git更新子模块</p>
+<ul>
+<li>git submodule update</li>
+</ul>
+</li>
+<li>
+<p>创建分支</p>
+<ul>
+<li>git branch test</li>
+</ul>
+</li>
+<li>
+<p>hexo布置</p>
+<ul>
+<li>npm install hexo-deployer-git --save<br />
+hexo d</li>
+</ul>
+</li>
+<li>
+<p>hexo布置出问题了,就把deploy_git删掉</p>
+</li>
+</ul>
+<p>=======<br />
+bcloud<br />
+chorme<br />
+shadowsock<br />
+星际翻译<br />
+git<br />
+nodejs &amp; hexo<br />
+and so on<br />
+vim</p>
+<h3><a id="%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>参考链接</h3>
+<h4><a id="socks5%E5%BC%BA%E8%BD%AC-http" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>socks5 强转http</h4>
+<p><a href="http://www.cnblogs.com/liuxuzzz/p/5324749.html">privoxy</a></p>
+<h4><a id="%E6%B7%98%E5%AE%9D%E9%95%9C%E5%83%8F%E5%AE%89%E8%A3%85hexo" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>淘宝镜像安装hexo</h4>
+<p><a href="https://npm.taobao.org/">淘宝镜像</a></p>
+<blockquote>
+<p><del>nmp,nodejs直接用新立得安装</del><br />
+这里还是到<a href="https://nodejs.org/en/">nodejs官网</a>,直接下载压缩包,然后解压,把解压后的bin目录添加到PATH环境变量中去,记得PATH=$PATH:xxx/bin</p>
+</blockquote>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[单元测试与Spring框架]]></title>
+    <link href="https://zerolxf.github.io/16913469569887.html"/>
+    <updated>2023-08-07T02:35:56+08:00</updated>
+    <id>https://zerolxf.github.io/16913469569887.html</id>
+    <content type="html"><![CDATA[
+<p><a href="https://www.jianshu.com/p/1b04c698c56b">参考博客</a><br />
+<a href="https://github.com/zerolxf/MyDemo">源代码</a></p>
+<p>当进行单元测试的时候,需要给对象的依赖一个mock对象<br />
+但是对于Spring项目对象的私有成员,我们无法访问给他一个mock对象.这个时候我们就需要ReflectionTestUtils,他能够像Spring一样注入filed,通过手动给私有成员一个mock对象</p>
+<span id="more"></span><!-- more -->
+<pre class="line-numbers"><code class="language-Java">public class ObjectA {
+	private String pwString;
+
+	public String getPwString() {
+		return pwString;
+	}
+
+	public void setPwString(String pwString) {
+		this.pwString = pwString;
+	}
+}
+
+</code></pre>
+<p>被测试类</p>
+<pre class="line-numbers"><code class="language-Java">public class ObjectB {
+	private ObjectA objectA;
+
+	public ObjectA getObjectA() {
+		return objectA;
+	}
+
+	public void setObjectA(ObjectA objectA) {
+		this.objectA = objectA;
+	}
+
+}
+
+</code></pre>
+<p>测试类</p>
+<pre class="line-numbers"><code class="language-Java">import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import org.junit.Test;
+import org.springframework.test.util.ReflectionTestUtils;
+
+public class testMockito {
+	@Test
+	public void test() {
+		ObjectB objectB = new ObjectB();
+		ObjectA objectA = mock(ObjectA.class);
+		when(objectA.getPwString()).thenReturn(&quot;hello A&quot;);
+		//&quot;objectA&quot;是通过成员变量名字确定的
+		ReflectionTestUtils.setField(objectB, &quot;objectA&quot;, objectA);
+		
+		ObjectA actucalA = objectB.getObjectA();
+		assertEquals(&quot;hello A&quot;, actucalA.getPwString());
+	}
+}
+</code></pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[单元测试 笔记]]></title>
+    <link href="https://zerolxf.github.io/16913469569862.html"/>
+    <updated>2023-08-07T02:35:56+08:00</updated>
+    <id>https://zerolxf.github.io/16913469569862.html</id>
+    <content type="html"><![CDATA[
+<p>学习链接<br />
+<a href="http://static.javadoc.io/org.mockito/mockito-core/2.13.0/org/mockito/Mockito.html">Mockito官方文档</a><br />
+<a href="http://wiki.jikexueyuan.com/list/java/">极客学院</a><br />
+<a href="http://www.yiibai.com/testng/suite-test.html">TestNg</a><br />
+<a href="http://www.cnblogs.com/Ming8006/p/6297333.html">Mockito中文教程</a></p>
+<h2><a id="mockito%E4%BD%BF%E7%94%A8%E6%83%85%E6%99%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Mockito 使用情景</h2>
+<p>我们往往会遇到要测试的类有很多依赖，这些依赖的类/对象/资源又有别的依赖，从而形成一个大的依赖树，要在单元测试的环境中完整地构建这样的依赖，是一件很困难的事情。</p>
+<span id="more"></span><!-- more -->
+<h3><a id="%E5%9F%BA%E6%9C%AC%E4%BD%BF%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>基本使用</h3>
+<pre class="line-numbers"><code class="language-plain_text">	@Test
+	public void test() {
+		ObjectB objectB = mock(ObjectB.class);
+		ObjectA objectA = new ObjectA();
+		objectA.setPwString(&quot;testString&quot;);
+		when(objectB.getObjectA()).thenReturn(objectA);
+		
+		ObjectA actucalA = objectB.getObjectA();
+		assertEquals(objectA, actucalA);
+	}
+</code></pre>
+<p>注意使用注释快速Mock的时候需要<code>MockitoAnnotations.initMocks(this);</code><a href="http://www.cnblogs.com/Ming8006/p/6297333.html">参考2.5</a></p>
+<h3><a id="%E5%8F%82%E6%95%B0%E5%8C%B9%E9%85%8D" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>参数匹配</h3>
+<p>在匹配方法的参数时候可以写准确值也可以使用any()</p>
+<pre class="line-numbers"><code class="language-plain_text">    when(templateDAO.findAll(any(TemplateSpecification.class))).thenThrow(new 
+    	DataAccessException(&quot;query template failed&quot;) {
+        	private static final long serialVersionUID = -6784264998739312988L;
+    });
+    when(templateDAO.findAll(any(TemplateSpecification.class))).thenThrow(new
+    	DataAccessException(&quot;query template failed&quot;) {
+    }); 
+</code></pre>
+<ul>
+<li>这里需要注意的是一旦参数使用了一个matcher,那么后面的参数都必须matcher</li>
+<li>可以自己自定义参数匹配</li>
+</ul>
+<h3><a id="doreturn-when%E5%92%8C-when-doreturn%E5%8C%BA%E5%88%AB" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>doReturn().when()和when().doReturn()区别</h3>
+<p>这里需要注意一下<code>when().doReturn</code>和<code>doReturn().when()</code>的区别</p>
+<ul>
+<li>doReturn().when()不会真的去调用该方法</li>
+<li>when().doReturn()在监测对象是完全mock对象的时候不会调用方法(因为mock就是一个假对象),而当对象是spy的时候会真的去调用该方法</li>
+<li>当调用方法返回值是空的时候,只能用doReturn().when().method()</li>
+</ul>
+<h3><a id="%E9%AA%8C%E8%AF%81%E5%BC%82%E5%B8%B8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>验证异常</h3>
+<h4><a id="%E4%BB%A3%E7%A0%81%E9%AA%8C%E8%AF%81" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>代码验证</h4>
+<pre class="line-numbers"><code class="language-plain_text">    @Rule
+    public ExpectedException expectedEx = ExpectedException.none(); 
+    //...
+    expectedEx.expect(CannotUploadTemplateException.class);
+    expectedEx.expectMessage(&quot;Template Rejected&quot;); 
+    expectedEx.expect(CannotUploadTemplateException.class);
+    expectedEx.expectMessage(&quot;Template Rejected&quot;); 
+</code></pre>
+<h4><a id="%E4%BD%BF%E7%94%A8%E6%B3%A8%E9%87%8A%E6%9D%A5%E9%AA%8C%E8%AF%81%E5%BC%82%E5%B8%B8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>使用注释来验证异常</h4>
+<pre class="line-numbers"><code class="language-Java">    @Test(expected = RuntimeException.class)
+    public void doThrow_when(){
+        List list = mock(List.class);
+        doThrow(new RuntimeException()).when(list).add(1);
+        list.add(1);
+    }
+
+</code></pre>
+<h3><a id="spy%E6%A3%80%E6%B5%8B%E5%AF%B9%E8%B1%A1" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Spy检测对象</h3>
+<p>spy是一个可以检测实际对象的技术,能够监测方法并设置对象行为,这里就需要注意之前所说的<code> doReturn().when()</code>和<code>when().doReturn()</code>的区别,理解起来就是一种可实可虚的半mock对象</p>
+<pre class="line-numbers"><code class="language-plain_text">	@Test
+	public void test() {
+		ObjectB objectB = spy(new ObjectB());
+		ObjectA objectA = new ObjectA();
+		objectA.setPwString(&quot;testString&quot;);
+		when(objectB.getObjectA()).thenReturn(objectA);
+		
+		ObjectA actucalA = objectB.getObjectA();
+		assertEquals(objectA, actucalA);
+	    //这里getValue()会调用实际的方法,返回值是&quot;hello world&quot;
+		assertEquals(&quot;hello world&quot;, objectB.getValue());
+	}
+	
+</code></pre>
+<h3><a id="%E9%87%8D%E7%BD%AEmock" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>重置Mock</h3>
+<pre class="line-numbers"><code class="language-plain_text">     @Test
+    public void reset_mock(){
+        List list = mock(List.class);
+        when(list.size()).thenReturn(10);
+        list.add(1);
+        assertEquals(10,list.size());
+        //重置mock，清除所有的互动和预设
+        reset(list);
+        assertEquals(0,list.size());
+    }
+</code></pre>
+<h3><a id="%E8%BF%9E%E7%BB%AD%E8%B0%83%E7%94%A8" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>连续调用</h3>
+<pre class="line-numbers"><code class="language-plain_text">    @Test(expected = RuntimeException.class)
+    public void consecutive_calls(){
+        //模拟连续调用返回期望值，如果分开，则只有最后一个有效
+        when(mockList.get(0)).thenReturn(0);
+        when(mockList.get(0)).thenReturn(1);
+        when(mockList.get(0)).thenReturn(2);
+        when(mockList.get(1)).thenReturn(0).thenReturn(1).thenThrow(new RuntimeException());
+        assertEquals(2,mockList.get(0));
+        assertEquals(2,mockList.get(0));
+        assertEquals(0,mockList.get(1));
+        assertEquals(1,mockList.get(1));
+        //第三次或更多调用都会抛出异常
+        mockList.get(1);
+    }
+</code></pre>
+<h3><a id="%E9%AA%8C%E8%AF%81%E6%89%A7%E8%A1%8C%E9%A1%BA%E5%BA%8F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>验证执行顺序</h3>
+<p><a href="http://www.cnblogs.com/Ming8006/p/6297333.html">详情参考2.16</a></p>
+<h3><a id="%E7%A1%AE%E4%BF%9D%E6%A8%A1%E6%8B%9F%E5%AF%B9%E8%B1%A1%E4%B8%8A%E6%97%A0%E4%BA%92%E5%8A%A8%E5%8F%91%E7%94%9F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>确保模拟对象上无互动发生</h3>
+<p><a href="http://www.cnblogs.com/Ming8006/p/6297333.html">详情参考2.17</a></p>
+<h3><a id="%E6%89%BE%E5%87%BA%E5%86%97%E4%BD%99%E7%9A%84%E4%BA%92%E5%8A%A8%E5%8D%B3%E6%9C%AA%E8%A2%AB%E9%AA%8C%E8%AF%81%E5%88%B0%E7%9A%84" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>找出冗余的互动(即未被验证到的)</h3>
+<p><a href="http://www.cnblogs.com/Ming8006/p/6297333.html">详情参考2.18</a></p>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[开源webbench代码学习]]></title>
+    <link href="https://zerolxf.github.io/16913469569311.html"/>
+    <updated>2023-08-07T02:35:56+08:00</updated>
+    <id>https://zerolxf.github.io/16913469569311.html</id>
+    <content type="html"><![CDATA[
+<p>无聊至极,学习一下一些简单的开源项目</p>
+<h3><a id="webbench" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Webbench</h3>
+<blockquote>
+<p>Webbench是一个在linux下使用的非常简单的网站压测工具。它使用fork()模拟多个客户端同时访问我们设定的URL，测试网站在压力下工作的性能，最多可以模拟3万个并发连接去测试网站的负载能力。Webbench使用C语言编写, 代码实在太简洁，源码加起来不到600行。 --by [林木][1]</p>
+</blockquote>
+<!-- more -- >
+
+#### 命令行参数解析
+要看懂代码,最好先学习下`getopt_long`等函数的用法,他是c语言中用来解析命令行参数
+分析一个很全的学习[博客1][2]和[博客2][3]
+使用 getopt_long_only 时, - 和 --都可以作用于长选项, 而使用 getopt_only 时, 只有 --可以作用于长选项.
+短选项:就是只是一个字符串如`-a -v`,只用-表示
+长选项:一般如`--help --version`,在getopt_long_only中`-name`也是
+
+`const char * optstring` optstring用来指定可以处理哪些选项
+`"hvx:"`该示例表明程序可以接受3个选项: -h -v -x, 其中 x 后面的 :表示该选项后面要跟一个参数, 即如 -x 10的形式, 选项后面跟的参数会被保存到 optarg 变量中. 下面是一个使用示例
+`extern int optind`  下一次调用getopt的时，从optind存储的位置处重新开始检查选项。 
+
+#### 字符串处理函数
+`strrchr()` 函数用于查找某字符在字符串中最后一次出现的位置，其原型为：
+    `char * strrchr(const char *str, int c);`
+    
+`atoi` (表示ascii to integer)是把字符串转换成整型数的一个函数
+
+`strncasecmp()`用来比较参数s1 和s2 字符串前n个字符，比较时会自动忽略大小写的差异
+
+`strstr(str1,str2)` 函数用于判断字符串str2是否是str1的子串。如果是，则该函数返回str2在str1中首次出现的地址；否则，返回NULL
+`strchr`是计算机的一个函数，原型为extern char *strchr(const char *s,char c)，可以查找字符串s中首次出现字符c的位置
+
+函数`char * index(const char *s, int c); `函数说明index()用来找出参数s 字符串中第一个出现的参数c 地址
+
+### fork讲解
+[fork讲解][5]
+这个代码总共执行多少次？
+``` c
+#include <stdio.h>
+int main(int argc, char* argv[])
+{
+   fork();
+   fork() && fork() || fork();
+   fork();
+   printf("+/n");
+}
+```
+**20!** fork返回值只有0，1
+所以最终结果就是0/1***0/1,所以只需要分析中间3个合理组合，只有5个符合条件，所以5×4=20
+### 源代码分析
+这里有别人[源代码分析][4]
+
+### 
+
+[1]: https://www.zhihu.com/question/26469623
+[2]: http://blog.zhangjikai.com/2016/03/05/%E3%80%90C%E3%80%91%E8%A7%A3%E6%9E%90%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%8F%82%E6%95%B0--getopt%E5%92%8Cgetopt_long/
+[3]: http://blog.csdn.net/men_wen/article/details/61934376
+[4]: http://www.cnblogs.com/xuning/p/3888699.html
+[5]: http://blog.csdn.net/jason314/article/details/5640969
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[T5-谷歌]]></title>
+    <link href="https://zerolxf.github.io/16900583165827.html"/>
+    <updated>2023-07-23T04:38:36+08:00</updated>
+    <id>https://zerolxf.github.io/16900583165827.html</id>
+    <content type="html"><![CDATA[
+<p>论文标题: &quot;Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer&quot;, 作者: Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, Peter J. Liu, 时间: 2019年10月, 核心算法名: T5 (Text-to-Text Transfer Transformer), 论文链接: <a href="https://arxiv.org/abs/1910.10683">https://arxiv.org/abs/1910.10683</a></p>
+<h2><a id="%E8%83%8C%E6%99%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>背景</h2>
+<p>该论文的目标不是提出新的方法，而是提供一个全面的视角来理解当前领域的状况。因此，这项工作主要包括对现有技术的调查、探索和实证比较。作者还通过扩大系统研究的洞察力（训练多达110亿参数的模型）来探索当前方法的极限，从而在许多任务中获得了最先进的结果。为了进行这种规模的实验，作者引入了“巨大的清洁爬行语料库”（C4），这是一个由网络上抓取的数百GB的清洁英文文本组成的数据集。认识到转移学习的主要用途是在数据稀缺的环境中利用预训练模型，作者发布了他们的代码、数据集和预训练模型（Page 3）。</p>
+<h2><a id="%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决问题</h2>
+<p>该论文通过采用合理的基线（在第3.1节中描述），并一次改变设置的一个方面，系统地研究了这些贡献。例如，在第3.3节中，作者在保持实验流程不变的情况下，测量了不同无监督目标的性能。这种“坐标上升”方法可能会错过二阶效应（例如，某个特定的无监督目标可能在比基线设置更大的模型上效果最好），但进行所有可能组合的探索将是不切实际的（Page 10）。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关工作</h2>
+<p>该论文的研究是在许多相关工作的基础上进行的，包括BERT、GPT-2、RoBERTa、XLNet等。这些工作都在一定程度上影响了T5的设计和实现。然而，T5的目标是通过统一的文本到文本框架，对这些方法进行全面的比较和分析，以理解各种技术的贡献和重要性（Page 10）。</p>
+<h2><a id="%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95%E5%92%8C%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>核心方法和步骤</h2>
+<ol>
+<li>T5采用了文本到文本的框架，这提供了一种简单的方法来训练单一模型以处理各种文本任务，使用相同的损失函数和解码过程。这种方法可以成功应用于生成任务（如抽象摘要）、分类任务（如自然语言推理）甚至回归任务（如STS-B）。尽管简单，但文本到文本框架的性能与任务特定的架构相当，并最终在与规模结合时产生了最先进的结果（Page 41）。</li>
+<li>在无监督目标的探索中，作者发现去噪目标在预训练中优于语言建模和解混乱。他们没有观察到去噪目标的许多变体之间的显著差异。然而，不同的目标（或目标的参数化）可以导致不同的序列长度，从而导致不同的训练速度（Page 24-25）。</li>
+</ol>
+<h2><a id="%E5%B7%A5%E4%BD%9C%E5%AF%B9%E6%AF%94" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>工作对比</h2>
+<ul>
+<li>
+<p>与其他工作的方法区别是什么<br />
+T5的主要区别在于它采用了统一的文本到文本框架，这使得它能够在各种任务上使用相同的模型和损失函数。此外，T5还进行了大规模的实验，以探索转移学习的极限，并在许多任务中达到了最先进的结果（Page 41）。</p>
+</li>
+<li>
+<p>实验效果对比<br />
+在最后的一组实验中，T5在24个任务中的18个任务上实现了最先进的性能。预期地，他们最大的（110亿参数）模型在所有任务中的性能最好。他们的T5-3B模型变体在几个任务中超越了之前的最先进的技术，但将模型规模扩大到110亿参数是实现最佳性能的最重要因素（Page 38）。</p>
+</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[RealFormer-谷歌]]></title>
+    <link href="https://zerolxf.github.io/16900574891714.html"/>
+    <updated>2023-07-23T04:24:49+08:00</updated>
+    <id>https://zerolxf.github.io/16900574891714.html</id>
+    <content type="html"><![CDATA[
+<p>论文标题: RealFormer: Transformer Likes Residual Attention, 作者: Ruining He, Anirudh Ravula, Bhargav Kanagal, Joshua Ainslie, 时间: 2021年9月10日, 核心算法名: RealFormer, 论文链接: <a href="https://arxiv.org/abs/2012.11747">arXiv:2012.11747</a></p>
+<h2><a id="%E8%83%8C%E6%99%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>背景</h2>
+<p>Transformer是现代自然语言处理（NLP）模型的基础。然而，尽管Transformer在许多任务中表现出色，但其设计和实现仍有改进的空间。本文提出了一种名为RealFormer的新技术，该技术通过在Transformer网络中创建残差注意层（Residual Attention Layer）来改进Transformer的性能。</p>
+<h2><a id="%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决问题</h2>
+<p>RealFormer的目标是改进Transformer网络的性能，使其在各种任务中表现更好。这些任务包括Masked Language Modeling、GLUE、SQuAD、Neural Machine Translation、WikiHop、HotpotQA、Natural Questions和OpenKP等。此外，RealFormer还旨在稳定训练过程，并使模型的注意力更加稀疏。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关工作</h2>
+<p>Transformer最初由Vaswani等人在2017年提出，用于神经机器翻译（NMT），并从此深刻改变了NLP领域。此后，许多工作都在探索如何改进Transformer，包括提出更好的自我监督目标、使用更大的预训练数据和更好的超参数、模型参数共享、多任务预训练等。这些工作通常采用Post-LN Transformer作为其核心。在本文中，我们采用BERT来测试不同的Transformer架构，因为它被广泛使用并具有代表性。</p>
+<h2><a id="%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95%E5%92%8C%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>核心方法和步骤</h2>
+<p><img src="media/16900574891714/16900575043063.jpg" alt="" /></p>
+\[\begin{equation}
+Attention(\boldsymbol{Q}_n,\boldsymbol{K}_n,\boldsymbol{V}_n) = softmax\left(\boldsymbol{A}_n\right)\boldsymbol{V}_n,\quad \boldsymbol{A}_n=\frac{\boldsymbol{Q}_n\boldsymbol{K}_n^{\top}}{\sqrt{d_k}}
+\end{equation}
+\]
+<p>变成如下形式:a</p>
+\[\begin{equation}
+Attention(\boldsymbol{Q}_n,\boldsymbol{K}_n,\boldsymbol{V}_n) = softmax\left(\boldsymbol{A}_n\right)\boldsymbol{V}_n,\quad \boldsymbol{A}_n=\frac{\boldsymbol{Q}_n\boldsymbol{K}_n^{\top}}{\sqrt{d_k}} + \boldsymbol{A}_{n-1}
+\end{equation}
+\]
+<ol>
+<li>RealFormer的核心是在Transformer网络中创建一个“直接”路径，以传播原始注意力分数。这通过在每个RealFormer层中添加“残差分数”（以与常规Transformer中的注意力分数相同的方式计算）来实现。然后，这两个分数的和被用来通过softmax计算注意力概率。</li>
+<li>实际上，RealFormer可以被看作是在基础Transformer上添加了简单的跳过连接。由于它不添加昂贵的乘法操作，因此预期性能将是可比较的。注意，我们的技术也可以直接应用于不同的Transformer变体。</li>
+</ol>
+<h2><a id="%E5%B7%A5%E4%BD%9C%E5%AF%B9%E6%AF%94" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>工作对比</h2>
+<ul>
+<li>RealFormer与其他工作的主要区别在于，它通过创建残差注意层来改进Transformer网络，这是一种新颖的方法。</li>
+<li>在各种任务中，包括Masked Language Modeling、GLUE、SQuAD、Neural Machine Translation、WikiHop、HotpotQA、Natural Questions和OpenKP等，RealFormer都显著优于标准的Transformer和其变体（如BERT、ETC等）。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[层次分解位置编码 (Hierarchical Decomposition of Position Encoding)]]></title>
+    <link href="https://zerolxf.github.io/16900571047816.html"/>
+    <updated>2023-07-23T04:18:24+08:00</updated>
+    <id>https://zerolxf.github.io/16900571047816.html</id>
+    <content type="html"><![CDATA[
+<p>论文标题: 层次分解位置编码，让BERT可以处理超长文本<br />
+作者: 苏剑林<br />
+时间: 2020-12-04<br />
+核心算法名: 层次分解位置编码<br />
+论文链接: <a href="https://spaces.ac.cn/archives/7947">https://spaces.ac.cn/archives/7947</a></p>
+<h2><a id="%E8%83%8C%E6%99%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>背景</h2>
+<p>BERT模型最多能处理512个token的文本。这一瓶颈的根本原因是BERT使用了从随机初始化训练出来的绝对位置编码，一般的最大位置设为了512，因此顶多只能处理512个token，多出来的部分就没有位置编码可用了。另一个重要的原因是Attention的\(O(n^2)\)复杂度，导致长序列时显存用量大大增加，一般显卡也finetune不了。</p>
+<h2><a id="%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决问题</h2>
+<p>如何简单修改当前最大长度为512的BERT模型，使得它可以直接处理更长的文本。主要思路是层次分解已经训练好的绝对位置编码，使得它可以延拓到更长的位置。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关工作</h2>
+<p>解决这个问题的一个主流思路是换成相对位置编码，这是个可行的办法，华为的NEZHA模型便是一个换成了相对位置编码的BERT模型。相对位置编码一般会对位置差做个截断，使得要处理的相对位置都在一个有限的范围内，因此相对位置编码可以不受限于序列长度。</p>
+<h2><a id="%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95%E5%92%8C%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>核心方法和步骤</h2>
+<ol>
+<li>层次分解已经训练好的绝对位置编码，使得它可以延拓到更长的位置。具体来说，假设已经训练好的绝对位置编码向量为\(p_1,p_2,...,p_n\)，我们希望能在此基础上构造一套新的编码向量\(q_1,q_2,...,q_m\)，其中\(m &gt; n\)。为此，我们设
+<ul>
+<li>\(q_{(i-1)×n + j} = αu_i + (1 - α)u_j\) 其中\(α∈ (0, 1)\)且\(α ≠ 0.5\)是一个超参数，\(u_1,u_2,...,u_n\)是该套位置编码的“基底”。这样的表示意义很清晰，就是将位置\((i - 1)×n + j\)层次地表示为\((i, j)\)，然后\(i, j\)对应的位置编码分别为\(αu_i\)和\((1 - α)u_j\)，而最终\((i - 1)×n + j\)的编码向量则是两者的叠加。</li>
+<li>\(u_i = \frac{p_i - αp_1}{1 - α}\)，\(i = 1,2,...,n\) 这样一来，我们的参数还是\(p_1,p_2,...,p_n\)，但我们可以表示出\(n^2\)个位置的编码，并且前\(n\)个位置编码跟原来模型是相容的。</li>
+</ul>
+</li>
+</ol>
+<h2><a id="%E5%B7%A5%E4%BD%9C%E5%AF%B9%E6%AF%94" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>工作对比</h2>
+<ul>
+<li>和其他工作一个典型工作的方法区别是什么: 与使用相对位置编码的方法不同，这种方法是在已经训练好的绝对位置编码的基础上进行层次分解，使得它可以延拓到更长的位置，而不需要重新训练模型。</li>
+<li>效果对比: 实验验证了这种方法的有效性，它可以使BERT模型处理更长的文本。</li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>

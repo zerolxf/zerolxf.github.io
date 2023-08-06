@@ -1,0 +1,575 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  RealFormer-谷歌 - zeroxf
+  
+  </title>
+  
+  
+  <link href="atom.xml" rel="alternate" title="zeroxf" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+ 
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:zerolxf.github.io ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_blank" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_blank" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; zeroxf</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_blank" href="index.html">Home</a></li>
+        
+        <li><a target="_blank" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html">GPT 读论文</a></li>
+        
+            <li><a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html">配置使用</a></li>
+        
+            <li><a href="java.html">java</a></li>
+        
+            <li><a href="c++.html">c++</a></li>
+        
+            <li><a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html">数学&优化&算法</a></li>
+        
+            <li><a href="python.html">python</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>RealFormer-谷歌</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2023/07/23</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html'>GPT 读论文</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p>论文标题: RealFormer: Transformer Likes Residual Attention, 作者: Ruining He, Anirudh Ravula, Bhargav Kanagal, Joshua Ainslie, 时间: 2021年9月10日, 核心算法名: RealFormer, 论文链接: <a href="https://arxiv.org/abs/2012.11747">arXiv:2012.11747</a></p>
+<h2><a id="%E8%83%8C%E6%99%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>背景</h2>
+<p>Transformer是现代自然语言处理（NLP）模型的基础。然而，尽管Transformer在许多任务中表现出色，但其设计和实现仍有改进的空间。本文提出了一种名为RealFormer的新技术，该技术通过在Transformer网络中创建残差注意层（Residual Attention Layer）来改进Transformer的性能。</p>
+<h2><a id="%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决问题</h2>
+<p>RealFormer的目标是改进Transformer网络的性能，使其在各种任务中表现更好。这些任务包括Masked Language Modeling、GLUE、SQuAD、Neural Machine Translation、WikiHop、HotpotQA、Natural Questions和OpenKP等。此外，RealFormer还旨在稳定训练过程，并使模型的注意力更加稀疏。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关工作</h2>
+<p>Transformer最初由Vaswani等人在2017年提出，用于神经机器翻译（NMT），并从此深刻改变了NLP领域。此后，许多工作都在探索如何改进Transformer，包括提出更好的自我监督目标、使用更大的预训练数据和更好的超参数、模型参数共享、多任务预训练等。这些工作通常采用Post-LN Transformer作为其核心。在本文中，我们采用BERT来测试不同的Transformer架构，因为它被广泛使用并具有代表性。</p>
+<h2><a id="%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95%E5%92%8C%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>核心方法和步骤</h2>
+<p><img src="media/16900574891714/16900575043063.jpg" alt="" /></p>
+\[\begin{equation}
+Attention(\boldsymbol{Q}_n,\boldsymbol{K}_n,\boldsymbol{V}_n) = softmax\left(\boldsymbol{A}_n\right)\boldsymbol{V}_n,\quad \boldsymbol{A}_n=\frac{\boldsymbol{Q}_n\boldsymbol{K}_n^{\top}}{\sqrt{d_k}}
+\end{equation}
+\]
+<p>变成如下形式:a</p>
+\[\begin{equation}
+Attention(\boldsymbol{Q}_n,\boldsymbol{K}_n,\boldsymbol{V}_n) = softmax\left(\boldsymbol{A}_n\right)\boldsymbol{V}_n,\quad \boldsymbol{A}_n=\frac{\boldsymbol{Q}_n\boldsymbol{K}_n^{\top}}{\sqrt{d_k}} + \boldsymbol{A}_{n-1}
+\end{equation}
+\]
+<ol>
+<li>RealFormer的核心是在Transformer网络中创建一个“直接”路径，以传播原始注意力分数。这通过在每个RealFormer层中添加“残差分数”（以与常规Transformer中的注意力分数相同的方式计算）来实现。然后，这两个分数的和被用来通过softmax计算注意力概率。</li>
+<li>实际上，RealFormer可以被看作是在基础Transformer上添加了简单的跳过连接。由于它不添加昂贵的乘法操作，因此预期性能将是可比较的。注意，我们的技术也可以直接应用于不同的Transformer变体。</li>
+</ol>
+<h2><a id="%E5%B7%A5%E4%BD%9C%E5%AF%B9%E6%AF%94" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>工作对比</h2>
+<ul>
+<li>RealFormer与其他工作的主要区别在于，它通过创建残差注意层来改进Transformer网络，这是一种新颖的方法。</li>
+<li>在各种任务中，包括Masked Language Modeling、GLUE、SQuAD、Neural Machine Translation、WikiHop、HotpotQA、Natural Questions和OpenKP等，RealFormer都显著优于标准的Transformer和其变体（如BERT、ETC等）。</li>
+</ul>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="16900583165827.html" 
+          title="Previous Post: T5-谷歌">&laquo; T5-谷歌</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="16900571047816.html" 
+          title="Next Post: 层次分解位置编码 (Hierarchical Decomposition of Position Encoding)">层次分解位置编码 (Hierarchical Decomposition of Position Encoding) &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="https://avatars.githubusercontent.com/u/12774971?v=4" /></div>
+            
+                <h1>zeroxf</h1>
+                <div class="site-des"></div>
+                <div class="social">
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/zerolxf" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:liangxianfeng96@qq.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html"><strong>GPT 读论文</strong></a>
+        
+            <a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html"><strong>配置使用</strong></a>
+        
+            <a href="java.html"><strong>java</strong></a>
+        
+            <a href="c++.html"><strong>c++</strong></a>
+        
+            <a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html"><strong>数学&优化&算法</strong></a>
+        
+            <a href="python.html"><strong>python</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="16913487231002.html">搭建正向反向代理</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913486248203.html">二阶随机优化算法</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485508310.html">Pandas 读取文本数据</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485233251.html">Pandas 数据整合</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485004157.html">Python 数据分析画图&one-hot编码</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="asset/prism.js"></script>
+
+
+<style type="text/css">
+figure{margin: 0;padding: 0;}
+figcaption{text-align:center;}
+
+/* PrismJS 1.14.0
+ http://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript */
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: black;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    text-shadow: none;
+    background:#b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    text-shadow: none;
+    background: #b3d4fc;
+}
+
+@media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+        text-shadow: none;
+    }
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #F7F7F7;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: slategray;
+}
+
+.token.punctuation {
+    color: #999;
+}
+
+.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+    background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #07a;
+}
+
+.token.function,
+.token.class-name {
+    color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #e90;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+
+pre[class*="language-"].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+    .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+    }
+
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            color: #999;
+            display: block;
+            padding-right: 0.8em;
+            text-align: right;
+        }
+
+</style>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+
+
+  </body>
+</html>

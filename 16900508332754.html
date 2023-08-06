@@ -1,0 +1,568 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  Synthesizer: Rethinking Self-Attention for Transformer Models (Google Research) - zeroxf
+  
+  </title>
+  
+  
+  <link href="atom.xml" rel="alternate" title="zeroxf" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+ 
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:zerolxf.github.io ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_blank" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_blank" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; zeroxf</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_blank" href="index.html">Home</a></li>
+        
+        <li><a target="_blank" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html">GPT 读论文</a></li>
+        
+            <li><a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html">配置使用</a></li>
+        
+            <li><a href="java.html">java</a></li>
+        
+            <li><a href="c++.html">c++</a></li>
+        
+            <li><a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html">数学&优化&算法</a></li>
+        
+            <li><a href="python.html">python</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>Synthesizer: Rethinking Self-Attention for Transformer Models (Google Research)</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2023/07/23</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html'>GPT 读论文</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p>论文标题: Synthesizer: Rethinking Self-Attention for Transformer Models, 作者: Yi Tay, Dara Bahri, Donald Metzler, Da-Cheng Juan, Zhe Zhao, Che Zheng, 时间: 2020, 核心算法名: Synthesizer, 论文链接: <a href="https://arxiv.org/pdf/2005.00743.pdf">https://arxiv.org/pdf/2005.00743.pdf</a></p>
+<h2><a id="%E8%83%8C%E6%99%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>背景</h2>
+<p>Transformer模型（Vaswani等人，2017）在各种任务中都表现出了成功，这使得Transformer在近年来大大取代了一度流行的自回归和循环模型。Transformer模型的核心是查询-键-值点积注意力。Transformer模型的成功广泛地归因于这种自注意力机制，因为全连接的token图能够模型长距离依赖性，提供了强大的归纳偏见。但是，这篇论文质疑点积自注意力的真正重要性，并通过大量实验发现，随机对齐矩阵的表现出奇地好，而从token-token（查询-键）交互中学习注意力权重虽然有用，但并不那么重要。</p>
+<h2><a id="%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决问题</h2>
+<p>为了解决这个问题，作者提出了Synthesizer，一种无需token-token交互就能学习合成注意力权重的模型。实验结果显示，简单的Synthesizer在与vanilla Transformer模型的比较中，在一系列任务上都取得了高度竞争性的性能，包括机器翻译、语言建模、文本生成和GLUE/SuperGLUE基准测试。当与点积注意力组合时，作者发现Synthesizer始终优于Transformers。此外，作者还对Synthesizer与Dynamic Convolutions进行了额外的比较，结果显示，简单的Random Synthesizer不仅比Dynamic Convolutions快60%，而且还将困惑度提高了相对3.5%。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关工作</h2>
+<p>注意力模型被广泛应用于各种问题领域，尤其是在语言和视觉领域，这些模型因其有效性而受到欢迎。注意力模型可以追溯到机器翻译模型（Bahdanau等人，2014年；Luong等人，2015年），在这些模型中，注意力被用来学习语言对之间的软对齐。自注意力的基本角色是学习自对齐，即确定单个token相对于序列中所有其他token的相对重要性。然而，这篇论文提出，我们不仅可以不使用点积自注意力，而且也可以完全不使用基于内容的记忆式自注意力。</p>
+<h2><a id="%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95%E5%92%8C%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>核心方法和步骤</h2>
+<p><img src="media/16900508332754/16900517291887.jpg" alt="" /></p>
+<ol>
+<li>
+<p><strong>Dense Synthesizer</strong>: 这是最简单的SYNTHESIZER模型变体，它依赖于每个输入token。该方法接受一个输入Xh,<code> ∈ RN×d，并产生一个输出Yh,</code> ∈ RN×d。这里，<code>表示序列长度，d表示模型的维度。首先，我们采用Fh,</code> (.)，一个参数化的函数，用于将输入Xi从d维度投影到N维度。然后，给定Bi,h,<code> ∈ RN×N，我们现在计算Yh,</code> = softmax(Bh,<code> )Gh,</code> (Xh,<code> )，其中Gh,</code> (.)是另一个参数化函数，类似于标准Transformer模型中的Vh,<code> (值)。这种方法通过将标准Transformers中的Qh,</code> Kh,<code> &gt;替换为合成函数Fh,</code> (.)，消除了点积注意力Y = softmax(Qh,<code> Kh,</code> &gt;)Vh,`。</p>
+</li>
+<li>
+<p><strong>Random Synthesizer</strong>: 这是另一个SYNTHESIZER的变体，其中注意力权重不依赖于任何输入token。相反，注意力权重被初始化为随机值。这些值可以是可训练的，也可以保持固定。给定一个随机初始化的矩阵Rh,<code>，Random Synthesizer定义为Yh,</code> = softmax(Rh,<code> )Gh,</code> (Xh,<code> )。这里，Rh,</code> ∈ RN×N。每个头部都向网络添加了N 2个参数。Random Synthesizer的基本思想是不依赖于token-token交互或任何来自单个token的信息，而是学习一个在许多样本中全局工作良好的任务特定对齐。</p>
+</li>
+</ol>
+<h2><a id="%E5%B7%A5%E4%BD%9C%E5%AF%B9%E6%AF%94" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>工作对比</h2>
+<ul>
+<li>和其他工作一个典型工作的方法区别是什么：Synthesizer的主要区别在于它不依赖于token-token交互来学</li>
+</ul>
+<p>习注意力权重，而是直接合成对齐矩阵。这种方法提供了一种新的学习注意力的方式，不需要显式地进行注意力（即，没有点积注意力或基于内容的注意力）。相反，我们生成对齐矩阵，而不依赖于token-token依赖性，并探索了一系列参数化函数来合成注意力矩阵。</p>
+<ul>
+<li>实验效果对比：在大规模的C4数据集（Raffel等人，2019）上进行的遮罩语言建模和在SuperGLUE和GLUE基准测试上的微调中，我们显示出简单的随机Synthesizers可以胜过/匹配Lightweight Dynamic convolutions（Wu等人，2019）以及胜过Transformers和Universal Transformers（Dehghani等人，2018）。在两个编码任务中，分解的随机Synthesizers胜过低秩的Linformers（Wang等人，2020）。</li>
+</ul>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="16900514233052.html" 
+          title="Previous Post: T-TA (Transformer-based Text Autoencoder)">&laquo; T-TA (Transformer-based Text Autoencoder)</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="16900483379023.html" 
+          title="Next Post: ELECTRA (Stanford University & Google Brain)">ELECTRA (Stanford University & Google Brain) &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="https://avatars.githubusercontent.com/u/12774971?v=4" /></div>
+            
+                <h1>zeroxf</h1>
+                <div class="site-des"></div>
+                <div class="social">
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/zerolxf" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:liangxianfeng96@qq.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html"><strong>GPT 读论文</strong></a>
+        
+            <a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html"><strong>配置使用</strong></a>
+        
+            <a href="java.html"><strong>java</strong></a>
+        
+            <a href="c++.html"><strong>c++</strong></a>
+        
+            <a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html"><strong>数学&优化&算法</strong></a>
+        
+            <a href="python.html"><strong>python</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="16913487231002.html">搭建正向反向代理</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913486248203.html">二阶随机优化算法</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485508310.html">Pandas 读取文本数据</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485233251.html">Pandas 数据整合</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485004157.html">Python 数据分析画图&one-hot编码</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style type="text/css">
+figure{margin: 0;padding: 0;}
+figcaption{text-align:center;}
+
+/* PrismJS 1.14.0
+ http://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript */
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: black;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    text-shadow: none;
+    background:#b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    text-shadow: none;
+    background: #b3d4fc;
+}
+
+@media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+        text-shadow: none;
+    }
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #F7F7F7;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: slategray;
+}
+
+.token.punctuation {
+    color: #999;
+}
+
+.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+    background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #07a;
+}
+
+.token.function,
+.token.class-name {
+    color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #e90;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+
+pre[class*="language-"].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+    .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+    }
+
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            color: #999;
+            display: block;
+            padding-right: 0.8em;
+            text-align: right;
+        }
+
+</style>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+
+
+  </body>
+</html>

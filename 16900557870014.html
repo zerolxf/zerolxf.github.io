@@ -1,0 +1,588 @@
+<!doctype html>
+<html class="no-js" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+    
+  Performer - Google & University of Cambridge - zeroxf
+  
+  </title>
+  
+  
+  <link href="atom.xml" rel="alternate" title="zeroxf" type="application/atom+xml">
+    <link rel="stylesheet" href="asset/css/foundation.min.css" />
+    <link rel="stylesheet" href="asset/css/docs.css" />
+    <script src="asset/js/vendor/modernizr.js"></script>
+    <script src="asset/js/vendor/jquery.js"></script>
+ 
+<script type="text/javascript">
+  function before_search(){
+    var searchVal = 'site:zerolxf.github.io ' + document.getElementById('search_input').value;
+    document.getElementById('search_q').value = searchVal;
+    return true;
+  }
+</script>
+  </head>
+  <body class="antialiased hide-extras">
+    
+    <div class="marketing off-canvas-wrap" data-offcanvas>
+      <div class="inner-wrap">
+
+
+<nav class="top-bar docs-bar hide-for-small" data-topbar>
+
+
+  <section class="top-bar-section">
+  <div class="row">
+      <div style="position: relative;width:100%;"><div style="position: absolute; width:100%;">
+        <ul id="main-menu" class="left">
+        
+        <li id=""><a target="_blank" href="index.html">Home</a></li>
+        
+        <li id=""><a target="_blank" href="archives.html">Archives</a></li>
+        
+        </ul>
+
+        <ul class="right" id="search-wrap">
+          <li>
+<form target="_blank" onsubmit="return before_search();" action="https://google.com/search" method="get">
+    <input type="hidden" id="search_q" name="q" value="" />
+    <input tabindex="1" type="search" id="search_input"  placeholder="Search"/>
+</form>
+</li>
+          </ul>
+      </div></div>
+  </div>
+  </section>
+
+</nav>
+
+        <nav class="tab-bar show-for-small">
+  <a href="javascript:void(0)" class="left-off-canvas-toggle menu-icon">
+    <span> &nbsp; zeroxf</span>
+  </a>
+</nav>
+
+<aside class="left-off-canvas-menu">
+      <ul class="off-canvas-list">
+        
+        <li><a target="_blank" href="index.html">Home</a></li>
+        
+        <li><a target="_blank" href="archives.html">Archives</a></li>
+        
+
+    <li><label>Categories</label></li>
+
+        
+            <li><a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html">GPT 读论文</a></li>
+        
+            <li><a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html">配置使用</a></li>
+        
+            <li><a href="java.html">java</a></li>
+        
+            <li><a href="c++.html">c++</a></li>
+        
+            <li><a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html">数学&优化&算法</a></li>
+        
+            <li><a href="python.html">python</a></li>
+         
+
+      </ul>
+    </aside>
+
+<a class="exit-off-canvas" href="#"></a>
+
+
+        <section id="main-content" role="main" class="scroll-container">
+        
+       
+
+ <script type="text/javascript">
+  $(function(){
+    $('#menu_item_index').addClass('is_active');
+  });
+</script>
+<div class="row">
+  <div class="large-8 medium-8 columns">
+      <div class="markdown-body article-wrap">
+       <div class="article">
+          
+          <h1>Performer - Google & University of Cambridge</h1>
+     
+        <div class="read-more clearfix">
+          <span class="date">2023/07/23</span>
+
+          <span>posted in&nbsp;</span> 
+          
+              <span class="posted-in"><a href='GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html'>GPT 读论文</a></span>
+           
+         
+          <span class="comments">
+            
+
+            
+          </span>
+
+        </div>
+      </div><!-- article -->
+
+      <div class="article-content">
+      <p>论文标题：Rethinking Attention with Performers<br />
+作者：Krzysztof Choromanski, Valerii Likhosherstov, David Dohan, Xingyou Song, Andreea Gane, Tamas Sarlos, Peter Hawkins, Jared Davis, Afroz Mohiuddin, Lukasz Kaiser, David Belanger, Lucy Colwell, Adrian Weller<br />
+时间：2021<br />
+核心算法名：Performer<br />
+论文链接：<a href="https://arxiv.org/abs/2009.14794">arXiv:2009.14794v4</a></p>
+<h2><a id="%E8%83%8C%E6%99%AF" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>背景</h2>
+<p>Transformer架构在机器学习的多个领域中都取得了最先进的结果，包括自然语言处理、神经机器翻译、文档生成/摘要、时间序列预测、生成建模（如图像生成）、音乐生成和生物信息学等。然而，Transformer的计算复杂度随着输入序列的长度呈二次增长，这对于处理大规模序列的任务来说是不可接受的。为了解决这个问题，研究者们提出了多种方法，如限制注意力机制只关注局部邻域，或者引入稀疏性、池化压缩、聚类/分箱/卷积技术等结构先验。</p>
+<h2><a id="%E8%A7%A3%E5%86%B3%E9%97%AE%E9%A2%98" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>解决问题</h2>
+<p>Performer是一种新的Transformer架构，它能够以可证明的准确性估计常规（softmax）全秩注意力Transformer，但只使用线性（而不是二次）的空间和时间复杂度，而且不依赖于任何先验知识，如稀疏性或低秩性。为了近似softmax注意力核，Performer使用了一种新的通过正交随机特征进行快速注意力（FAVOR+）的方法，这可能对可扩展的核方法具有独立的兴趣。FAVOR+还可以用于有效地模拟超出softmax的可核化注意力机制。</p>
+<span id="more"></span><!-- more -->
+<h2><a id="%E7%9B%B8%E5%85%B3%E5%B7%A5%E4%BD%9C" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>相关工作</h2>
+<p>Transformer架构在机器学习的多个领域中都取得了最先进的结果，包括自然语言处理、神经机器翻译、文档生成/摘要、时间序列预测、生成建模（如图像生成）、音乐生成和生物信息学等。然而，Transformer的计算复杂度随着输入序列的长度呈二次增长，这对于处理大规模序列的任务来说是不可接受的。为了解决这个问题，研究者们提出了多种方法，如限制注意力机制只关注局部邻域，或者引入稀疏性、池化压缩、聚类/分箱/卷积技术等结构先验。</p>
+<h2><a id="%E6%A0%B8%E5%BF%83%E6%96%B9%E6%B3%95%E5%92%8C%E6%AD%A5%E9%AA%A4" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>核心方法和步骤</h2>
+\[ \begin{equation}\begin{aligned} 
+e^{\boldsymbol{q}\cdot \boldsymbol{k}}&amp;=\mathbb{E}_{\boldsymbol{\omega}\sim \mathcal{N}(\boldsymbol{\omega};0,\boldsymbol{1}_d)}\left[e^{\boldsymbol{\omega}\cdot \boldsymbol{q}-\Vert \boldsymbol{q}\Vert^2 / 2} \times e^{\boldsymbol{\omega}\cdot \boldsymbol{k}-\Vert \boldsymbol{k}\Vert^2 / 2}\right]\\[6pt] 
+&amp;\approx\underbrace{\frac{1}{\sqrt{m}}\begin{pmatrix}e^{\boldsymbol{\omega}_1\cdot \boldsymbol{q}-\Vert \boldsymbol{q}\Vert^2 / 2} \\ 
+e^{\boldsymbol{\omega}_2\cdot \boldsymbol{q}-\Vert \boldsymbol{q}\Vert^2 / 2}\\ 
+\vdots\\ 
+e^{\boldsymbol{\omega}_m\cdot \boldsymbol{q}-\Vert \boldsymbol{q}\Vert^2 / 2} \end{pmatrix}}_{\tilde{\boldsymbol{q}}} 
+\cdot  \underbrace{\frac{1}{\sqrt{m}}\begin{pmatrix}e^{\boldsymbol{\omega}_1\cdot \boldsymbol{k}-\Vert \boldsymbol{k}\Vert^2 / 2} \\ 
+e^{\boldsymbol{\omega}_2\cdot \boldsymbol{k}-\Vert \boldsymbol{k}\Vert^2 / 2}\\ 
+\vdots\\ 
+e^{\boldsymbol{\omega}_m\cdot \boldsymbol{k}-\Vert \boldsymbol{k}\Vert^2 / 2} \end{pmatrix}}_{\tilde{\boldsymbol{k}}} 
+\end{aligned}\label{eq:core}\end{equation}
+\]
+<p>我们就可以将原来head_size为d<br />
+的标准Attention，转化为head_size为m<br />
+的线性Attention了，这便是整篇论文的核心思路。</p>
+<p>重点在于线性的attention的话, 就可以优化矩阵乘法了<br />
+原本是 \((QK)V\)复杂度n^2d, 变成线性之后, 为 \(Q(KV)\)复杂度nd+nm, 但是这里m的采样一般需要高于d</p>
+<ol>
+<li>Performer使用FAVOR+机制来估计注意力矩阵。FAVOR+使用正交随机特征来近似softmax注意力核，这可能对可扩展的核方法具有独立的兴趣。FAVOR+还可以用于有效地模拟超出softmax的可核化注意力机制。</li>
+<li>Performer是第一种完全兼容常规Transformer的线性架构，提供了强大的理论保证：无偏或近乎无偏的注意力矩阵估计，一致性收敛和低估计方差。</li>
+</ol>
+<h2><a id="%E5%B7%A5%E4%BD%9C%E5%AF%B9%E6%AF%94" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>工作对比</h2>
+<ul>
+<li>Performer与其他工作的主要区别在于，它能够以可证明的准确性估计常规（softmax）全秩注意力Transformer，但只使用线性（而不是二次）的空间和时间复杂度，而且不依赖于任何先验知识，如稀疏性或低秩性。</li>
+<li>在像素预测、文本模型和蛋白质序列建模等丰富的任务集上测试Performer，我们展示了与其他检查的有效稀疏和密集注意力方法的竞争结果，展示了Performer利用的新注意力学习范式的有效性。</li>
+</ul>
+<p><img src="media/16900557870014/16900563504645.jpg" alt="" /></p>
+<p><img src="media/16900557870014/16900563595898.jpg" alt="" /></p>
+
+
+    
+
+      </div>
+
+      <div class="row">
+        <div class="large-6 columns">
+        <p class="text-left" style="padding:15px 0px;">
+      
+          <a href="16900571047816.html" 
+          title="Previous Post: 层次分解位置编码 (Hierarchical Decomposition of Position Encoding)">&laquo; 层次分解位置编码 (Hierarchical Decomposition of Position Encoding)</a>
+      
+        </p>
+        </div>
+        <div class="large-6 columns">
+      <p class="text-right" style="padding:15px 0px;">
+      
+          <a  href="16900550358573.html" 
+          title="Next Post: 打造更强大的Transformer - Google">打造更强大的Transformer - Google &raquo;</a>
+      
+      </p>
+        </div>
+      </div>
+      <div class="comments-wrap">
+        <div class="share-comments">
+          
+
+          
+
+          
+        </div>
+      </div>
+    </div><!-- article-wrap -->
+  </div><!-- large 8 -->
+
+
+
+
+ <div class="large-4 medium-4 columns">
+  <div class="hide-for-small">
+    <div id="sidebar" class="sidebar">
+          <div id="site-info" class="site-info">
+            
+                <div class="site-a-logo"><img src="https://avatars.githubusercontent.com/u/12774971?v=4" /></div>
+            
+                <h1>zeroxf</h1>
+                <div class="site-des"></div>
+                <div class="social">
+
+
+
+
+
+
+
+
+
+<a target="_blank" class="github" target="_blank" href="https://github.com/zerolxf" title="GitHub">GitHub</a>
+<a target="_blank" class="email" href="mailto:liangxianfeng96@qq.com" title="Email">Email</a>
+  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
+                
+              	 </div>
+          	</div>
+
+             
+
+              <div id="site-categories" class="side-item ">
+                <div class="side-header">
+                  <h2>Categories</h2>
+                </div>
+                <div class="side-content">
+
+      	<p class="cat-list">
+        
+            <a href="GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html"><strong>GPT 读论文</strong></a>
+        
+            <a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html"><strong>配置使用</strong></a>
+        
+            <a href="java.html"><strong>java</strong></a>
+        
+            <a href="c++.html"><strong>c++</strong></a>
+        
+            <a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html"><strong>数学&优化&算法</strong></a>
+        
+            <a href="python.html"><strong>python</strong></a>
+         
+        </p>
+
+
+                </div>
+              </div>
+
+              <div id="site-categories" class="side-item">
+                <div class="side-header">
+                  <h2>Recent Posts</h2>
+                </div>
+                <div class="side-content">
+                <ul class="posts-list">
+	      
+		      
+			      <li class="post">
+			        <a href="16913487231002.html">搭建正向反向代理</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913486248203.html">二阶随机优化算法</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485508310.html">Pandas 读取文本数据</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485233251.html">Pandas 数据整合</a>
+			      </li>
+		     
+		  
+		      
+			      <li class="post">
+			        <a href="16913485004157.html">Python 数据分析画图&one-hot编码</a>
+			      </li>
+		     
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		  
+		      
+		   
+		  		</ul>
+                </div>
+              </div>
+        </div><!-- sidebar -->
+      </div><!-- hide for small -->
+</div><!-- large 4 -->
+
+</div><!-- row -->
+
+ <div class="page-bottom clearfix">
+  <div class="row">
+   <p class="copyright">Copyright &copy; 2015
+Powered by <a target="_blank" href="http://www.mweb.im">MWeb</a>,&nbsp; 
+Theme used <a target="_blank" href="http://github.com">GitHub CSS</a>.</p>
+  </div>
+</div>
+
+        </section>
+      </div>
+    </div>
+
+
+
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script type="text/x-mathjax-config">MathJax.Hub.Config({TeX: { equationNumbers: { autoNumber: "AMS" } }});</script>
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script src="asset/prism.js"></script>
+
+
+<style type="text/css">
+figure{margin: 0;padding: 0;}
+figcaption{text-align:center;}
+
+/* PrismJS 1.14.0
+ http://prismjs.com/download.html#themes=prism&languages=markup+css+clike+javascript */
+/**
+ * prism.js default theme for JavaScript, CSS and HTML
+ * Based on dabblet (http://dabblet.com)
+ * @author Lea Verou
+ */
+
+code[class*="language-"],
+pre[class*="language-"] {
+    color: black;
+    background: none;
+    text-shadow: 0 1px white;
+    font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+    text-align: left;
+    white-space: pre;
+    word-spacing: normal;
+    word-break: normal;
+    word-wrap: normal;
+    line-height: 1.5;
+    
+    -moz-tab-size: 4;
+    -o-tab-size: 4;
+    tab-size: 4;
+    
+    -webkit-hyphens: none;
+    -moz-hyphens: none;
+    -ms-hyphens: none;
+    hyphens: none;
+}
+
+pre[class*="language-"]::-moz-selection, pre[class*="language-"] ::-moz-selection,
+code[class*="language-"]::-moz-selection, code[class*="language-"] ::-moz-selection {
+    text-shadow: none;
+    background:#b3d4fc;
+}
+
+pre[class*="language-"]::selection, pre[class*="language-"] ::selection,
+code[class*="language-"]::selection, code[class*="language-"] ::selection {
+    text-shadow: none;
+    background: #b3d4fc;
+}
+
+@media print {
+    code[class*="language-"],
+    pre[class*="language-"] {
+        text-shadow: none;
+    }
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+    padding: 1em;
+    margin: .5em 0;
+    overflow: auto;
+}
+
+:not(pre) > code[class*="language-"],
+pre[class*="language-"] {
+    background: #F7F7F7;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+    padding: .1em;
+    border-radius: .3em;
+    white-space: normal;
+}
+
+.token.comment,
+.token.prolog,
+.token.doctype,
+.token.cdata {
+    color: slategray;
+}
+
+.token.punctuation {
+    color: #999;
+}
+
+.namespace {
+    opacity: .7;
+}
+
+.token.property,
+.token.tag,
+.token.boolean,
+.token.number,
+.token.constant,
+.token.symbol,
+.token.deleted {
+    color: #905;
+}
+
+.token.selector,
+.token.attr-name,
+.token.string,
+.token.char,
+.token.builtin,
+.token.inserted {
+    color: #690;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+    color: #9a6e3a;
+    background: hsla(0, 0%, 100%, .5);
+}
+
+.token.atrule,
+.token.attr-value,
+.token.keyword {
+    color: #07a;
+}
+
+.token.function,
+.token.class-name {
+    color: #DD4A68;
+}
+
+.token.regex,
+.token.important,
+.token.variable {
+    color: #e90;
+}
+
+.token.important,
+.token.bold {
+    font-weight: bold;
+}
+.token.italic {
+    font-style: italic;
+}
+
+.token.entity {
+    cursor: help;
+}
+
+
+pre[class*="language-"].line-numbers {
+    position: relative;
+    padding-left: 3.8em;
+    counter-reset: linenumber;
+}
+
+pre[class*="language-"].line-numbers > code {
+    position: relative;
+    white-space: inherit;
+}
+
+.line-numbers .line-numbers-rows {
+    position: absolute;
+    pointer-events: none;
+    top: 0;
+    font-size: 100%;
+    left: -3.8em;
+    width: 3em; /* works for line-numbers below 1000 lines */
+    letter-spacing: -1px;
+    border-right: 1px solid #999;
+
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+}
+
+    .line-numbers-rows > span {
+        pointer-events: none;
+        display: block;
+        counter-increment: linenumber;
+    }
+
+        .line-numbers-rows > span:before {
+            content: counter(linenumber);
+            color: #999;
+            display: block;
+            padding-right: 0.8em;
+            text-align: right;
+        }
+
+</style>
+
+  
+    
+
+    <script src="asset/js/foundation.min.js"></script>
+    <script>
+      $(document).foundation();
+      function fixSidebarHeight(){
+        var w1 = $('.markdown-body').height();
+          var w2 = $('#sidebar').height();
+          if (w1 > w2) { $('#sidebar').height(w1); };
+      }
+      $(function(){
+        fixSidebarHeight();
+      })
+      $(window).load(function(){
+          fixSidebarHeight();
+      });
+     
+    </script>
+
+
+
+  </body>
+</html>
