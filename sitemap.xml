@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
   <loc>https://zerolxf.github.io/</loc>
-  <lastmod>2023-08-07T04:56:47+08:00</lastmod>
+  <lastmod>2023-08-07T05:05:31+08:00</lastmod>
 </url>
 
 <url>
@@ -151,9 +151,18 @@
 </url>
 
 
+<url>
+  <loc>https://zerolxf.github.io/categories.html</loc>
+  <lastmod>2023-08-07T05:04:51+08:00</lastmod>
+</url>
+
 
 <url>
-  <loc>https://zerolxf.github.io/GPT%20%E8%AF%BB%E8%AE%BA%E6%96%87.html</loc>
+  <loc>https://zerolxf.github.io/gpt_paper.html.html</loc>
+</url>
+
+<url>
+  <loc>https://zerolxf.github.io/attention.html</loc>
 </url>
 
 <url>

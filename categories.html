@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>
     
-  搭建正向反向代理 - zeroxf
+  CATEGORIES - zeroxf
   
   </title>
   
@@ -103,231 +103,22 @@
        
 
  <script type="text/javascript">
-  $(function(){
-    $('#menu_item_index').addClass('is_active');
-  });
+	$(function(){
+		var currentURL = 'categories.html';
+		currentURL = currentURL.substr(0,currentURL.length-5);
+		$('#menu_item_'+currentURL).addClass('is_active');
+	});
 </script>
 <div class="row">
-  <div class="large-8 medium-8 columns">
-      <div class="markdown-body article-wrap">
-       <div class="article">
-          
-          <h1>搭建正向反向代理</h1>
-     
-        <div class="read-more clearfix">
-          <span class="date">2023/08/07</span>
 
-          <span>posted in&nbsp;</span> 
-          
-              <span class="posted-in"><a href='%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html'>配置使用</a></span>
-           
-         
-          <span class="comments">
-            
-              <a href="https://zerolxf.github.io/16913487231002.html#disqus_thread">comments</a>
-            
+    <div id="single-page-wrap">
+        <h1>CATEGORIES</h1>
 
-            
-          </span>
-
+        <div class="markdown-body post-page">
+        
         </div>
-      </div><!-- article -->
-
-      <div class="article-content">
-      <p>现在有两台机器A，B<br />
-A位于内网中，一般机器无法访问，但是A可以访问B，B可以是公网机器也可以是内网中可以外网访问的机器</p>
-<span id="more"></span><!-- more -->
-<p>那么这个时候，就可以在机器A上搭建一个反向代理，让A登陆到B并且把A的某个端口portA映射到机器B的portB上</p>
-<p>具体如下需使用的ssh参数</p>
-<blockquote>
-<p>反向代理 <code>ssh -fCNR</code><br />
-正向代理 <code>ssh -fCNL</code></p>
-</blockquote>
-<ul>
-<li>f 后台执行ssh指令</li>
-<li>C 允许压缩数据</li>
-<li>N 不执行远程指令</li>
-<li>R 将远程主机(服务器)的某个端口转发到本地主机指定的端口</li>
-<li>L 将本地机(客户机)的某个端口转发到远端指定机器的指定端口</li>
-<li>p 指定远程主机的端口</li>
-</ul>
-<h2><a id="%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>反向代理</h2>
-<p>ssh -fCNR [B机器IP或省略]:[B机器端口]:[A机器的IP]:[A机器的sshd端口] [登录B机器的用户名@B机器的IP] -p [B机器的sshd端口]<br />
-具体例子，在机器A上执行<br />
-<code>ssh -fCNR 6320:localhost:3303 -o ServerAliveInterval=60 liangxianfeng@172.18.255.70 -p 22</code></p>
-<h4><a id="%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E5%BB%BA%E7%AB%8B%E6%88%90%E5%8A%9F" class="anchor" aria-hidden="true"><span class="octicon octicon-link"></span></a>检查是否建立成功</h4>
-<p>在机器A上执行<code>ps aux | grep ssh</code><br />
-或者机器B上执行<code>netstat -antpul | grep '127.0.0.1:6320'</code></p>
-<p>ssh -fCNR 6320:localhost:3763 -o ServerAliveInterval=60 nameB@ipB -p 22<br />
-<a href="https://www.cnblogs.com/kwongtai/p/6903420.html">参考链接</a></p>
-
-
-    
-
-      </div>
-
-      <div class="row">
-        <div class="large-6 columns">
-        <p class="text-left" style="padding:15px 0px;">
-      
-        </p>
-        </div>
-        <div class="large-6 columns">
-      <p class="text-right" style="padding:15px 0px;">
-      
-          <a  href="16913486248203.html" 
-          title="Next Post: 二阶随机优化算法">二阶随机优化算法 &raquo;</a>
-      
-      </p>
-        </div>
-      </div>
-      <div class="comments-wrap">
-        <div class="share-comments">
-          
-
-          
-            <div id="disqus_thread"></div>
-          
-
-          
-        </div>
-      </div>
-    </div><!-- article-wrap -->
-  </div><!-- large 8 -->
-
-
-
-
- <div class="large-4 medium-4 columns">
-  <div class="hide-for-small">
-    <div id="sidebar" class="sidebar">
-          <div id="site-info" class="site-info">
-            
-                <div class="site-a-logo"><img src="https://avatars.githubusercontent.com/u/12774971?v=4" /></div>
-            
-                <h1>zeroxf</h1>
-                <div class="site-des"></div>
-                <div class="social">
-
-
-
-
-
-
-
-
-
-<a target="_blank" class="github" target="_blank" href="https://github.com/zerolxf" title="GitHub">GitHub</a>
-<a target="_blank" class="email" href="mailto:liangxianfeng96@qq.com" title="Email">Email</a>
-  <a target="_blank" class="rss" href="atom.xml" title="RSS">RSS</a>
-                
-              	 </div>
-          	</div>
-
-             
-
-              <div id="site-categories" class="side-item ">
-                <div class="side-header">
-                  <h2>Categories</h2>
-                </div>
-                <div class="side-content">
-
-      	<p class="cat-list">
-        
-            <a href="gpt_paper.html.html"><strong>GPT 读论文</strong></a>
-        
-            <a href="%E9%85%8D%E7%BD%AE%E4%BD%BF%E7%94%A8.html"><strong>配置使用</strong></a>
-        
-            <a href="java.html"><strong>java</strong></a>
-        
-            <a href="c++.html"><strong>c++</strong></a>
-        
-            <a href="%E6%95%B0%E5%AD%A6&%E4%BC%98%E5%8C%96&%E7%AE%97%E6%B3%95.html"><strong>数学&优化&算法</strong></a>
-        
-            <a href="python.html"><strong>python</strong></a>
-         
-        </p>
-
-
-                </div>
-              </div>
-
-              <div id="site-categories" class="side-item">
-                <div class="side-header">
-                  <h2>Recent Posts</h2>
-                </div>
-                <div class="side-content">
-                <ul class="posts-list">
-	      
-		      
-			      <li class="post">
-			        <a href="16913487231002.html">搭建正向反向代理</a>
-			      </li>
-		     
-		  
-		      
-			      <li class="post">
-			        <a href="16913486248203.html">二阶随机优化算法</a>
-			      </li>
-		     
-		  
-		      
-			      <li class="post">
-			        <a href="16913485508310.html">Pandas 读取文本数据</a>
-			      </li>
-		     
-		  
-		      
-			      <li class="post">
-			        <a href="16913485233251.html">Pandas 数据整合</a>
-			      </li>
-		     
-		  
-		      
-			      <li class="post">
-			        <a href="16913485004157.html">Python 数据分析画图&one-hot编码</a>
-			      </li>
-		     
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		  
-		      
-		   
-		  		</ul>
-                </div>
-              </div>
-        </div><!-- sidebar -->
-      </div><!-- hide for small -->
-</div><!-- large 4 -->
-
-</div><!-- row -->
-
+    </div>
+</div>              
  <div class="page-bottom clearfix">
   <div class="row">
    <p class="copyright">Copyright &copy; 2015
