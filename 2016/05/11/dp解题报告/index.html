@@ -1,0 +1,840 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zerolxf.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="传送门 A 雷神之路题意在一个坐标轴上面起始位置是0，你可以往右走一步，两步，三步。其中某些位置不能走，问你走到位置n有多少种方法（1&lt;&#x3D; n &lt;&#x3D; 1e18）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第二场联合总结">
+<meta property="og:url" content="http://zerolxf.github.io/2016/05/11/dp%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/index.html">
+<meta property="og:site_name" content="BigHead">
+<meta property="og:description" content="传送门 A 雷神之路题意在一个坐标轴上面起始位置是0，你可以往右走一步，两步，三步。其中某些位置不能走，问你走到位置n有多少种方法（1&lt;&#x3D; n &lt;&#x3D; 1e18）">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-05-10T20:04:00.000Z">
+<meta property="article:modified_time" content="2023-08-07T19:20:46.840Z">
+<meta property="article:author" content="BigHead">
+<meta property="article:tag" content="总结">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zerolxf.github.io/2016/05/11/dp%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>第二场联合总结 | BigHead</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">BigHead</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2016/05/11/dp%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第二场联合总结
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-05-11 04:04:00" itemprop="dateCreated datePublished" datetime="2016-05-11T04:04:00+08:00">2016-05-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-08 03:20:46" itemprop="dateModified" datetime="2023-08-08T03:20:46+08:00">2023-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%9D%E5%A4%A7%E9%87%8D%E5%A4%A7%E8%81%94%E5%90%88%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">川大重大联合赛</span></a>
+                </span>
+                  , 
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%B7%9D%E5%A4%A7%E9%87%8D%E5%A4%A7%E8%81%94%E5%90%88%E8%B5%9B/%E7%AC%AC%E4%BA%8C%E5%9C%BA%E8%81%94%E5%90%88%E8%B5%9B/" itemprop="url" rel="index"><span itemprop="name">第二场联合赛</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2016/05/11/dp%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/" class="post-meta-item leancloud_visitors" data-flag-title="第二场联合总结" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2016/05/11/dp%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/05/11/dp%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p><a target="_blank" rel="noopener" href="http://acm.scu.edu.cn/soj/contest/contest.action?cid=367">传送门</a></p>
+<h3 id="A-雷神之路"><a href="#A-雷神之路" class="headerlink" title="A 雷神之路"></a>A 雷神之路</h3><h4 id="题意"><a href="#题意" class="headerlink" title="题意"></a>题意</h4><p>在一个坐标轴上面起始位置是0，你可以往右走一步，两步，三步。其中某些位置不能走，问你走到位置n有多少种方法（1&lt;&#x3D; n &lt;&#x3D; 1e18）</p>
+<span id="more"></span>
+<h4 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h4><ul>
+<li>这题是走楼梯的进阶版，状态很好想dp[n]，转移有三种：走一步两步三步转移过来。不过由于n太大，很容易想到矩阵加速。</li>
+<li>用矩阵A表示第i个可走，矩阵B表示第i个不可走。有些地方x不能走，那么我只要用矩阵加速求出第x-1个矩阵C，那么第x个矩阵就是C*B，最后得出第n个矩阵</li>
+</ul>
+<h4 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>dp[n] &#x3D; dp[n-1] + dp[n-2] + dp[n-3] (n&gt;&#x3D;3)所以我们第一个矩阵是从2开始的，小于2的方案要手动打出来</li>
+</ul>
+<h3 id="B-Snowd-修长廊"><a href="#B-Snowd-修长廊" class="headerlink" title="B Snowd 修长廊"></a>B Snowd 修长廊</h3><h4 id="题意-1"><a href="#题意-1" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>现在要修长廊覆盖n个点，第i个点可以单独修一个长廊，也可以修到前面第j个点（覆盖j到i之间的点），现在修i和j之间的长廊花费cost(i,j) &#x3D; W + (x $<em>{i}$ － x$</em>{j}$ ) $^_{2}$,其中W是固有花费,现在求最小花费是多少</li>
+</ul>
+<h4 id="分析-1"><a href="#分析-1" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>我们状态很好建立,dp[i]表示覆盖到第i个点为止至少需要花费多少,但是他可以有很多状态转移过来.</p>
+</li>
+<li><pre><code>  dp[i] = min(dp[j-1]+cost(j,i));
+</code></pre>
+</li>
+<li><p>如果现在有两个状态j和k(其中j&gt;k)可以转移过来.那么用单调队列dp思想把这两个相减</p>
+<pre><code>  dp[j] + cost(j,i) - dp[k] - cost(k,i)
+      
+   =(dp[j] +x[j]*x[j])-(dp[k]+ x[k]*x[k]) -　2*x[i]*(x[j]-x[k])
+  
+</code></pre>
+<p>  那么也就是说如果dp[j]转移过来比dp[k]更优的话,就有上式小于 0,那么我们在更新最优的dp[y]的时候,如果前面存在一个状态x比状态i差,那么便有上式成立</p>
+<p>  同时可以发现如果现在就已经成立,那么这个式子对y以后的状态都会成立,因为对y以后的x<a href="i%3E=y">i</a>上式也成立(这个就是斜率dp的特点,总会有一个自变量一直递增或递减),那么状态x就属于无用状态应该从队列中剔除</p>
+<p>  <strong>判定条件一:如果i点没有j点优(也就是说j点比i点更优)的条件是i和j(i&lt;j)斜率小于2x[i]</strong></p>
+</li>
+<li><p>那么如何保证队列起第一个就是最优的呢?</p>
+<ul>
+<li><p><strong>感性的认识:</strong></p>
+<p>  根据上面的式子我们可以一直判断第一个和第二个元素然后剔除,从而使得保证队队列第一个一定比第二个更优,那么剩下的就需要保证第一个比第三个,第一个比第四个更优…这个性质一直成立就好了</p>
+<p>  假设上面这个性质成立则有:23点的斜率大于12点,34点斜率大于12点…</p>
+</li>
+</ul>
+<p>  但是确保每相邻两个点斜率大于12点不具有<strong>传递性</strong>,所以我们可以缩小简化:23点的斜率大于12点,34点斜率大于23点…从而形成了<strong>下凸包</strong></p>
+<pre><code>  从结果看:斜率递增保证了下凸包,而下凸包其实是保证了**:第三个点没有第二个点优,第四个点没有三个点优..**,因为第一个破坏下凸包性质的点一定不是最优,可参考理性认识的证明
+  
+  
+  所以我们要维护上面两个性质:1:第一个点比第二个点优,2:第三个点没有第二个点优,第四个点没有三个点优...(用维护斜率递增实现)**
+</code></pre>
+</li>
+</ul>
+<h4 id="思考-1"><a href="#思考-1" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><p>如何证明维护的队列的第一个就是最优的呢?<br>-    <strong>理性认识:</strong><br>   dp[i] &#x3D; dp[j] + x[j] $^_{2}$ + x[i]$^_{2}$ +　2x[i]*x[j] + W</p>
+<p>   dp[i] - W - x[i]$^_{2}$  &#x3D; dp[j] + x[j] $^_{2}$ +　2x[i]*x[j] </p>
+<p>   从上面这个式子看出dp[i] , x[i]$^_{2}$ ,Ｗ这三个相对于i是定值</p>
+<p>   **问题转换:**我们要找到这样一个 x[j] 和 dp[j] + x[j] $^_{2}$ 使得 dp[i] 最小,看成b &#x3D; y - kx,也就是b最小.从而我们可以画出一些点(2x[j],dp[j] + x[j] $^_{2}$),用斜率固定k的直线从下面往上面开始扫描,第一个接触到的点就是我们要找的最优点.这样找的话就会发现一个特点,上凸包的转折点永远不会被扫到,所以也应该剔除.</p>
+<p>   如果我们在每一次插入的时候一直这样判断,那么就能够保证最后两个斜率一定大于前两个点的斜率,由于插入斜率大小具有<strong>传递性</strong>,所以能够保证<strong>斜率递增</strong></p>
+<p>   <strong>但是光斜率递增就一定能够使得第一个最优吗?</strong></p>
+<p>   确保第一个最优的充分必要条件是每个点和第一个点的斜率大于等于2x[i],这样看来显然不能够确保第一个最优.(<strong>举一个极限的例子,所有点和第一个点的斜率都小于2x[i]但是却递增</strong>)</p>
+<p>   为了弥补上面的不足,可以让第一个优于第二个,也就是12斜率大于2x[i],由于上面凸包的性质使得第一个点和所有点斜率都大于2x[i]也就是说,以后的点不能够比第一个点更优.所以:<strong>第一个是最优的</strong></p>
+</li>
+</ul>
+<h3 id="C-Taosama和煎饼"><a href="#C-Taosama和煎饼" class="headerlink" title="C  Taosama和煎饼"></a>C  Taosama和煎饼</h3><h4 id="题意-2"><a href="#题意-2" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>韬韬想吃煎饼但是有急事,一个煎饼有n个工序,每个工序i有着A[i]美味度,韬韬有m个道具,每个道具用一次可以前进b[i]个单位,每个工序一旦被跳过得不到美味度,问你使用这些工具最多获得多少美味度*(0&lt;&#x3D;b[i]&lt;&#x3D;4,0&lt;&#x3D;a[i]&lt;&#x3D;100,0&lt;&#x3D;n&lt;&#x3D;350,0&lt;&#x3D;m&lt;&#x3D;120)*,确保b[i]的和是n-1</li>
+</ul>
+<h4 id="分析-2"><a href="#分析-2" class="headerlink" title="分析"></a>分析</h4><ul>
+<li>建立状态</li>
+</ul>
+<pre><code>dp[i][a][b][c][d]表示处于i位置还剩abcd个四种道具(a表示前进b[1]个道具)最多能够获得多少美味度
+
+状态转移
+
+dp[i][a][b][c][d]可以由dp[i-1][a-1][b][c][d]等四种状态转移过来
+</code></pre>
+<ul>
+<li>状态优化</li>
+</ul>
+<pre><code>上面的状态很容易想,但是350 * 40 * 40 * 40 * 40复杂度很高,我们可以发现,这五个变量只要确定四个,那么第五个变量是确定的,所以我们可以减少一维,dp[a][b][c][d]就好了,复杂度40 * 40 * 40 * 40完美过题
+</code></pre>
+<ul>
+<li>超时原因</li>
+</ul>
+<pre><code>由于建立状态思维定式,所以建立的状态是dp[350][40][40][40],超时了,但仔细发现这里的350有很多状态达不到
+</code></pre>
+<h4 id="思考-2"><a href="#思考-2" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>技巧</li>
+</ul>
+<pre><code>-    对于这种固定形式的转移,记忆化搜索写起来最快
+-    建立状态的时候如果有多种选择首先找范围小的,其次找容易实现的
+</code></pre>
+<h3 id="D-任务"><a href="#D-任务" class="headerlink" title="D 任务"></a>D 任务</h3><h4 id="题意-3"><a href="#题意-3" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>有两台机器n个任务,每个任务i在机器A完成时间是a[i],B上面完成时间是b[i],任务i可以被处理当前仅当每个任务j(i&gt;j)已经被完成或者正在进行.求最少完成任务的时间(n&lt;2000,a[i],b[i]&lt;&#x3D;3000)</li>
+</ul>
+<h4 id="分析-3"><a href="#分析-3" class="headerlink" title="分析"></a>分析</h4><ul>
+<li>首先读清楚题目意思</li>
+</ul>
+<pre><code>**任务i可以被处理当前仅当每个任务j(i&gt;j)已经被完成或者正在进行**
+
+上面这句话有什么用?
+
+仔细分析后可以发现上面这个性质确保了执行任意任务的时候机器AB时间差不会超过3000
+
+假如A比B将少运行时间超过3000,那么现在放置任务i+1
+-    那么任务i+1不能放置机器A最开始空闲的时候,因为这样B机器必然(B多A3000时间)有任务j(j&lt;i)还没有没执行;那么任务i+1只能当道B机器运行最后一个任务j的起始时间上去,这样的方案必然没有比任务j放置到A机器方案优(可以画图模拟一下)
+-    把任务i+1放置到机器B,那么这种方案将继续造成恶性循环又进入此状态,显然最终这种方案不优
+
+所以任一个任务选择的时候AB机器运行结束时间差不能够3000
+
+**建立状态**
+
+dp[i][j]表示完成任务i并且机器AB运行结束时间差为j的最少时间,(j&gt;0表示A比B多j,否则B比A多-j,后面右移3000,保证都是正数)
+
+**状态转移**
+
+dp[i][j]由dp[i-1][j+a[i]和dp[i-1][j-b[i]]转移过来,其中要注意任务i放到机器A或B中可能对时间没有影响
+</code></pre>
+<h4 id="思考-3"><a href="#思考-3" class="headerlink" title="思考"></a>思考</h4><ul>
+<li><strong>错误分析</strong></li>
+</ul>
+<pre><code>-    没有对非法状态进行限制,比如状态转移的时候,放置任务i到机器A,必须设定任务i时间当值 &gt;= B机器最后一个任务j放置时间!!!确保i之前的任务被处理完或正被处理
+-    没有考虑任务i放置到机器A后对时间无影响的情况
+</code></pre>
+<h3 id="E-goozy搭积木"><a href="#E-goozy搭积木" class="headerlink" title="E goozy搭积木"></a>E goozy搭积木</h3><h4 id="题意-4"><a href="#题意-4" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>goozy对积木十分的狂热，今天他想搭一个双子塔（就是两个高度一样的塔）！他想知道，用现有的积木，能不能实现这个想法.积木个数n(1 &lt;&#x3D; n &lt;&#x3D; 50)，每个积木的高度hi(1 &lt;&#x3D; hi &lt;&#x3D; 500000),题目保证所有积木高度总和不超过500000。</li>
+</ul>
+<h4 id="分析-4"><a href="#分析-4" class="headerlink" title="分析"></a>分析</h4><ul>
+<li>建立状态</li>
+</ul>
+<pre><code>这题和能不能把所有的平分是不一样的,因而我只要保证有一种方案把积木部分平分就好了
+
+所以建立状态不能用dp[i][j]表示i木块j高度是否可达
+
+状态是dp[i][j]表示前i个木块使得两份木块高度差为j的最大可达高度是多少.
+</code></pre>
+<ul>
+<li>状态转移</li>
+</ul>
+<pre><code>状态转移就很简单了,积木i放到比较高的那一方或者比较低的那一方
+    
+    放到比较高的一方
+    
+    dp[now][j+h] = max(dp[now][j+h],dp[1-now][j]+h);
+    
+    放到比较低的一方
+    
+    newh = max(dp[1-now][j]-j+h, dp[1-now][j]);
+    
+    dp[now][abs(h-j)] = max(dp[now][abs(h-j)], newh);
+    
+</code></pre>
+<h4 id="思考-4"><a href="#思考-4" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>有时候dp建立状态后发现某一位范围过大,不能直接dp[i][j]的时候可以考虑特殊性质,然后对他们的差进行状态转移,正如D题一样</li>
+</ul>
+<h3 id="F-先锋看烟花"><a href="#F-先锋看烟花" class="headerlink" title="F 先锋看烟花"></a>F 先锋看烟花</h3><h4 id="题意-5"><a href="#题意-5" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>一共有n个地点（1到n排列），一共有m个烟花，每个烟花放出的地点ai和时间ti，每个烟花有观赏值bi，对于每个烟花，对先锋的幸福度贡献bi-|ai-cur|，其中cur表示放第i个烟花时先锋所处的位置，因此，当先锋离烟花太远时，幸福度甚至会下降！已知先锋每秒最多运动d距离，问这个晚上先锋看烟花能获得的最大幸福度。</li>
+</ul>
+<h4 id="分析-5"><a href="#分析-5" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><p>这相当于是一道移动接苹果的题目,只不过每秒移动范围为d并且烟花放的每一个点都有一个贡献值可为负数</p>
+</li>
+<li><p><strong>状态建立</strong></p>
+</li>
+</ul>
+<pre><code>dp[i][j]表示第i个烟花位于j位置最多能够获得多少幸福感
+
+**状态转移**
+
+    dp[i][j]=min(dp[i-1][k]+bi-|ai-j|);
+    
+    k和j差值不超过(t[i] - t[i-1]) * d
+    
+**转移优化**
+
+直接转移显然不行,那么就可以分成两种情况并进行单调队列优化了
+若ai&gt;cur
+    
+    dp[i][j]=min(dp[i-1][k]+bi-ai+j);
+那么维护一个和j差范围处于(t[i]-t[i-1])*d的队列
+
+如果 dp[i-1][k] 和 dp[i-1][kk] 都在队列中并且 k &lt; k &amp;&amp;  dp[i-1][k] &lt; dp[i-1][kk] 那么在对i时刻烟花j以后的位置,都不会选择dp[i-1][k]了,因为dp[i-1][kk] 一定比他优,所以dp[i-1][k]这个状态就要从队列中间pop出来
+
+所以队首的只要处于范围之内一定最优
+
+这个队列最多插入n次pop n次,因而复杂度是O(n)
+</code></pre>
+<h4 id="思考-5"><a href="#思考-5" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>当遇到一种可以由很多种状态转移过来的时候,考虑一下nlogn线段树或树状数组查询或单调队列或斜率优化</li>
+</ul>
+<h3 id="H-又见背包"><a href="#H-又见背包" class="headerlink" title="H 又见背包"></a>H 又见背包</h3><h4 id="题意-6"><a href="#题意-6" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>有n种大小不同的数字a_i,每种m_i个，判断是否可以从这些数字中选出若干使它们的和恰好为k。(0&lt;n&lt;&#x3D;100,0&lt;k&lt;&#x3D;1e5)</li>
+</ul>
+<h4 id="分析-6"><a href="#分析-6" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><strong>建立状态</strong></li>
+</ul>
+<pre><code>dp[i][j]表示前i个物品能不能组成和是j
+</code></pre>
+<ul>
+<li><strong>状态转移</strong></li>
+</ul>
+<pre><code>dp[i][j] |= dp[i-1][j-a[i]];
+</code></pre>
+<ul>
+<li><strong>状态优化</strong></li>
+</ul>
+<pre><code>上面的状态首先可以二进制对个数进行优化,然后可以发现单独的一次转移居然只是转移一个bool,太浪费时间了,所以充分使用int或ll的位数,我们可以把j分成64位一组,一次性转移一组这样转移负责度就除以64了相当于降了两个数量级了
+
+现在复杂度是n*k*logm/64,这样相当于消去logm而且转移过程还是位运算很快,所以就过了
+</code></pre>
+<h4 id="思考-6"><a href="#思考-6" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>如果以后遇到bool为dp存的状态的时候,那么这个状态肯定是不好的,这时候要么像这题一样压缩一下转移,要么重新建一个状态</li>
+</ul>
+<h3 id="I-Mingo的游戏"><a href="#I-Mingo的游戏" class="headerlink" title="I Mingo的游戏"></a>I Mingo的游戏</h3><h4 id="题意-7"><a href="#题意-7" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>Mingo 最近迷上了一款电子游戏。这款游戏有N个关卡，编号为1到n。这些关卡可以被玩家分为K(1&lt;&#x3D;K&lt;&#x3D;N)组，每组包含至少一个并且编号连续的关卡。<br>这款游戏有些很奇怪的规则：</li>
+</ul>
+<pre><code>1.如果所有的关卡都被通关，那么这个游戏立即结束，否则系统会找到第一个包含还没有通过的关卡的那组，设X是这组的编号。 
+
+2.设在X组里，已经通关的关卡编号为i,i+1，i+2,...,j。那么j+1为最早的一个没有通关的关卡。每一个关卡都有一个权重ti。此时系统会随机以
+</code></pre>
+<p>的概率进入关卡k。 </p>
+<pre><code>3.Mingo是一个富有天赋的玩家，每一关都能轻松过关，但是每一关都会消耗她一个小时去过关。
+
+Mingo想以最快的速度通关所有的关卡，但是她非常困惑到底如何分组才能使她尽可能的尽早通关所有关卡呢。你能帮她计算一下如何分组才能使她通关所有关卡所用时间的期望最小么。
+</code></pre>
+<h4 id="分析-7"><a href="#分析-7" class="headerlink" title="分析"></a>分析</h4><pre><code>CF原题,第一次遇到的斜率dp,详解见B
+</code></pre>
+<h4 id="思考-7"><a href="#思考-7" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>这题后面我CF过了,但是scu一直过不了,可能因为我写错了,然后CF用相对误差,SCU用绝对误差</li>
+</ul>
+<h3 id="L-来签个到吧"><a href="#L-来签个到吧" class="headerlink" title="L 来签个到吧"></a>L 来签个到吧</h3><h4 id="题意-8"><a href="#题意-8" class="headerlink" title="题意"></a>题意</h4><ul>
+<li>给你 n (2 &lt;&#x3D; n &lt;&#x3D; 60,000) 个球,每球上都写有互不相同的数字t ( 0 &lt;&#x3D; t &lt; 100,000),这些球放在一个盒子里.开始你能执行一种加球操作:选择任意两个球: x 和y,然后看| x - y |在已经有的球中是否存在,如果不存在,就把|x - y|写在一个球上,把这个球加入这个盒子,这里就成功完成了一次加球操作.<br>你就一直加球,直到盒子中任意两个数的差,在集合中已经存在</li>
+</ul>
+<pre><code>现在摸求,问你摸完所有球的所进行操作次数的期望
+</code></pre>
+<h4 id="分析-8"><a href="#分析-8" class="headerlink" title="分析"></a>分析</h4><ul>
+<li><strong>最终状态会有多少个球?</strong></li>
+</ul>
+<pre><code>显然加球操作很像辗转相减的过程,我们只需要对这题求最大公约数,然后最大值除以这个最大公约数就是最终的个数
+</code></pre>
+<ul>
+<li><strong>期望怎么求?</strong></li>
+</ul>
+<pre><code>如果当前摸过了i个球,还剩下n-i个就没有摸,那么摸到i+1球的期望是多少?
+
+-    可以用无穷级数来求
+
+-    可以感性认识一下,n 个球我要摸到n-i球中的一个期望是多少,就是n / (n-i)
+
+所以最后ans = sum(n/i) + 加球操作数
+</code></pre>
+<h4 id="思考-8"><a href="#思考-8" class="headerlink" title="思考"></a>思考</h4><ul>
+<li>这题要注意对0的处理</li>
+<li>这题实际不难,但是读错题意,以为操作只包括摸球</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%80%BB%E7%BB%93/" rel="tag"># 总结</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/05/11/%E5%A5%B6%E7%89%9B%E5%90%88%E5%BD%B1/" rel="prev" title="奶牛合影">
+      <i class="fa fa-chevron-left"></i> 奶牛合影
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2016/05/11/%E5%A5%B6%E7%89%9B%E5%BA%8F%E5%88%97/" rel="next" title="奶牛序列">
+      奶牛序列 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#A-%E9%9B%B7%E7%A5%9E%E4%B9%8B%E8%B7%AF"><span class="nav-number">1.</span> <span class="nav-text">A 雷神之路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F"><span class="nav-number">1.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90"><span class="nav-number">1.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83"><span class="nav-number">1.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#B-Snowd-%E4%BF%AE%E9%95%BF%E5%BB%8A"><span class="nav-number">2.</span> <span class="nav-text">B Snowd 修长廊</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-1"><span class="nav-number">2.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-1"><span class="nav-number">2.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-1"><span class="nav-number">2.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#C-Taosama%E5%92%8C%E7%85%8E%E9%A5%BC"><span class="nav-number">3.</span> <span class="nav-text">C  Taosama和煎饼</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-2"><span class="nav-number">3.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-2"><span class="nav-number">3.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-2"><span class="nav-number">3.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#D-%E4%BB%BB%E5%8A%A1"><span class="nav-number">4.</span> <span class="nav-text">D 任务</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-3"><span class="nav-number">4.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-3"><span class="nav-number">4.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-3"><span class="nav-number">4.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#E-goozy%E6%90%AD%E7%A7%AF%E6%9C%A8"><span class="nav-number">5.</span> <span class="nav-text">E goozy搭积木</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-4"><span class="nav-number">5.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-4"><span class="nav-number">5.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-4"><span class="nav-number">5.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#F-%E5%85%88%E9%94%8B%E7%9C%8B%E7%83%9F%E8%8A%B1"><span class="nav-number">6.</span> <span class="nav-text">F 先锋看烟花</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-5"><span class="nav-number">6.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-5"><span class="nav-number">6.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-5"><span class="nav-number">6.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#H-%E5%8F%88%E8%A7%81%E8%83%8C%E5%8C%85"><span class="nav-number">7.</span> <span class="nav-text">H 又见背包</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-6"><span class="nav-number">7.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-6"><span class="nav-number">7.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-6"><span class="nav-number">7.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#I-Mingo%E7%9A%84%E6%B8%B8%E6%88%8F"><span class="nav-number">8.</span> <span class="nav-text">I Mingo的游戏</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-7"><span class="nav-number">8.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-7"><span class="nav-number">8.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-7"><span class="nav-number">8.3.</span> <span class="nav-text">思考</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#L-%E6%9D%A5%E7%AD%BE%E4%B8%AA%E5%88%B0%E5%90%A7"><span class="nav-number">9.</span> <span class="nav-text">L 来签个到吧</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%A2%98%E6%84%8F-8"><span class="nav-number">9.1.</span> <span class="nav-text">题意</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%86%E6%9E%90-8"><span class="nav-number">9.2.</span> <span class="nav-text">分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%80%9D%E8%80%83-8"><span class="nav-number">9.3.</span> <span class="nav-text">思考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BigHead</p>
+  <div class="site-description" itemprop="description">咸鱼也有咸鱼的生活</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zerolxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zerolxf" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liangxianfeng96@gmail.com" title="E-Mail → mailto:liangxianfeng96@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://www.zhihu.com/people/liang-xian-feng-58" title="知乎 → http:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;liang-xian-feng-58" rel="noopener" target="_blank"><i class="zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://blog.csdn.net/xfzero" title="CSDN → http:&#x2F;&#x2F;blog.csdn.net&#x2F;xfzero" rel="noopener" target="_blank"><i class="csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://goozy.github.io/" title="http:&#x2F;&#x2F;goozy.github.io" rel="noopener" target="_blank">Goozy</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BigHead</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'CofxBK84U8TP78kix0Fk8aP1-9Nh9j0Va',
+      appKey     : 'AmMExziYyk8WPd3Rc8sQtRnm',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

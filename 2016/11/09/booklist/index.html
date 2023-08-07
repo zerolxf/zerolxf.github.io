@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zerolxf.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="想看书籍c++系列转自知乎 阶段 1《Essential C++》  这是一本内容不多但很实用的C++入门书籍，强调快速上手与理解C++编程。本书主要围绕一系列逐渐复杂的程序问题，以及用以解决这些问题的语言特性展开讲解。你不只学到C++的函数和结构，也会学习到它们的设计目的和基本原理。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="c++书籍单">
+<meta property="og:url" content="http://zerolxf.github.io/2016/11/09/booklist/index.html">
+<meta property="og:site_name" content="BigHead">
+<meta property="og:description" content="想看书籍c++系列转自知乎 阶段 1《Essential C++》  这是一本内容不多但很实用的C++入门书籍，强调快速上手与理解C++编程。本书主要围绕一系列逐渐复杂的程序问题，以及用以解决这些问题的语言特性展开讲解。你不只学到C++的函数和结构，也会学习到它们的设计目的和基本原理。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2016-11-09T15:26:49.000Z">
+<meta property="article:modified_time" content="2023-08-07T19:20:46.839Z">
+<meta property="article:author" content="BigHead">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zerolxf.github.io/2016/11/09/booklist/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>c++书籍单 | BigHead</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">BigHead</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2016/11/09/booklist/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          c++书籍单
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2016-11-09 23:26:49" itemprop="dateCreated datePublished" datetime="2016-11-09T23:26:49+08:00">2016-11-09</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-08 03:20:46" itemprop="dateModified" datetime="2023-08-08T03:20:46+08:00">2023-08-08</time>
+              </span>
+
+          
+            <span id="/2016/11/09/booklist/" class="post-meta-item leancloud_visitors" data-flag-title="c++书籍单" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2016/11/09/booklist/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2016/11/09/booklist/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="想看书籍c-系列"><a href="#想看书籍c-系列" class="headerlink" title="想看书籍c++系列"></a>想看书籍c++系列</h3><p>转自<a target="_blank" rel="noopener" href="https://www.zhihu.com/question/20410487">知乎</a></p>
+<h5 id="阶段-1"><a href="#阶段-1" class="headerlink" title="阶段 1"></a>阶段 1</h5><p>《Essential C++》</p>
+<blockquote>
+<p>这是一本内容不多但很实用的C++入门书籍，强调快速上手与理解C++编程。本书主要围绕一系列逐渐复杂的程序问题，以及用以解决这些问题的语言特性展开讲解。你不只学到C++的函数和结构，也会学习到它们的设计目的和基本原理。</p>
+</blockquote>
+<span id="more"></span>
+<p>《C++ Primer》<br>本书对C++基本概念、技术、以及现代C++编程风格进行了全面而且权威的阐述，是C++初学者的最佳指南；本书可以帮助你编写实用的程序，而无需首先精通每个语言细节。对于中高级程序员，本书也是不可或缺的参考书。</p>
+<h5 id="阶段-2"><a href="#阶段-2" class="headerlink" title="阶段 2"></a>阶段 2</h5><p>《Effective C++》和《More effective C++》</p>
+<blockquote>
+<p>作者是Scott Meyers。你应该熟读它们，并清楚地理解每个项目。该书围绕55条准则，每一条都介绍了一个可让你写出更好的C++程序代码的方法，并以特别设计过的例子详加讨论。</p>
+</blockquote>
+<p>《Exceptional C++（C++编程剖析）》和《More exceptional C++》</p>
+<blockquote>
+<p>这两本书中都包含了40个C++编程问题，这些问题会让你磨练自己的技能，最终成为优秀的C++程序员。这些问题是Herb Sutter精心挑选，与ISO&#x2F;ANSI C++官方标准相一致，帮助程序员在设计、架构和编码过程中保持良好的风格，从而使编写的C++软件更健壮、更高效。</p>
+</blockquote>
+<h5 id="阶段-3"><a href="#阶段-3" class="headerlink" title="阶段 3"></a>阶段 3</h5><p>《Inside the C++ object model（深度探索C++对象模型）》</p>
+<blockquote>
+<p>本书专注于C++面向对象程序设计的底层机制，包括结构式语意、临时性对象的生成、封装、继承，以及虚拟——虚拟函数和虚拟继承，帮助你理解程序的底层实现，以便写出更高效的代码。</p>
+</blockquote>
+<p>《The design and evolution of C++（C++语言的设计与演化）》</p>
+<blockquote>
+<p>本书作者也是C++语言的设计者Bjarne Stroustrup，作者在书中综合性地介绍了C++的发展历史，C++中各种重要机制的本质意义和设计背景，这些机制的基本用途和使用方法，讨论了C++所适合的应用领域及其未来的发展前景，既没有忽略关键性的详情，又没有过多地陷入技术细节。</p>
+</blockquote>
+<h5 id="阶段-4"><a href="#阶段-4" class="headerlink" title="阶段 4"></a>阶段 4</h5><p>《The C++ standard library（C++标准程序库）》</p>
+<blockquote>
+<p>这是标准模板库字典，你可以在本书中找到STL相关的一切知识。本书焦点放在标准模板库、检查容器、迭代器、函数对象和STL算法上。每一个元素都有深刻的呈现，包括其介绍、设计、运用实例、细节解说、陷阱、意想不到的危险，以及相关类别和函数等。</p>
+</blockquote>
+<p>《Effective STL》</p>
+<blockquote>
+<p>这是Scott Meyers的第三本C++专著，也是学习STL最权威的书籍。作者对书中的50个指导方针都作了详尽的分析，并配以示例。通过这些规则，C++开发者可以最大限度地使用STL。</p>
+</blockquote>
+<p>《Generic programming and the STL（泛型编程与STL）》</p>
+<blockquote>
+<p>本书阐述了泛型程序设计的核心理念：concepts（概念）、modeling（模型）和refinement（改善），并为你展示这些观念如何导出STL的基础概念：iterators（迭代器）、containers（容器）和function objects（函数对象）。按照本书所述，你可以把STL想象成一个由concepts组成的library，你将学习到STL正式结构并理解其强大的优势。</p>
+</blockquote>
+<h5 id="阶段-5"><a href="#阶段-5" class="headerlink" title="阶段 5"></a>阶段 5</h5><p>《Exceptional C++ style》</p>
+<blockquote>
+<p>作者为Herb Sutter。本书同样提出了40个C++风格相关的问题，对一些至关重要的C++细节和相互关系提出了新的见解，为当今的关键C++编程技术（如泛型编程、STL、异常安全等）提供了新的策略，帮助开发者在开销与功能之间、优雅与可维护性之间、灵活性与过分灵活之间寻找完美的平衡点。</p>
+</blockquote>
+<p>《C++ template》</p>
+<blockquote>
+<p>这是一本关于C++模板的完整的参考手册和教程，它强调模板的使用实践，包含了现实世界中的例子。每个C++程序员都应该好好读一读这本书。</p>
+</blockquote>
+<p>《Modern C++ design（现代C++设计）》</p>
+<blockquote>
+<p>作者Andrei Alexandrescu为C++程序员打开了一个新的局面。本书提供了一些针对软件设计的前沿方法，如联合设计模式、泛型编程，使程序员可以编写有表现力的、灵活的、高度可重用的代码。</p>
+</blockquote>
+<p>《Thinking in C++（C++编程思想）》</p>
+<blockquote>
+<p>C++ 领域权威著作，介绍了C++实用的编程技术和最佳的实践方法。</p>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2016/11/09/list-md/" rel="prev" title="Ubuntu 安装必备">
+      <i class="fa fa-chevron-left"></i> Ubuntu 安装必备
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2018/01/17/58login1/" rel="next" title="Java 模拟 58登录 （一） 分析">
+      Java 模拟 58登录 （一） 分析 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%83%B3%E7%9C%8B%E4%B9%A6%E7%B1%8Dc-%E7%B3%BB%E5%88%97"><span class="nav-number">1.</span> <span class="nav-text">想看书籍c++系列</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-1"><span class="nav-number">1.0.1.</span> <span class="nav-text">阶段 1</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-2"><span class="nav-number">1.0.2.</span> <span class="nav-text">阶段 2</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-3"><span class="nav-number">1.0.3.</span> <span class="nav-text">阶段 3</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-4"><span class="nav-number">1.0.4.</span> <span class="nav-text">阶段 4</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%98%B6%E6%AE%B5-5"><span class="nav-number">1.0.5.</span> <span class="nav-text">阶段 5</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BigHead</p>
+  <div class="site-description" itemprop="description">咸鱼也有咸鱼的生活</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zerolxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zerolxf" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liangxianfeng96@gmail.com" title="E-Mail → mailto:liangxianfeng96@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://www.zhihu.com/people/liang-xian-feng-58" title="知乎 → http:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;liang-xian-feng-58" rel="noopener" target="_blank"><i class="zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://blog.csdn.net/xfzero" title="CSDN → http:&#x2F;&#x2F;blog.csdn.net&#x2F;xfzero" rel="noopener" target="_blank"><i class="csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://goozy.github.io/" title="http:&#x2F;&#x2F;goozy.github.io" rel="noopener" target="_blank">Goozy</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BigHead</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'CofxBK84U8TP78kix0Fk8aP1-9Nh9j0Va',
+      appKey     : 'AmMExziYyk8WPd3Rc8sQtRnm',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

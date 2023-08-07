@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zerolxf.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Java 模拟58登录(二) 实现 实习期间需要做一个模拟58登录然后爬取简历，之前已经写了一篇分析，现在具体实现过程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java 模拟58登录(二) 实现">
+<meta property="og:url" content="http://zerolxf.github.io/2018/01/28/58login2/index.html">
+<meta property="og:site_name" content="BigHead">
+<meta property="og:description" content="Java 模拟58登录(二) 实现 实习期间需要做一个模拟58登录然后爬取简历，之前已经写了一篇分析，现在具体实现过程">
+<meta property="og:locale">
+<meta property="article:published_time" content="2018-01-28T06:25:40.000Z">
+<meta property="article:modified_time" content="2023-08-07T19:20:46.838Z">
+<meta property="article:author" content="BigHead">
+<meta property="article:tag" content="Java">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zerolxf.github.io/2018/01/28/58login2/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Java 模拟58登录(二) 实现 | BigHead</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">BigHead</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2018/01/28/58login2/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Java 模拟58登录(二) 实现
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2018-01-28 14:25:40" itemprop="dateCreated datePublished" datetime="2018-01-28T14:25:40+08:00">2018-01-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-08-08 03:20:46" itemprop="dateModified" datetime="2023-08-08T03:20:46+08:00">2023-08-08</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Java/" itemprop="url" rel="index"><span itemprop="name">Java</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2018/01/28/58login2/" class="post-meta-item leancloud_visitors" data-flag-title="Java 模拟58登录(二) 实现" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2018/01/28/58login2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2018/01/28/58login2/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Java-模拟58登录-二-实现"><a href="#Java-模拟58登录-二-实现" class="headerlink" title="Java 模拟58登录(二) 实现"></a>Java 模拟58登录(二) 实现</h1><blockquote>
+<p>实习期间需要做一个模拟58登录然后爬取简历，之前已经写了一篇分析，现在具体实现过程</p>
+</blockquote>
+<span id="more"></span>
+<h2 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h2><h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p>根据之前的分析可以得出58登录的大致流程如下</p>
+<blockquote>
+<ul>
+<li>发送Get请求（data？）， 获取 token</li>
+</ul>
+</blockquote>
+<ul>
+<li>发送Get请求（getcode？）， 请求发送手机验证码， 同时获得一个tokencode</li>
+<li>发送Get请求（login？）， 输入手机号，动态码以及其他相关参数来发送登录请求</li>
+<li>登录成功</li>
+</ul>
+<h3 id="预处理"><a href="#预处理" class="headerlink" title="预处理"></a>预处理</h3><p>除了上述所说的步骤外，还有很多需要处理的底层实现细节，比如解析Cookie， 构造必须的参数</p>
+<h4 id="设置必须参数"><a href="#设置必须参数" class="headerlink" title="设置必须参数"></a>设置必须参数</h4><ul>
+<li>FINGERPRINT 和FINGERPRINT2是网页登录的时候直接抓取的，我试过随机修改后面几个数字依旧可以登录</li>
+<li>JQUERYSTR 只是jquery调用时候自动生成的参数，为了不出现什么问题我也加上了</li>
+<li>initTime initTime表示页面加载时间，后面加密时候需要用到的时间戳这个参数，这里所有需要的时间戳都是(需要的时间戳时刻b-initTime+ const time 1411093327735L)</li>
+<li>TOKENCODE 和 TOKEN 是调用的时候获取的参数</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">FRONTEND_URL</span> <span class="operator">=</span> <span class="string">&quot;http://passport.58.com/frontend/data?&quot;</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">TOKENCODE_URL</span> <span class="operator">=</span> <span class="string">&quot;http://passport.58.com/mobile/getcode?&quot;</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">LOGIN_URL</span> <span class="operator">=</span> <span class="string">&quot;https://passport.58.com/mobile/pc/login?&quot;</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">FINGERPRINT</span> <span class="operator">=</span> <span class="string">&quot;421A592E9D98DC7C0711A36033A582E84360ED23C621CCE3_011&quot;</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">FIGNERPRINT2</span> <span class="operator">=</span> <span class="string">&quot;zh-CN|24|1|4|1600_900|1600_860|-480|1|1|1|undefined|undefined|&quot;</span></span><br><span class="line">		+ <span class="string">&quot;unknown|Win64|unspecified|1|false|false|false|true|false|&quot;</span></span><br><span class="line">		+ <span class="string">&quot;0_true_true|d41d8cd98f00b204e9800998ecf8427F|b01de87fcefd32c68d348cd9d18b62d9&quot;</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">JQUERYSTR</span> <span class="operator">=</span> <span class="string">&quot;jQuery183025066063002634587_&quot;</span> + getNow();</span><br><span class="line"><span class="keyword">private</span> <span class="type">long</span> <span class="variable">initTime</span> <span class="operator">=</span> (<span class="keyword">new</span> <span class="title class_">Date</span>()).getTime();</span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">TOKENCODE</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br><span class="line"><span class="keyword">private</span> <span class="type">String</span> <span class="variable">TOKEN</span> <span class="operator">=</span> <span class="string">&quot;&quot;</span>;</span><br></pre></td></tr></table></figure>
+<h4 id="解析Cookie"><a href="#解析Cookie" class="headerlink" title="解析Cookie"></a>解析Cookie</h4><p>这里实际写的时候遇到了坑点, 最初底层实现Cookie是参考<a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/5574530/how-to-parse-a-cookie-string">stackoverflow</a>中的那种实现<br>但是如果Cookie value中含有”&#x3D;”,解析就是失败，刚好58的session Cookie 中含有这个！！！我也是失败很多次才知道</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line">	protected CookieStore cookieStore = new BasicCookieStore();</span><br><span class="line"></span><br><span class="line">	public void setCookieStore(HttpResponse httpResponse) &#123;</span><br><span class="line"></span><br><span class="line">		Header[] headers = httpResponse.getHeaders(&quot;Set-Cookie&quot;);</span><br><span class="line">		if (headers != null &amp;&amp; headers.length &gt; 0) &#123;</span><br><span class="line">			for (int i = 0; i &lt; headers.length; i++) &#123;</span><br><span class="line">				String setCookie = headers[i].getValue();</span><br><span class="line">				try &#123;</span><br><span class="line">					BasicClientCookie cookie = this.parseRawCookie(setCookie);</span><br><span class="line">					if (!cookie.isExpired(new Date())) &#123;</span><br><span class="line">						this.cookieStore.addCookie(cookie);</span><br><span class="line">					&#125;</span><br><span class="line">				&#125; catch (Exception e) &#123;</span><br><span class="line">					// do nothing</span><br><span class="line">				&#125;</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		this.cookieStore.clearExpired(new Date());</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">//使用java.net.HttpCookie自带的解析，然后手动转换成BasicClientCookie</span><br><span class="line">//这里java.net.HttpCookie会有些默认行为需要注意</span><br><span class="line">	protected BasicClientCookie parseRawCookie(String rawCookie) throws Exception &#123;</span><br><span class="line">		List&lt;HttpCookie&gt; cookies = HttpCookie.parse(rawCookie);</span><br><span class="line">		if (cookies.size() &lt; 1)</span><br><span class="line">			return null;</span><br><span class="line">		HttpCookie httpCookie = cookies.get(0);</span><br><span class="line">		BasicClientCookie cookie = new BasicClientCookie(httpCookie.getName(), httpCookie.getValue());</span><br><span class="line">		if (httpCookie.getMaxAge() &gt;= 0) &#123;</span><br><span class="line">			Date expiryDate = new Date(System.currentTimeMillis() + httpCookie.getMaxAge() * 1000);</span><br><span class="line">			cookie.setExpiryDate(expiryDate);</span><br><span class="line">		&#125;</span><br><span class="line">		if (httpCookie.getDomain() != null)</span><br><span class="line">			cookie.setDomain(httpCookie.getDomain());</span><br><span class="line">		if (httpCookie.getPath() != null)</span><br><span class="line">			cookie.setPath(httpCookie.getPath());</span><br><span class="line">		if (httpCookie.getComment() != null)</span><br><span class="line">			cookie.setComment(httpCookie.getComment());</span><br><span class="line">		cookie.setSecure(httpCookie.getSecure());</span><br><span class="line">		return cookie;</span><br><span class="line">	&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="解析Response-String"><a href="#解析Response-String" class="headerlink" title="解析Response String"></a>解析Response String</h4><p>返回的Response类似于下面，需要提取其中的键值对</p>
+<blockquote>
+<p>jQuery18305434571389149673_1515995590691({“code”:0,”data”:{“remainTime”:0,”token”:”7pjUnv6fhBONHh7A_4HrN_2rH4is-gC8”,”rsaModulus”:”xxx固定值xxx”,<br>“rsaExponent”:”010001”,”totalTime”:60,”mobile”:”手机号”},”msg”:””})</p>
+</blockquote>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">protected String getResponseParameter(String response, String parameterName) &#123;</span><br><span class="line">	String result = response.replaceAll(&quot;,|\&quot;|:&quot;, &quot; &quot;);</span><br><span class="line">	StringTokenizer tokenizer = new StringTokenizer(result, &quot; &quot;);</span><br><span class="line">	while (tokenizer.hasMoreTokens() &amp;&amp; !tokenizer.nextToken().equals(parameterName)) &#123;</span><br><span class="line">	&#125;</span><br><span class="line">	String token = tokenizer.nextToken();</span><br><span class="line">	return token;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="发送Get请求模块"><a href="#发送Get请求模块" class="headerlink" title="发送Get请求模块"></a>发送Get请求模块</h4><p>因为后面很多都用到get 请求，所以这里封装一下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> String <span class="title function_">doGet</span><span class="params">(String url, String host)</span> <span class="keyword">throws</span> Exception &#123;</span><br><span class="line">	<span class="type">CloseableHttpClient</span> <span class="variable">client</span> <span class="operator">=</span> <span class="built_in">this</span>.createHttpClient();</span><br><span class="line">	<span class="type">HttpGet</span> <span class="variable">get</span> <span class="operator">=</span> <span class="keyword">new</span> <span class="title class_">HttpGet</span>(url);</span><br><span class="line">	get.addHeader(<span class="string">&quot;Connection&quot;</span>, <span class="string">&quot;keep-alive&quot;</span>);</span><br><span class="line">	get.addHeader(<span class="string">&quot;accept&quot;</span>,</span><br><span class="line">			<span class="string">&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&quot;</span>);</span><br><span class="line">	get.addHeader(<span class="string">&quot;accept-encoding&quot;</span>, <span class="string">&quot;gzip, deflate, br&quot;</span>);</span><br><span class="line">	get.addHeader(<span class="string">&quot;accept-language&quot;</span>, <span class="string">&quot;en-US,en;q=0.9&quot;</span>);</span><br><span class="line">	get.addHeader(<span class="string">&quot;upgrade-insecure-requests&quot;</span>, <span class="string">&quot;1&quot;</span>);</span><br><span class="line">	get.addHeader(<span class="string">&quot;user-agent&quot;</span>,</span><br><span class="line">			<span class="string">&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/63.0.3239.84 Safari/537.36&quot;</span>);</span><br><span class="line">	get.addHeader(<span class="string">&quot;Host&quot;</span>, host);</span><br><span class="line">	<span class="type">CloseableHttpResponse</span> <span class="variable">response</span> <span class="operator">=</span> client.execute(get);</span><br><span class="line">	<span class="keyword">if</span> (response == <span class="literal">null</span>) &#123;</span><br><span class="line">		<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">Exception</span>(<span class="string">&quot;network error, unable to connect to 51job&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	setCookieStore(response);</span><br><span class="line">	<span class="type">HttpEntity</span> <span class="variable">entity</span> <span class="operator">=</span> response.getEntity();</span><br><span class="line">	<span class="type">InputStream</span> <span class="variable">stream</span> <span class="operator">=</span> entity.getContent();</span><br><span class="line">	<span class="type">String</span> <span class="variable">result</span> <span class="operator">=</span> IOUtils.toString(stream, <span class="string">&quot;utf-8&quot;</span>);</span><br><span class="line"></span><br><span class="line">	IOUtils.closeQuietly(stream);</span><br><span class="line">	EntityUtils.consumeQuietly(entity);</span><br><span class="line">	HttpClientUtils.closeQuietly(client);</span><br><span class="line">	<span class="keyword">return</span> result;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="加密字符串"><a href="#加密字符串" class="headerlink" title="加密字符串"></a>加密字符串</h4><p>QuanzhouJSUtil是一个调用js的类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">protected</span> String <span class="title function_">encryptStr</span><span class="params">(String str)</span> &#123;</span><br><span class="line">	<span class="type">Long</span> <span class="variable">timeSpan</span> <span class="operator">=</span> <span class="number">1411093327735L</span>;</span><br><span class="line">	<span class="type">Long</span> <span class="variable">randomLong</span> <span class="operator">=</span> timeSpan + (<span class="keyword">new</span> <span class="title class_">Date</span>()).getTime() - initTime;</span><br><span class="line">	<span class="type">String</span> <span class="variable">timeSign</span> <span class="operator">=</span> String.valueOf(randomLong);</span><br><span class="line">	<span class="type">String</span> <span class="variable">passwd</span> <span class="operator">=</span> timeSign + str;</span><br><span class="line">	<span class="type">String</span> <span class="variable">encryptPwd</span> <span class="operator">=</span> QuanzhouJSUtil.getEncryptString(passwd);</span><br><span class="line">	<span class="keyword">return</span> encryptPwd;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="发送动态码"><a href="#发送动态码" class="headerlink" title="发送动态码"></a>发送动态码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">public void getPhoneCode(String phoneNumber) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">	// 获得token,然后用token作为参数获取tokenCode, 然后发送验证码登录时候需要用到tokenCode和token</span><br><span class="line">	String result = doGet(FRONTEND_URL + getJQueryCallBackStr(), &quot;passport.58.com&quot;);</span><br><span class="line">	TOKEN = getResponseParameter(result, &quot;token&quot;);</span><br><span class="line"></span><br><span class="line">	// 获取token code</span><br><span class="line">	String enPhone = encryptStr(phoneNumber);</span><br><span class="line">	String tokenCodeURL = TOKENCODE_URL + &quot;mobile=&quot; + enPhone + &quot;&amp;validcode=&amp;source=pc-login&amp;vcodekey=&amp;token=&quot;</span><br><span class="line">			+ TOKEN + &quot;&amp;voicetype=0&amp;codetype=0&amp;fingerprint=&quot; + FINGERPRINT + &quot;&amp;&quot; + getJQueryCallBackStr() + &quot;&amp;path=&quot;</span><br><span class="line">			+ &quot;http://my.58.com&quot;;</span><br><span class="line">	result = doGet(tokenCodeURL, &quot;passport.58.com&quot;);</span><br><span class="line">	TOKENCODE = getResponseParameter(result, &quot;tokencode&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="发送动态码-1"><a href="#发送动态码-1" class="headerlink" title="发送动态码"></a>发送动态码</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">public void getPhoneCode(String phoneNumber) throws Exception &#123;</span><br><span class="line"></span><br><span class="line">	// 获得token,然后用token作为参数获取tokenCode, 然后发送验证码登录时候需要用到tokenCode和token</span><br><span class="line">	String result = doGet(FRONTEND_URL + getJQueryCallBackStr(), &quot;passport.58.com&quot;);</span><br><span class="line">	TOKEN = getResponseParameter(result, &quot;token&quot;);</span><br><span class="line"></span><br><span class="line">	// 获取token code</span><br><span class="line">	String enPhone = encryptStr(phoneNumber);</span><br><span class="line">	String tokenCodeURL = TOKENCODE_URL + &quot;mobile=&quot; + enPhone + &quot;&amp;validcode=&amp;source=pc-login&amp;vcodekey=&amp;token=&quot;</span><br><span class="line">			+ TOKEN + &quot;&amp;voicetype=0&amp;codetype=0&amp;fingerprint=&quot; + FINGERPRINT + &quot;&amp;&quot; + getJQueryCallBackStr() + &quot;&amp;path=&quot;</span><br><span class="line">			+ &quot;http://my.58.com&quot;;</span><br><span class="line">	result = doGet(tokenCodeURL, &quot;passport.58.com&quot;);</span><br><span class="line">	TOKENCODE = getResponseParameter(result, &quot;tokencode&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="测试登录"><a href="#测试登录" class="headerlink" title="测试登录"></a>测试登录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">@Test</span><br><span class="line">public void testLogin58()&#123;</span><br><span class="line">	preLogin();</span><br><span class="line">	String phoneNum = &quot;&quot;;</span><br><span class="line">	String mobileCode = &quot;&quot;;</span><br><span class="line">	System.out.println(&quot;请输入你的手机号码:&quot;);</span><br><span class="line">	Scanner scanner = new Scanner(System.in);</span><br><span class="line">	phoneNum = scanner.nextLine();</span><br><span class="line">	try &#123;</span><br><span class="line">		getPhoneCode(phoneNum);</span><br><span class="line">		System.out.println(&quot;请输入你的手机验证码:&quot;);</span><br><span class="line">		mobileCode = scanner.nextLine();</span><br><span class="line">		loginJob58(phoneNum, mobileCode);</span><br><span class="line">	&#125; catch (Exception e) &#123;</span><br><span class="line">		// TODO Auto-generated catch block</span><br><span class="line">		e.printStackTrace();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	//add some code to do</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	scanner.close();</span><br><span class="line">	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Java/" rel="tag"># Java</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2018/01/28/%E5%8D%95%E5%85%83%E6%B5%8B%E8%AF%95%E7%AC%94%E8%AE%B0/" rel="prev" title="单元测试笔记">
+      <i class="fa fa-chevron-left"></i> 单元测试笔记
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/08/08/%E6%89%93%E9%80%A0%E6%9B%B4%E5%BC%BA%E5%A4%A7%E7%9A%84Transformer%20-%20Google/" rel="next" title="打造更强大的Transformer - Google">
+      打造更强大的Transformer - Google <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Java-%E6%A8%A1%E6%8B%9F58%E7%99%BB%E5%BD%95-%E4%BA%8C-%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.</span> <span class="nav-text">Java 模拟58登录(二) 实现</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9E%E7%8E%B0"><span class="nav-number">1.1.</span> <span class="nav-text">实现</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">1.1.1.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-number">1.1.2.</span> <span class="nav-text">预处理</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%BF%85%E9%A1%BB%E5%8F%82%E6%95%B0"><span class="nav-number">1.1.2.1.</span> <span class="nav-text">设置必须参数</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90Cookie"><span class="nav-number">1.1.2.2.</span> <span class="nav-text">解析Cookie</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90Response-String"><span class="nav-number">1.1.2.3.</span> <span class="nav-text">解析Response String</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%91%E9%80%81Get%E8%AF%B7%E6%B1%82%E6%A8%A1%E5%9D%97"><span class="nav-number">1.1.2.4.</span> <span class="nav-text">发送Get请求模块</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8A%A0%E5%AF%86%E5%AD%97%E7%AC%A6%E4%B8%B2"><span class="nav-number">1.1.2.5.</span> <span class="nav-text">加密字符串</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E5%8A%A8%E6%80%81%E7%A0%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">发送动态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%91%E9%80%81%E5%8A%A8%E6%80%81%E7%A0%81-1"><span class="nav-number">1.1.4.</span> <span class="nav-text">发送动态码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%E7%99%BB%E5%BD%95"><span class="nav-number">1.1.5.</span> <span class="nav-text">测试登录</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BigHead</p>
+  <div class="site-description" itemprop="description">咸鱼也有咸鱼的生活</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zerolxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zerolxf" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liangxianfeng96@gmail.com" title="E-Mail → mailto:liangxianfeng96@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://www.zhihu.com/people/liang-xian-feng-58" title="知乎 → http:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;liang-xian-feng-58" rel="noopener" target="_blank"><i class="zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://blog.csdn.net/xfzero" title="CSDN → http:&#x2F;&#x2F;blog.csdn.net&#x2F;xfzero" rel="noopener" target="_blank"><i class="csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://goozy.github.io/" title="http:&#x2F;&#x2F;goozy.github.io" rel="noopener" target="_blank">Goozy</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BigHead</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'CofxBK84U8TP78kix0Fk8aP1-9Nh9j0Va',
+      appKey     : 'AmMExziYyk8WPd3Rc8sQtRnm',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,1460 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.1.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"zerolxf.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="咸鱼也有咸鱼的生活">
+<meta property="og:type" content="website">
+<meta property="og:title" content="BigHead">
+<meta property="og:url" content="http://zerolxf.github.io/index.html">
+<meta property="og:site_name" content="BigHead">
+<meta property="og:description" content="咸鱼也有咸鱼的生活">
+<meta property="og:locale">
+<meta property="article:author" content="BigHead">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://zerolxf.github.io/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>BigHead</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">BigHead</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>About</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="Searching..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content index posts-expand">
+            
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/BERT-of-Theseus/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/BERT-of-Theseus/" class="post-title-link" itemprop="url">BERT-of-Theseus</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:01:33" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/BERT-of-Theseus/" class="post-meta-item leancloud_visitors" data-flag-title="BERT-of-Theseus" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/BERT-of-Theseus/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/BERT-of-Theseus/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="BERT-of-Theseus"><a href="#BERT-of-Theseus" class="headerlink" title="BERT-of-Theseus"></a>BERT-of-Theseus</h1><p>论文标题: BERT-of-Theseus: Compressing BERT by Progressive Module Replacing<br>作者: Canwen Xu, Wangchunshu Zhou, Tao Ge, Furu Wei, Ming Zhou<br>时间: 2020<br>核心算法名: BERT-of-Theseus<br>论文链接: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2002.02925">https://arxiv.org/abs/2002.02925</a><br>参考: <a target="_blank" rel="noopener" href="https://chat.openai.com/c/4b9f76af-42bc-47a4-90e6-cfe71e980e0c">科学空间</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>随着深度学习的普及，许多大型神经模型被提出并在各个领域取得了最先进的性能。特别是在自然语言处理（NLP）中，预训练和微调已经成为大多数任务的新规范。基于Transformer的预训练模型在自然语言理解（NLU）和自然语言生成（NLG）领域都占据了主导地位。这些模型受益于其“超参数化”的特性，并包含数百万甚至数十亿的参数，使其在计算成本和效率方面都显得过于昂贵和低效。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>为了解决这个问题，论文提出了一种新的模型压缩方法，通过逐步替换模块来有效地压缩BERT。该方法首先将原始的BERT划分为几个模块，并构建它们的紧凑替代品。然后，我们随机地用它们的替代品替换原始模块来训练紧凑模块以模仿原始模块的行为。我们逐渐增加替换的概率。这种方式使我们的方法在原始和紧凑模型之间带来了更深层次的交互。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/BERT-of-Theseus/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/ELECTRA%20(Stanford%20University%20&%20Google%20Brain)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/ELECTRA%20(Stanford%20University%20&%20Google%20Brain)/" class="post-title-link" itemprop="url">ELECTRA (Stanford University & Google Brain)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:01:33" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/ELECTRA%20(Stanford%20University%20&%20Google%20Brain)/" class="post-meta-item leancloud_visitors" data-flag-title="ELECTRA (Stanford University & Google Brain)" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/ELECTRA%20(Stanford%20University%20&%20Google%20Brain)/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/ELECTRA%20(Stanford%20University%20&%20Google%20Brain)/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="ELECTRA-Stanford-University-amp-Google-Brain"><a href="#ELECTRA-Stanford-University-amp-Google-Brain" class="headerlink" title="ELECTRA (Stanford University &amp; Google Brain)"></a>ELECTRA (Stanford University &amp; Google Brain)</h1><p>论文标题: ELECTRA: Pre-training Text Encoders as Discriminators Rather Than Generators, 作者: Kevin Clark, Minh-Thang Luong, Quoc V. Le, Christopher D. Manning, 时间: 2020, 核心算法名: ELECTRA, 论文链接: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2003.10555">ELECTRA</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>当前的语言表示学习方法可以被视为学习去噪自动编码器。他们选择未标记输入序列的一小部分（通常为15%），遮蔽这些token的身份（例如，BERT）或对这些token的注意力（例如，XLNet），然后训练网络恢复原始输入。虽然这些遮蔽语言建模（MLM）方法由于学习双向表示而比传统的语言模型预训练更有效，但它们通常需要大量的计算成本，因为网络每个示例只从15%的token中学习。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>作为替代，作者提出了一个更有效的预训练任务，称为替换token检测。与其遮蔽输入，作者的方法通过用从小型生成器网络采样的合理替代品替换一些token来破坏它。然后，作者训练了一个判别模型，该模型预测在被破坏的输入中的每个token是否被生成器样本替换。这种新的预训练任务比MLM更有效，因为该任务是在所有输入token上定义的，而不仅仅是被遮蔽的一小部分。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/ELECTRA%20(Stanford%20University%20&%20Google%20Brain)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/Map%20Net-%E5%8C%97%E5%A4%A7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/Map%20Net-%E5%8C%97%E5%A4%A7/" class="post-title-link" itemprop="url">Map Net-北大</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:01:26" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/Map%20Net-%E5%8C%97%E5%A4%A7/" class="post-meta-item leancloud_visitors" data-flag-title="Map Net-北大" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/Map%20Net-%E5%8C%97%E5%A4%A7/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/Map%20Net-%E5%8C%97%E5%A4%A7/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Map-Net-北大"><a href="#Map-Net-北大" class="headerlink" title="Map Net-北大"></a>Map Net-北大</h1><h1 id="Variance-reduced-Language-Pretraining-via-a-Mask-Proposal-Network"><a href="#Variance-reduced-Language-Pretraining-via-a-Mask-Proposal-Network" class="headerlink" title="Variance-reduced Language Pretraining via a Mask Proposal Network"></a>Variance-reduced Language Pretraining via a Mask Proposal Network</h1><p>这篇论文的标题是”Variance-reduced Language Pretraining via a Mask Proposal Network”，作者是Liang Chen，发表于2020年。</p>
+<h2 id="背景："><a href="#背景：" class="headerlink" title="背景："></a>背景：</h2><p>自我监督学习，也称为预训练，对自然语言处理非常重要。大多数预训练方法首先随机掩盖句子中的一些位置，然后训练模型恢复被掩盖位置的标记。这样，模型可以在没有人工标注的情况下进行训练，并且可以使用大量的数据和数十亿的参数。因此，优化效率变得至关重要。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>本文从梯度方差降低的角度解决这个问题。特别是，首先提出了一个原则性的梯度方差分解定理，该定理显示，语言预训练的随机梯度的方差可以自然地分解为两个项：一项是来自批处理中数据样本的方差，另一项是来自掩码采样的方差。为了减少第二部分的方差，我们利用重要性采样策略，该策略旨在根据提议分布而不是均匀分布来采样掩码。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/Map%20Net-%E5%8C%97%E5%A4%A7/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/Performer%20-%20Google%20&%20University%20of%20Cambridge/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/Performer%20-%20Google%20&%20University%20of%20Cambridge/" class="post-title-link" itemprop="url">Performer - Google</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:00:40" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/Performer%20-%20Google%20&%20University%20of%20Cambridge/" class="post-meta-item leancloud_visitors" data-flag-title="Performer - Google" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/Performer%20-%20Google%20&%20University%20of%20Cambridge/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/Performer%20-%20Google%20&%20University%20of%20Cambridge/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Performer-Google-amp-University-of-Cambridge"><a href="#Performer-Google-amp-University-of-Cambridge" class="headerlink" title="Performer - Google &amp; University of Cambridge"></a>Performer - Google &amp; University of Cambridge</h1><p>论文标题：Rethinking Attention with Performers<br>作者：Krzysztof Choromanski, Valerii Likhosherstov, David Dohan, Xingyou Song, Andreea Gane, Tamas Sarlos, Peter Hawkins, Jared Davis, Afroz Mohiuddin, Lukasz Kaiser, David Belanger, Lucy Colwell, Adrian Weller<br>时间：2021<br>核心算法名：Performer<br>论文链接：<a target="_blank" rel="noopener" href="https://arxiv.org/abs/2009.14794">arXiv:2009.14794v4</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Transformer架构在机器学习的多个领域中都取得了最先进的结果，包括自然语言处理、神经机器翻译、文档生成&#x2F;摘要、时间序列预测、生成建模（如图像生成）、音乐生成和生物信息学等。然而，Transformer的计算复杂度随着输入序列的长度呈二次增长，这对于处理大规模序列的任务来说是不可接受的。为了解决这个问题，研究者们提出了多种方法，如限制注意力机制只关注局部邻域，或者引入稀疏性、池化压缩、聚类&#x2F;分箱&#x2F;卷积技术等结构先验。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>Performer是一种新的Transformer架构，它能够以可证明的准确性估计常规（softmax）全秩注意力Transformer，但只使用线性（而不是二次）的空间和时间复杂度，而且不依赖于任何先验知识，如稀疏性或低秩性。为了近似softmax注意力核，Performer使用了一种新的通过正交随机特征进行快速注意力（FAVOR+）的方法，这可能对可扩展的核方法具有独立的兴趣。FAVOR+还可以用于有效地模拟超出softmax的可核化注意力机制。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/Performer%20-%20Google%20&%20University%20of%20Cambridge/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/Linear%20Attention/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/Linear%20Attention/" class="post-title-link" itemprop="url">Linear Attention</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:01:33" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/Linear%20Attention/" class="post-meta-item leancloud_visitors" data-flag-title="Linear Attention" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/Linear%20Attention/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/Linear%20Attention/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Linear-Attention"><a href="#Linear-Attention" class="headerlink" title="Linear Attention"></a>Linear Attention</h1><p>链接：<a target="_blank" rel="noopener" href="https://spaces.ac.cn/archives/7546">https://spaces.ac.cn/archives/7546</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Attention机制在自然语言处理（NLP）和计算机视觉（CV）中得到了广泛的应用。然而，标准的Attention机制的计算复杂度为O(n^2)，这在处理长序列时会带来问题。因此，研究者们提出了各种方法来降低Attention的计算复杂度，包括稀疏Attention、Reformer、Linformer等。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>本文主要探讨了如何通过去掉Softmax来实现线性Attention，即将Attention的计算复杂度降低到O(n)。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/Linear%20Attention/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/RealFormer-%E8%B0%B7%E6%AD%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/RealFormer-%E8%B0%B7%E6%AD%8C/" class="post-title-link" itemprop="url">RealFormer-谷歌</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 04:59:56" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/RealFormer-%E8%B0%B7%E6%AD%8C/" class="post-meta-item leancloud_visitors" data-flag-title="RealFormer-谷歌" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/RealFormer-%E8%B0%B7%E6%AD%8C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/RealFormer-%E8%B0%B7%E6%AD%8C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="RealFormer-谷歌"><a href="#RealFormer-谷歌" class="headerlink" title="RealFormer-谷歌"></a>RealFormer-谷歌</h1><p>论文标题: RealFormer: Transformer Likes Residual Attention, 作者: Ruining He, Anirudh Ravula, Bhargav Kanagal, Joshua Ainslie, 时间: 2021年9月10日, 核心算法名: RealFormer, 论文链接: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2012.11747">arXiv:2012.11747</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Transformer是现代自然语言处理（NLP）模型的基础。然而，尽管Transformer在许多任务中表现出色，但其设计和实现仍有改进的空间。本文提出了一种名为RealFormer的新技术，该技术通过在Transformer网络中创建残差注意层（Residual Attention Layer）来改进Transformer的性能。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>RealFormer的目标是改进Transformer网络的性能，使其在各种任务中表现更好。这些任务包括Masked Language Modeling、GLUE、SQuAD、Neural Machine Translation、WikiHop、HotpotQA、Natural Questions和OpenKP等。此外，RealFormer还旨在稳定训练过程，并使模型的注意力更加稀疏。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/RealFormer-%E8%B0%B7%E6%AD%8C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/T-TA%20(Transformer-based%20Text%20Autoencoder)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/T-TA%20(Transformer-based%20Text%20Autoencoder)/" class="post-title-link" itemprop="url">T-TA (Transformer-based Text Autoencoder)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:01:33" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/T-TA%20(Transformer-based%20Text%20Autoencoder)/" class="post-meta-item leancloud_visitors" data-flag-title="T-TA (Transformer-based Text Autoencoder)" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/T-TA%20(Transformer-based%20Text%20Autoencoder)/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/T-TA%20(Transformer-based%20Text%20Autoencoder)/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="T-TA-Transformer-based-Text-Autoencoder"><a href="#T-TA-Transformer-based-Text-Autoencoder" class="headerlink" title="T-TA (Transformer-based Text Autoencoder)"></a>T-TA (Transformer-based Text Autoencoder)</h1><p>论文标题: Fast and Accurate Deep Bidirectional Language Representations for Unsupervised Learning, 作者: Joongbo Shin, Yoonhyung Lee, Seunghyun Yoon, Kyomin Jung, 时间: 2020年4月, 核心算法名: Transformer-based Text Autoencoder (T-TA), 论文链接: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/2004.08097">https://arxiv.org/abs/2004.08097</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>尽管BERT在各种监督学习任务中取得了成功的性能提升，但将BERT应用于无监督任务仍然存在一个限制，即它需要重复推理以计算上下文语言表示。为了解决这个限制，我们提出了一种名为Transformer-based Text Autoencoder (T-TA)的新型深度双向语言模型。T-TA可以无重复地计算上下文语言表示，并具有像BERT一样的深度双向架构的优点。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>在CPU环境的运行时实验中，我们提出的T-TA在重排任务中的性能比基于BERT的模型快6倍多，在语义相似性任务中快12倍。此外，T-TA在上述任务中显示出与BERT相比的竞争甚至更好的准确性。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/T-TA%20(Transformer-based%20Text%20Autoencoder)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/T5-%E8%B0%B7%E6%AD%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/T5-%E8%B0%B7%E6%AD%8C/" class="post-title-link" itemprop="url">T5-谷歌</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:03:02" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/T5-%E8%B0%B7%E6%AD%8C/" class="post-meta-item leancloud_visitors" data-flag-title="T5-谷歌" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/T5-%E8%B0%B7%E6%AD%8C/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/T5-%E8%B0%B7%E6%AD%8C/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="T5-谷歌"><a href="#T5-谷歌" class="headerlink" title="T5-谷歌"></a>T5-谷歌</h1><p>论文标题: “Exploring the Limits of Transfer Learning with a Unified Text-to-Text Transformer”, 作者: Colin Raffel, Noam Shazeer, Adam Roberts, Katherine Lee, Sharan Narang, Michael Matena, Yanqi Zhou, Wei Li, Peter J. Liu, 时间: 2019年10月, 核心算法名: T5 (Text-to-Text Transfer Transformer), 论文链接: <a target="_blank" rel="noopener" href="https://arxiv.org/abs/1910.10683">https://arxiv.org/abs/1910.10683</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>该论文的目标不是提出新的方法，而是提供一个全面的视角来理解当前领域的状况。因此，这项工作主要包括对现有技术的调查、探索和实证比较。作者还通过扩大系统研究的洞察力（训练多达110亿参数的模型）来探索当前方法的极限，从而在许多任务中获得了最先进的结果。为了进行这种规模的实验，作者引入了“巨大的清洁爬行语料库”（C4），这是一个由网络上抓取的数百GB的清洁英文文本组成的数据集。认识到转移学习的主要用途是在数据稀缺的环境中利用预训练模型，作者发布了他们的代码、数据集和预训练模型（Page 3）。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>该论文通过采用合理的基线（在第3.1节中描述），并一次改变设置的一个方面，系统地研究了这些贡献。例如，在第3.3节中，作者在保持实验流程不变的情况下，测量了不同无监督目标的性能。这种“坐标上升”方法可能会错过二阶效应（例如，某个特定的无监督目标可能在比基线设置更大的模型上效果最好），但进行所有可能组合的探索将是不切实际的（Page 10）。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/T5-%E8%B0%B7%E6%AD%8C/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/Synthesizer:%20Rethinking%20Self-Attention%20for%20Transformer%20Models%20(Google%20Research)/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/Synthesizer:%20Rethinking%20Self-Attention%20for%20Transformer%20Models%20(Google%20Research)/" class="post-title-link" itemprop="url">Synthesizer Rethinking Self-Attention for Transformer Models (Google Research)</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:03:03" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/Synthesizer:%20Rethinking%20Self-Attention%20for%20Transformer%20Models%20(Google%20Research)/" class="post-meta-item leancloud_visitors" data-flag-title="Synthesizer Rethinking Self-Attention for Transformer Models (Google Research)" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/Synthesizer:%20Rethinking%20Self-Attention%20for%20Transformer%20Models%20(Google%20Research)/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/Synthesizer:%20Rethinking%20Self-Attention%20for%20Transformer%20Models%20(Google%20Research)/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="Synthesizer-Rethinking-Self-Attention-for-Transformer-Models-Google-Research"><a href="#Synthesizer-Rethinking-Self-Attention-for-Transformer-Models-Google-Research" class="headerlink" title="Synthesizer: Rethinking Self-Attention for Transformer Models (Google Research)"></a>Synthesizer: Rethinking Self-Attention for Transformer Models (Google Research)</h1><p>论文标题: Synthesizer: Rethinking Self-Attention for Transformer Models, 作者: Yi Tay, Dara Bahri, Donald Metzler, Da-Cheng Juan, Zhe Zhao, Che Zheng, 时间: 2020, 核心算法名: Synthesizer, 论文链接: <a target="_blank" rel="noopener" href="https://arxiv.org/pdf/2005.00743.pdf">https://arxiv.org/pdf/2005.00743.pdf</a></p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>Transformer模型（Vaswani等人，2017）在各种任务中都表现出了成功，这使得Transformer在近年来大大取代了一度流行的自回归和循环模型。Transformer模型的核心是查询-键-值点积注意力。Transformer模型的成功广泛地归因于这种自注意力机制，因为全连接的token图能够模型长距离依赖性，提供了强大的归纳偏见。但是，这篇论文质疑点积自注意力的真正重要性，并通过大量实验发现，随机对齐矩阵的表现出奇地好，而从token-token（查询-键）交互中学习注意力权重虽然有用，但并不那么重要。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>为了解决这个问题，作者提出了Synthesizer，一种无需token-token交互就能学习合成注意力权重的模型。实验结果显示，简单的Synthesizer在与vanilla Transformer模型的比较中，在一系列任务上都取得了高度竞争性的性能，包括机器翻译、语言建模、文本生成和GLUE&#x2F;SuperGLUE基准测试。当与点积注意力组合时，作者发现Synthesizer始终优于Transformers。此外，作者还对Synthesizer与Dynamic Convolutions进行了额外的比较，结果显示，简单的Random Synthesizer不仅比Dynamic Convolutions快60%，而且还将困惑度提高了相对3.5%。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/Synthesizer:%20Rethinking%20Self-Attention%20for%20Transformer%20Models%20(Google%20Research)/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://zerolxf.github.io/2023/08/08/UNILM%20/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="BigHead">
+      <meta itemprop="description" content="咸鱼也有咸鱼的生活">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="BigHead">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2023/08/08/UNILM%20/" class="post-title-link" itemprop="url">UNILM Unified Pre-training for Language Understanding and Generation</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2023-08-08 00:00:00 / Modified: 05:03:03" itemprop="dateCreated datePublished" datetime="2023-08-08T00:00:00+08:00">2023-08-08</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">In</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%A4%A7%E6%A8%A1%E5%9E%8B/" itemprop="url" rel="index"><span itemprop="name">大模型</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2023/08/08/UNILM%20/" class="post-meta-item leancloud_visitors" data-flag-title="UNILM Unified Pre-training for Language Understanding and Generation" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine: </span>
+    
+    <a title="valine" href="/2023/08/08/UNILM%20/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/08/08/UNILM%20/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="UNILM"><a href="#UNILM" class="headerlink" title="UNILM"></a>UNILM</h1><p>Unified Pre-training for Language Understanding and Generation<br>这篇论文的作者是Liu等人，发表于2019年。论文提出了一种新的统一预训练语言模型（UNILM），可以应用于自然语言理解和生成任务。</p>
+<h2 id="背景"><a href="#背景" class="headerlink" title="背景"></a>背景</h2><p>预训练的语言模型已经在各种自然语言处理任务中取得了显著的进步。预训练的语言模型通过预测基于大量文本数据的上下文中的词来学习上下文化的文本表示，并可以进行微调以适应下游任务。然而，现有的预训练模型，如BERT，主要用于自然语言理解任务，而不适用于自然语言生成任务。</p>
+<h2 id="解决问题"><a href="#解决问题" class="headerlink" title="解决问题"></a>解决问题</h2><p>本文提出了一种新的统一预训练语言模型（UNILM），可以应用于自然语言理解和生成任务。UNILM是一个多层Transformer网络，共同预训练在大量文本上，针对三种类型的无监督语言建模目标进行优化：单向LM，双向LM和序列到序列LM。为了控制预测条件的上下文，我们使用特定的自注意力掩码来控制共享的Transformer网络。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2023/08/08/UNILM%20/#more" rel="contents">
+                Read more &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+
+  
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="Next page"></i></a>
+  </nav>
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">BigHead</p>
+  <div class="site-description" itemprop="description">咸鱼也有咸鱼的生活</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">63</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">21</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">40</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/zerolxf" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;zerolxf" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:liangxianfeng96@gmail.com" title="E-Mail → mailto:liangxianfeng96@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://www.zhihu.com/people/liang-xian-feng-58" title="知乎 → http:&#x2F;&#x2F;www.zhihu.com&#x2F;people&#x2F;liang-xian-feng-58" rel="noopener" target="_blank"><i class="zhihu fa-fw"></i>知乎</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="http://blog.csdn.net/xfzero" title="CSDN → http:&#x2F;&#x2F;blog.csdn.net&#x2F;xfzero" rel="noopener" target="_blank"><i class="csdn fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://goozy.github.io/" title="http:&#x2F;&#x2F;goozy.github.io" rel="noopener" target="_blank">Goozy</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">BigHead</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/pjax/pjax.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+  <script>
+var pjax = new Pjax({
+  selectors: [
+    'head title',
+    '#page-configurations',
+    '.content-wrap',
+    '.post-toc-wrap',
+    '.languages',
+    '#pjax'
+  ],
+  switches: {
+    '.post-toc-wrap': Pjax.switches.innerHTML
+  },
+  analytics: false,
+  cacheBust: false,
+  scrollTo : !CONFIG.bookmark.enable
+});
+
+window.addEventListener('pjax:success', () => {
+  document.querySelectorAll('script[data-pjax], script#page-configurations, #pjax script').forEach(element => {
+    var code = element.text || element.textContent || element.innerHTML || '';
+    var parent = element.parentNode;
+    parent.removeChild(element);
+    var script = document.createElement('script');
+    if (element.id) {
+      script.id = element.id;
+    }
+    if (element.className) {
+      script.className = element.className;
+    }
+    if (element.type) {
+      script.type = element.type;
+    }
+    if (element.src) {
+      script.src = element.src;
+      // Force synchronous loading of peripheral JS.
+      script.async = false;
+    }
+    if (element.dataset.pjax !== undefined) {
+      script.dataset.pjax = '';
+    }
+    if (code !== '') {
+      script.appendChild(document.createTextNode(code));
+    }
+    parent.appendChild(script);
+  });
+  NexT.boot.refresh();
+  // Define Motion Sequence & Bootstrap Motion.
+  if (CONFIG.motion.enable) {
+    NexT.motion.integrator
+      .init()
+      .add(NexT.motion.middleWares.subMenu)
+      .add(NexT.motion.middleWares.postList)
+      .bootstrap();
+  }
+  NexT.utils.updateSidebarPosition();
+});
+</script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div id="pjax">
+  
+
+  
+
+  
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : true,
+      appId      : 'CofxBK84U8TP78kix0Fk8aP1-9Nh9j0Va',
+      appKey     : 'AmMExziYyk8WPd3Rc8sQtRnm',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+    </div>
+</body>
+</html>
