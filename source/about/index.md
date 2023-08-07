@@ -1,9 +1,9 @@
 ---
 title: about
-date: 2016-04-16 14:14:40
+date: 2023-08-08 00:00:40
 ---
-# 梁先锋   大二渣渣
-简介：一个装逼成魔的人
-![咸鱼](http://oh9ex6wd2.bkt.clouddn.com/me.jpg)
+# 梁先锋   
+简介：卷心菜
+![咸鱼](https://avatars.githubusercontent.com/u/12774971?v=4)
  邮箱：liangxianfeng96@qq.com 
  QQ: 641587852 
